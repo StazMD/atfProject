@@ -1,5 +1,6 @@
 package com.endava.atfproject;
 
+import com.endava.atfproject.utils.PropertyReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.platform.suite.api.ConfigurationParameter;
@@ -14,7 +15,6 @@ import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 @SelectClasspathResource("src/test/resources/features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.endava.atfproject.steps")
 public class BaseRunner {
-
 
     @BeforeEach
     public void setUp() {

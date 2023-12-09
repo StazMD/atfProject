@@ -6,12 +6,14 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.io.IOException;
+
 import static com.endava.atfproject.WebDriverSingleton.getDriver;
 
 public class DashboardPage {
     WebDriver driver;
 
-    public DashboardPage() {
+    public DashboardPage() throws IOException {
         this.driver = getDriver();
     }
 

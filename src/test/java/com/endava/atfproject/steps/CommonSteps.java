@@ -2,20 +2,17 @@ package com.endava.atfproject.steps;
 
 import com.endava.atfproject.pages.DashboardPage;
 import com.endava.atfproject.pages.LoginPage;
-import com.endava.atfproject.utils.ConfigReader;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import java.util.Map;
+import java.io.IOException;
 
 public class CommonSteps {
-    LoginPage loginPage = new LoginPage();
-    ConfigReader configReader = new ConfigReader();
 
     @When("username and password are entering on login form")
-    public void usernameAndPasswordAreEnteringOnLoginForm() {
-        Map<String, String> credentials = configReader.getLoginCredentials();
-        loginPage.fillLoginAndPassword(credentials.get("username"), credentials.get("password"));
+    public void credentialsEnteredOnLoginForm() {
+        LoginPage loginPage = new LoginPage();
+        loginPage.loginWithCredentials("admin","1Defectdojo@demo#appsec");
     }
 
     @Then("user successfully logged in and dashboard is opening")
