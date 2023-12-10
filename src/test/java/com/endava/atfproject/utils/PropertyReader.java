@@ -16,7 +16,7 @@ public class PropertyReader {
     }
     private void loadProperties() {
         properties = new Properties();
-        try (InputStream input = Files.newInputStream(Paths.get("application.properties"))) {
+        try (InputStream input = new FileInputStream("src/test/resources/application.properties")) {
             properties.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -16,27 +16,24 @@ public class WebDriverSingleton {
     public static WebDriver getDriver() {
         if (driver == null) {
             PropertyReader config = new PropertyReader();
-            config.getProperty("chrome");
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver(
+            String browserType = config.getProperty("browser");
+            String browserUrl = config.getProperty("url");
 
-            );
-        } else if (driver == null) {
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
-        } else {
-            System.out.println("Unsupported browser!");
+            switch (browserType) {
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver();
+                    break;
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported browser: " + browserType);
+            }
+            driver.get(browserUrl);
         }
-//        driver.manage().window().maximize();
-//        driver.get("https://demo.defectdojo.org/");
-//        return driver;
-        return null;
+        driver.manage().window().maximize();
+        return driver;
     }
-
-    public static void closeDriver() {
-        driver.quit();
-    }
-
 }
-
-

@@ -1,20 +1,21 @@
 package com.endava.atfproject.pages;
 
+import com.endava.atfproject.BaseRunner;
+import lombok.NoArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.IOException;
 
 import static com.endava.atfproject.WebDriverSingleton.getDriver;
 
-public class LoginPage {
+public class LoginPage extends BaseRunner {
 
-    WebDriver driver;
-
-    public LoginPage() throws IOException {
-        this.driver = getDriver();
+    public LoginPage() {
+        driver = getDriver();
     }
 
     private final By usernameField = By.name("username");
@@ -28,14 +29,4 @@ public class LoginPage {
         passwordFieldElement.sendKeys(password, Keys.RETURN);
 
     }
-
-//    public String alertMessage() {
-//        WebElement alertMessageText = driver.findElement(alertMessage);
-//        if (alertMessageText.isDisplayed()) {
-//            return alertMessageText.getText();
-//        } else {
-//            return null;
-//        }
-//    }
-
 }

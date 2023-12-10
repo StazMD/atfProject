@@ -1,5 +1,7 @@
 package com.endava.atfproject.pages;
 
+import com.endava.atfproject.BaseRunner;
+import lombok.NoArgsConstructor;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -10,11 +12,10 @@ import java.io.IOException;
 
 import static com.endava.atfproject.WebDriverSingleton.getDriver;
 
-public class DashboardPage {
-    WebDriver driver;
+public class DashboardPage extends BaseRunner {
 
-    public DashboardPage() throws IOException {
-        this.driver = getDriver();
+    public DashboardPage() {
+        driver = getDriver();
     }
 
     private final By userMenu = By.xpath("//*[@aria-label='User Menu']");
