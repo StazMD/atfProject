@@ -1,6 +1,6 @@
 package com.endava.atfproject;
 
-import com.endava.atfproject.utils.PropertyReader;
+import com.endava.atfproject.config.PropertyReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,16 +8,17 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class WebDriverSingleton {
 
-    private volatile static WebDriver driver;
+    public volatile static WebDriver driver;
+    public volatile static PropertyReader propertyReader;
 
-    private WebDriverSingleton() {
+    public WebDriverSingleton(PropertyReader propertyReader) {
+        this.propertyReader = propertyReader;
     }
 
     public static WebDriver getDriver() {
         if (driver == null) {
-            PropertyReader config = new PropertyReader();
-            String browserType = config.getProperty("browser");
-            String browserUrl = config.getProperty("url");
+            String browserType = propertyReader.getProperty("browser");
+            String browserUrl = propertyReader.getProperty("url");
 
             switch (browserType) {
                 case "chrome":
@@ -31,9 +32,15 @@ public class WebDriverSingleton {
                 default:
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
+            driver.manage().window().maximize();
             driver.get(browserUrl);
         }
-        driver.manage().window().maximize();
         return driver;
+    }
+
+    public static void closeDriver() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }

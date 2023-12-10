@@ -1,14 +1,15 @@
 package com.endava.atfproject.pages;
 
-import com.endava.atfproject.BaseRunner;
+import com.endava.atfproject.WebDriverSingleton;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import static com.endava.atfproject.WebDriverSingleton.getDriver;
+public class LoginPage {
 
-public class LoginPage extends BaseRunner {
+    WebDriver driver;
 
     @FindBy(name = "username")
     private WebElement usernameField;
@@ -17,7 +18,7 @@ public class LoginPage extends BaseRunner {
     private WebElement passwordField;
 
     public LoginPage() {
-        driver = getDriver();
+        driver = WebDriverSingleton.getDriver();
         PageFactory.initElements(driver, this);
     }
 
@@ -29,4 +30,5 @@ public class LoginPage extends BaseRunner {
         } catch (Exception e) {
         }
     }
+
 }
