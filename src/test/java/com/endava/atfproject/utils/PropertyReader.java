@@ -3,8 +3,6 @@ package com.endava.atfproject.utils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 public class PropertyReader {
@@ -16,7 +14,7 @@ public class PropertyReader {
     }
     private void loadProperties() {
         properties = new Properties();
-        try (InputStream input = Files.newInputStream(Paths.get("application.properties"))) {
+        try (InputStream input = new FileInputStream("src/test/resources/application.properties")) {
             properties.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();

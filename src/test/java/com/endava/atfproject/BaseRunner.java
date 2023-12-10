@@ -1,12 +1,12 @@
 package com.endava.atfproject;
 
-import com.endava.atfproject.utils.PropertyReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
+import org.openqa.selenium.WebDriver;
 
 import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 
@@ -16,6 +16,8 @@ import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.endava.atfproject.steps")
 public class BaseRunner {
 
+    protected static WebDriver driver;
+
     @BeforeEach
     public void setUp() {
         WebDriverSingleton.getDriver();
@@ -23,7 +25,7 @@ public class BaseRunner {
 
     @AfterEach
     public void tearDown() {
-        WebDriverSingleton.closeDriver();
-    }
+        driver.quit();
 
+    }
 }

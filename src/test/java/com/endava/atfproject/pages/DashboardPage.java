@@ -1,30 +1,30 @@
 package com.endava.atfproject.pages;
 
-import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import com.endava.atfproject.BaseRunner;
+import org.awaitility.Awaitility;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static com.endava.atfproject.WebDriverSingleton.getDriver;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class DashboardPage {
-    WebDriver driver;
+public class DashboardPage extends BaseRunner {
 
-    public DashboardPage() throws IOException {
-        this.driver = getDriver();
+    @FindBy(xpath = "//*[@role='alert']")
+    private WebElement loginAlert;
+
+    public DashboardPage() {
+        driver = getDriver();
+        PageFactory.initElements(driver, this);
     }
 
-    private final By userMenu = By.xpath("//*[@aria-label='User Menu']");
+    public void assertUserSuccessfullyLoggedIn() {
+        Awaitility.await("waiting for login alert to be visible").atMost(30, TimeUnit.SECONDS)
+                .until(() -> loginAlert.isDisplayed());
 
-    public void asserUserMenuFromTopBarNavigation() {
-        try {
-            WebElement userMenuElement = driver.findElement(userMenu);
-            Assert.assertNotNull("Element should be present", userMenuElement);
-        } catch (NoSuchElementException e) {
-            Assert.fail("Element not found");
-        }
+        assertThat(loginAlert.getText()).contains("Hello admin!");
     }
 }
