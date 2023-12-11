@@ -31,9 +31,15 @@ public class WebDriverSingleton {
                 default:
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
+            driver.manage().window().maximize();
             driver.get(browserUrl);
         }
-        driver.manage().window().maximize();
         return driver;
+    }
+
+    public static void closeDriver() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }

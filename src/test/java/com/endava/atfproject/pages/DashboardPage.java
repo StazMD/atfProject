@@ -1,6 +1,6 @@
 package com.endava.atfproject.pages;
 
-import com.endava.atfproject.BaseRunner;
+import com.endava.atfproject.steps.Hook;
 import org.awaitility.Awaitility;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import static com.endava.atfproject.WebDriverSingleton.getDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DashboardPage extends BaseRunner {
+public class DashboardPage extends Hook {
 
     @FindBy(xpath = "//*[@role='alert']")
     private WebElement loginAlert;

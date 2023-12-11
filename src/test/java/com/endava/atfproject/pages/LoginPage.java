@@ -1,6 +1,6 @@
 package com.endava.atfproject.pages;
 
-import com.endava.atfproject.BaseRunner;
+import com.endava.atfproject.steps.Hook;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import static com.endava.atfproject.WebDriverSingleton.getDriver;
 
-public class LoginPage extends BaseRunner {
+public class LoginPage extends Hook {
 
     @FindBy(name = "username")
     private WebElement usernameField;
