@@ -5,23 +5,35 @@ import com.endava.atfproject.pages.DashboardPage;
 import com.endava.atfproject.pages.LoginPage;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CommonStep {
 
-    public volatile static PropertyReader getInstance;
-    private final String credentialsUsername;
-    private final String credentialsPassword;
+    private final String credentialsAdminUsername;
+    private final String credentialsAdminPassword;
+    private final String credentialsUserUsername;
+    private final String credentialsUserPassword;
+    private static final Logger logger = LogManager.getLogger(CommonStep.class);
+
 
     public CommonStep() {
-        this.getInstance = getInstance;
-        this.credentialsUsername = getInstance.getProperty("login.username");
-        this.credentialsPassword = getInstance.getProperty("login.password");
+        this.credentialsAdminUsername = PropertyReader.getProperty("login.admin.username");
+        this.credentialsAdminPassword = PropertyReader.getProperty("login.admin.password");
+        this.credentialsUserUsername = PropertyReader.getProperty("login.user.username");
+        this.credentialsUserPassword = PropertyReader.getProperty("login.user.password");
     }
 
-    @When("username and password are entering on login form")
-    public void enterCredentialsOnLoginForm() {
+    @When("user {string} logged in")
+    public void userLoggedIn(String user) {
         LoginPage loginPage = new LoginPage();
-        loginPage.loginWithCredentials(credentialsUsername, credentialsPassword);
+        if (user.equals("admin")) {
+            loginPage.loginWithCredentials(credentialsAdminUsername, credentialsAdminPassword);
+        } else if (user.equals("user")) {
+            loginPage.loginWithCredentials(credentialsUserUsername, credentialsUserPassword);
+        } else {
+            logger.warn("Incorrect user {}!", user);
+        }
     }
 
     @Then("user successfully logged in")
@@ -29,5 +41,4 @@ public class CommonStep {
         DashboardPage dashboardPage = new DashboardPage();
         dashboardPage.assertUserSuccessfullyLoggedIn();
     }
-
 }

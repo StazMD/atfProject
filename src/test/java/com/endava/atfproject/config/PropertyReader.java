@@ -7,31 +7,27 @@ import java.util.Properties;
 
 public class PropertyReader {
 
-    private static PropertyReader instance;
-    private Properties properties;
+    private static Properties properties;
 
     private PropertyReader() {
-        loadProperties();
     }
 
-    public static synchronized PropertyReader getInstance() {
-        if (instance == null) {
-            instance = new PropertyReader();
-        }
-        return instance;
-    }
-
-    private void loadProperties() {
-        //make properties singleton
-        properties = new Properties();
-        try (InputStream input = new FileInputStream("src/test/resources/application.properties")) {
-            properties.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    //method should be static so that it can be called without creating an instance of PropertyReader
+    private static synchronized void loadProperties() {
+        if (properties == null) {
+            properties = new Properties();
+            try (InputStream input = new FileInputStream("src/test/resources/application.properties")) {
+                properties.load(input);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
-    public String getProperty(String key) {
+    public static String getProperty(String key) {
+        if (properties == null) {
+            loadProperties();
+        }
         return properties.getProperty(key);
     }
 }

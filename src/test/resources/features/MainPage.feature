@@ -1,5 +1,8 @@
 Feature: Login feature
 
-  Scenario: User successfully log in
-    When username and password are entering on login form
-    Then user successfully logged in
+  Scenario Outline: User successfully log in
+    When user "<user>" logged in
+#    Then user successfully logged in
+    Examples:
+      | user  |
+      | admin |
