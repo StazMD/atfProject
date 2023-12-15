@@ -1,21 +1,20 @@
 package com.endava.atfproject.steps;
 
-import com.endava.atfproject.config.PropertyReader;
 import com.endava.atfproject.pages.DashboardPage;
 import com.endava.atfproject.pages.LoginPage;
+import com.endava.atfproject.utils.PropertyReader;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class CommonStep {
 
-    public volatile static PropertyReader getInstance;
     private final String credentialsUsername;
     private final String credentialsPassword;
 
     public CommonStep() {
-        this.getInstance = getInstance;
-        this.credentialsUsername = getInstance.getProperty("login.username");
-        this.credentialsPassword = getInstance.getProperty("login.password");
+        PropertyReader config = new PropertyReader();
+        this.credentialsUsername = config.getProperty("login.username");
+        this.credentialsPassword = config.getProperty("login.password");
     }
 
     @When("username and password are entering on login form")
