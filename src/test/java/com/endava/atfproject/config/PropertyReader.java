@@ -16,7 +16,7 @@ public class PropertyReader {
     private static synchronized void loadProperties() {
         if (properties == null) {
             properties = new Properties();
-            try (InputStream input = new FileInputStream("src/test/resources/application.properties")) {
+            try (InputStream input = new FileInputStream("src/test/resources/application.yml")) {
                 properties.load(input);
             } catch (IOException ex) {
                 ex.printStackTrace();
