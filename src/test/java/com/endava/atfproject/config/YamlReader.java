@@ -8,23 +8,28 @@ import java.io.IOException;
 import java.util.Map;
 
 public class YamlReader {
+    private static final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-    public class Users {
+    private class UsersWrapper {
         private Map<String, User> users; //users in application.yml
     }
 
-    public class User {
+    private class User {
         private String username;
         private String password;
     }
 
-    public static Users readUsers(String filePath) {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    private static synchronized UsersWrapper readUsers() {
         try {
-            return mapper.readValue(new File(filePath), Users.class);
+            return mapper.readValue(new File("src/test/resources/application.yml"), UsersWrapper.class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Map<String, User> getUsers() {
+        UsersWrapper usersWrapper = readUsers();
+        return usersWrapper != null ? usersWrapper.users : null; //condition ? then : else
     }
 }

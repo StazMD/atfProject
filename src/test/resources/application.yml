@@ -3,8 +3,8 @@ url: https://demo.defectdojo.org
 
 users:
   admin:
-    username: admin
-    password: 1Defectdojo@demo#appsec
+    - username: admin
+    - password: 1Defectdojo@demo#appsec
   user:
-    username: user
-    password: UserPassword
+    - username: user
+    - password: UserPassword
