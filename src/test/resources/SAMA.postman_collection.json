@@ -1,0 +1,2882 @@
+{
+	"info": {
+		"_postman_id": "49a4b201-a484-4498-aea6-b20ae2e9defa",
+		"name": "SAMA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Banc request codes",
+			"item": [
+				{
+					"name": "GetBankResponses",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routingKey\": \"SAHSBC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-simulator.local:18800/bank/getresponses",
+							"protocol": "http",
+							"host": [
+								"ips-simulator",
+								"local"
+							],
+							"port": "18800",
+							"path": [
+								"bank",
+								"getresponses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bank Responses",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routingKey\": \"SALOYD\",\n    \"originalCreationDateTime\": \"2023-05-16T13:35:45\",\n    \"currency\": \"SAR\",\n    \"creditResponseDelay\": \"0\",\n    \"cancellationResponseDelay\": \"0\",\n    \"echoResponseDelay\": \"0\",\n    \"duplicate\": \"false\",\n    \"creditResponse\": \"0000\",\n    \"creditDelay\": \"0\",\n    \"creditReply\": \"Y\",\n    \"debitReply\": \"Y\",\n    \"debitResponse\": \"0000\",\n    \"debitDelay\": \"0\",\n    \"debitReversalResponse\": \"0000\",\n    \"debitReversalReply\": \"Y\",\n    \"debitReversalDelay\": \"0\",\n    \"cancellationDelay\": \"0\",\n    \"cancellationResponse\": \"0000\",\n    \"cancellationReply\": \"Y\",\n    \"prtnDelay\": \"0\",\n    \"prtnResponse\": \"0000\",\n    \"prtnReply\": \"Y\",\n    \"echoReply\": \"Y\",\n    \"echoDelay\": \"0\",\n    \"rfpDelay\": \"0\",\n    \"rfpResponse\": \"0000\",\n    \"rfpReply\": \"Y\",\n    \"rfpBusinessResponse\": \"0000\",\n    \"rrfpReply\": \"Y\",\n    \"rrfpResponse\": \"0000\",\n    \"rrfpDelay\": \"0\",\n    \"ackReply\": \"Y\",\n    \"ackResponse\": \"0000\",\n    \"ackDelay\": \"0\",\n    \"rfiReply\": \"Y\",\n    \"rfiResponse\": \"0000\",\n    \"rfiDelay\": \"0\",\n    \"rfiBusinessResponse\": \"0000\",\n    \"rrfiReply\": \"Y\",\n    \"rrfiResponse\": \"0000\",\n    \"rrfiDelay\": \"0\",\n    \"rffReply\": \"Y\",\n    \"rffResponse\": \"0000\",\n    \"rffDelay\": \"0\",\n    \"raReply\": \"Y\",\n    \"raResponse\": \"0000\",\n    \"raDelay\": \"0\",\n    \"raBusinessResponse\": \"0000\",\n    \"rrffReply\": \"Y\",\n    \"rrffResponse\": \"0000\",\n    \"rrffDelay\": \"0\",\n    \"rrffBusinessResponse\": \"0000\",\n    \"avReply\": \"Y\",\n    \"avResponse\": \"0000\",\n    \"avDelay\": \"0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-simulator.local:18800/bank/responses",
+							"protocol": "http",
+							"host": [
+								"ips-simulator",
+								"local"
+							],
+							"port": "18800",
+							"path": [
+								"bank",
+								"responses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "Jobs Get alll",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e5e60512-c2db-4370-bd3b-5a2800cde026",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6aeda21-ba9c-49f3-a9cd-cdf9178db858",
+								"exec": [
+									"pm.test(\"Extract job ID and send POST request\", function () {",
+									"    // Extract job ID from response and set it as a Postman environment variable",
+									"    var jsonData = pm.response.json();",
+									"    var jobId = jsonData.jobs[0].id;",
+									"    pm.environment.set(\"jobId\", jobId);",
+									"    console.log(\"Job ID:\", jobId);",
+									"",
+									"    // // Send POST request with job ID",
+									"    // pm.sendRequest({",
+									"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+									"    //     method: \"POST\",",
+									"    //     body: {",
+									"    //         \"approved\": true",
+									"    //     },",
+									"    //     header: {",
+									"    //         \"Content-Type\": \"application/json\",",
+									"    //         \"Content-Length\": 0,",
+									"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+									"    //     }",
+									"    // }, function (err, response) {",
+									"    //     console.log(\"Response:\", response);",
+									"    //     if (err) {",
+									"    //         console.log(err);",
+									"    //     } else {",
+									"    //         console.log(\"Response code:\", response.responseCode);",
+									"    //         console.log(\"Response body:\", response.body);",
+									"    //     }",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/find-jobs?status=AWAITING_APPROVAL",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"configuration-update",
+								"find-jobs"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "AWAITING_APPROVAL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs Get alll Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d46560bf-9f9f-4071-a2b3-78be96fc8a1d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "81ab4972-8101-41a4-8a6b-1e66a143a85a",
+								"exec": [
+									"pm.test(\"Extract job ID and send POST request\", function () {",
+									"    // Extract job ID from response and set it as a Postman environment variable",
+									"    var jsonData = pm.response.json();",
+									"    var jobId = jsonData.jobs[0].id;",
+									"    pm.environment.set(\"jobId\", jobId);",
+									"    console.log(\"Job ID:\", jobId);",
+									"",
+									"    // // Send POST request with job ID",
+									"    // pm.sendRequest({",
+									"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+									"    //     method: \"POST\",",
+									"    //     body: {",
+									"    //         \"approved\": true",
+									"    //     },",
+									"    //     header: {",
+									"    //         \"Content-Type\": \"application/json\",",
+									"    //         \"Content-Length\": 0,",
+									"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+									"    //     }",
+									"    // }, function (err, response) {",
+									"    //     console.log(\"Response:\", response);",
+									"    //     if (err) {",
+									"    //         console.log(err);",
+									"    //     } else {",
+									"    //         console.log(\"Response code:\", response.responseCode);",
+									"    //         console.log(\"Response body:\", response.body);",
+									"    //     }",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/find-jobs?status=AWAITING_APPROVAL",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"configuration-update",
+								"find-jobs"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "AWAITING_APPROVAL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs -  Approve",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a5978907-cc3c-4d6b-86c3-e427254b9d9a",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9795b265-a4bc-4881-b7f7-942b14e14849",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "SYSTEM_APPROVER",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"approved\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/61/decisions",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"configuration-update",
+								"jobs",
+								"61",
+								"decisions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Settlement",
+			"item": [
+				{
+					"name": "Jobs -  Settlement COM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0b7a6d8c-1d53-4d4f-93b8-702ebe10fe9c",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "49f3c63a-7869-4e01-a21c-e3eef3e49b86",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"SET_SETTLEMENT_STATUS_TO_COMPLETE_STATE\",\n    \"parameters\": \n    {\n        \"currencyIsoCode\": \"SAR\",\n        \"cutoverDate\": \"2010-01-05\",\n        \"cycleNumber\": \"001\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-simulator.local:9080/ips-console/vlapi/ips/v1.0/operator/configuration-update/jobs",
+							"protocol": "http",
+							"host": [
+								"ips-simulator",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips-console",
+								"vlapi",
+								"ips",
+								"v1.0",
+								"operator",
+								"configuration-update",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Settl - SetComplete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "998129df-5042-4e52-8964-a5b46d7b69fa",
+								"exec": [
+									"eval(pm.collectionVariables.get(\"helper\")).updateJobId();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SystemOperator}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{contentType}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"SET_SETTLEMENT_STATUS_TO_COMPLETE_STATE\",\n    \"parameters\": {\n        \"currencyIsoCode\": \"SAR\",\n        \"cycleNumber\": \"001\",\n        \"cutoverDate\": \"2010-01-05\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"configuration-update",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "SNM",
+			"item": [
+				{
+					"name": "Send 981 SNM to Participant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eb883e26-5100-4b7b-8612-7c2c6ab3b87a",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d09f087b-c751-4ff4-b394-cba3f4f39dba",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "SYSTEM_OPERATOR",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"participantId\": \"SARBSG\",\r\n    \"bankCode\": null,\r\n    \"details\": {\r\n        \"messageText\": \"Test Message\"\r\n    },\r\n    \"eventType\": \"981\",\r\n    \"messageTimestamp\": \"{{$isoTimestamp}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/snms/send",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"snms",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send 981 SNM to FA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "68b65fdb-00ef-434b-9752-09e0aa6df657",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "578068e8-fa08-4dd3-92df-4e801dd24d98",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "SYSTEM_OPERATOR",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"participantId\": \"FSABARC01\",\r\n    \"bankCode\": null,\r\n    \"details\": {\r\n        \"messageText\": \"Test Message\"\r\n    },\r\n    \"eventType\": \"981\",\r\n    \"messageTimestamp\": \"{{$isoTimestamp}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/snms/send",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"snms",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send 981 SNM 0BROADCAST",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "acba0b9b-b837-4dcb-a7a0-068a70575335",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8461eee3-7217-4e71-94ec-943d0f624c56",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "SYSTEM_OPERATOR",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"details\": {\r\n        \"messageText\": \"Test Message\"\r\n    },\r\n    \"eventType\": \"981\",\r\n    \"messageTimestamp\": \"{{$isoTimestamp}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ips-node1.local:9080/ips/v1.0/operator/snms/send",
+							"protocol": "http",
+							"host": [
+								"ips-node1",
+								"local"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"snms",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list of SNMs participants",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cb965241-dedd-4748-810c-a44764620997",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f2d5df80-7aef-4f34-9821-b723a1d6ed47",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:9080/ips/v1.0/operator/events/snm?entityId=SARBSG&entityType=SARBSG&startDate=2023-12-05&endDate=2023-12-05&eventTypes=981",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"events",
+								"snm"
+							],
+							"query": [
+								{
+									"key": "entityId",
+									"value": "SARBSG"
+								},
+								{
+									"key": "entityType",
+									"value": "SARBSG"
+								},
+								{
+									"key": "startDate",
+									"value": "2023-12-05"
+								},
+								{
+									"key": "endDate",
+									"value": "2023-12-05"
+								},
+								{
+									"key": "eventTypes",
+									"value": "981"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list of SNMs 0BROADCAST",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3dfb170e-aa2f-41af-b21f-cd2088ee7d40",
+								"exec": [
+									"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "94aa2bd0-a94f-4bd6-a5ad-db61f23cd75a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "alpha",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Password2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:9080/ips/v1.0/operator/events/snm?entityId=SARBSG&entityType=SARBSG&startDate=2023-12-05&endDate=2023-12-05&eventTypes=981",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "9080",
+							"path": [
+								"ips",
+								"v1.0",
+								"operator",
+								"events",
+								"snm"
+							],
+							"query": [
+								{
+									"key": "entityId",
+									"value": "SARBSG"
+								},
+								{
+									"key": "entityType",
+									"value": "SARBSG"
+								},
+								{
+									"key": "startDate",
+									"value": "2023-12-05"
+								},
+								{
+									"key": "endDate",
+									"value": "2023-12-05"
+								},
+								{
+									"key": "eventTypes",
+									"value": "981"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Sign-On",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routingKey\":\"SAFAFA\",\n    \"messageType\":\"signOn\"\n}"
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/admin/request",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"admin",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign-Off",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routingKey\":\"SAFAFA\",\n    \"messageType\":\"signOn\"\n}"
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/admin/request",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"admin",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign-On Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routingKey\":\"SAFAFA\",\n    \"messageType\":\"signOn\"\n}"
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/admin/request",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"admin",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "29608c1f-2e6b-41e5-b2c3-4ba004c2e401",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment().format((\"YYYY-MM-DD\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b87fbff6-57d7-4484-9f21-55c027a10a48",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "start_date",
+						"value": "{{currentdate}}",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "end_date",
+						"value": "{{$timestamp}}",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/api/value-transactions?start_date={{currentdate}}&end_date={{currentdate}}&items_per_page=200&requestor_id=&owner_id=000000501C501&message_type=pacs.008&requestor_type=PA&owner_type=PA",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"api",
+						"value-transactions"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "end_date",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "items_per_page",
+							"value": "200"
+						},
+						{
+							"key": "requestor_id",
+							"value": ""
+						},
+						{
+							"key": "owner_id",
+							"value": "000000501C501"
+						},
+						{
+							"key": "message_type",
+							"value": "pacs.008"
+						},
+						{
+							"key": "requestor_type",
+							"value": "PA"
+						},
+						{
+							"key": "owner_type",
+							"value": "PA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transaction legs",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0b53053f-e4f7-4e00-af11-28013dc4ebb6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d711d544-30ba-46f8-9c5b-dd353438e42f",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "start_date",
+						"value": "{{currentdate}}",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "end_date",
+						"value": "{{$timestamp}}",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"instructionIDs\": [\"20231222SALOLKLOLK6H51711048036419\"],\n    \"includeXml\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/transaction/messages",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"transaction",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SNMs fetch",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "36226768-4edb-4184-a7cb-8880da10aa73",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "31c6b4f6-b968-4150-9cb0-6d7f07e7a4bd",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "default",
+						"value": "application/json"
+					},
+					{
+						"key": "start_date",
+						"type": "default",
+						"value": "{{currentdate}}",
+						"disabled": true
+					},
+					{
+						"key": "end_date",
+						"type": "default",
+						"value": "{{$timestamp}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:9080/participant-simulator/functionalTestingTab/adminTab/fetchSnms?routingKey=SABARC",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"participant-simulator",
+						"functionalTestingTab",
+						"adminTab",
+						"fetchSnms"
+					],
+					"query": [
+						{
+							"key": "routingKey",
+							"value": "SABARC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9c0547b7-6e48-4327-9a7c-d3fa3d5e2eac",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment().format((\"YYYY-MM-DD\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ee128faf-84de-4fd5-9596-ef463e356cb2",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/user/find-user/SYSTEM_OPERATOR",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"user",
+						"find-user",
+						"SYSTEM_OPERATOR"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "52e662a0-5698-489a-9e77-4e92a708f30d",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment().format((\"YYYY-MM-DD\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8b812375-e031-4e6c-b80f-101e72daf33b",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/user/find-user/SYSTEM_OPERATOR",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"user",
+						"find-user",
+						"SYSTEM_OPERATOR"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRejectReport",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5779ab4e-be53-4481-8c34-33349ecbd627",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment().format((\"YYYY-MM-DD\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "47f48777-6387-467e-9ecb-9279a6d71a03",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "start_date",
+						"value": "{{currentdate}}",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "end_date",
+						"value": "{{$timestamp}}",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/api/value-transactions?start_date={{currentdate}}&end_date={{currentdate}}&items_per_page=200&requestor_id=&owner_id=000000501C501&message_type=pacs.008&requestor_type=PA&owner_type=PA",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"api",
+						"value-transactions"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "end_date",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "items_per_page",
+							"value": "200"
+						},
+						{
+							"key": "requestor_id",
+							"value": ""
+						},
+						{
+							"key": "owner_id",
+							"value": "000000501C501"
+						},
+						{
+							"key": "message_type",
+							"value": "pacs.008"
+						},
+						{
+							"key": "requestor_type",
+							"value": "PA"
+						},
+						{
+							"key": "owner_type",
+							"value": "PA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getRejectReport Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "639f2516-ef5a-4012-b2c2-6198332ca90a",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment().format((\"YYYY-MM-DD\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "101fc08e-2031-4f23-ac74-d4cc9ede0e41",
+						"exec": [
+							"pm.test(\"Extract job ID and send POST request\", function () {",
+							"    // Extract job ID from response and set it as a Postman environment variable",
+							"    var jsonData = pm.response.json();",
+							"    var jobId = jsonData.jobs[0].id;",
+							"    pm.environment.set(\"jobId\", jobId);",
+							"    console.log(\"Job ID:\", jobId);",
+							"",
+							"    // // Send POST request with job ID",
+							"    // pm.sendRequest({",
+							"    //     url: \"http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/84/decisions\",",
+							"    //     method: \"POST\",",
+							"    //     body: {",
+							"    //         \"approved\": true",
+							"    //     },",
+							"    //     header: {",
+							"    //         \"Content-Type\": \"application/json\",",
+							"    //         \"Content-Length\": 0,",
+							"    //         \"Cookie\": \"JSESSIONID=0000fiCzEs3TjxO-p8XQJVLdOC4:-1; Path=/; HttpOnly;\"",
+							"    //     }",
+							"    // }, function (err, response) {",
+							"    //     console.log(\"Response:\", response);",
+							"    //     if (err) {",
+							"    //         console.log(err);",
+							"    //     } else {",
+							"    //         console.log(\"Response code:\", response.responseCode);",
+							"    //         console.log(\"Response body:\", response.body);",
+							"    //     }",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "start_date",
+						"value": "{{currentdate}}",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "end_date",
+						"value": "{{$timestamp}}",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/api/value-transactions?start_date={{currentdate}}&end_date={{currentdate}}&items_per_page=200&requestor_id=&owner_id=000000501C501&message_type=pacs.008&requestor_type=PA&owner_type=PA",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"api",
+						"value-transactions"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "end_date",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "items_per_page",
+							"value": "200"
+						},
+						{
+							"key": "requestor_id",
+							"value": ""
+						},
+						{
+							"key": "owner_id",
+							"value": "000000501C501"
+						},
+						{
+							"key": "message_type",
+							"value": "pacs.008"
+						},
+						{
+							"key": "requestor_type",
+							"value": "PA"
+						},
+						{
+							"key": "owner_type",
+							"value": "PA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Connections_Disable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a124c6d2-4373-4d31-94df-074d11068e10",
+						"exec": [
+							"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "062ca7e6-7c5b-482c-bbfc-368622798471",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"command\": \"DISABLE_CONNECTION\",\r\n    \"parameters\": \r\n    {\r\n        \"connectionId\": \"000000501C501\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Connections_Enable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "344b8b52-0915-4e95-a9ef-a3c91fc51b08",
+						"exec": [
+							"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "47dc984f-71c8-490a-a9db-2862a4ea4b66",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"command\": \"DISABLE_CONNECTION\",\r\n    \"parameters\": \r\n    {\r\n        \"connectionId\": \"000000501C501\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Settlement schedule",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2fb567db-5776-4c80-a59c-88d73b4442d4",
+						"exec": [
+							"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/settlement/calendar/SAR/2023-01-30T21%3A00%3A00Z",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"settlement",
+						"calendar",
+						"SAR",
+						"2023-01-30T21%3A00%3A00Z"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Settlement schedule Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "86f0019d-a3f9-40f7-8fcd-596685d8fabd",
+						"exec": [
+							"// eval(pm.collectionVariables.get(\"helper\")).testStatusCode(204);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/settlement/calendar/SAR/2023-01-30T21%3A00%3A00Z",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"settlement",
+						"calendar",
+						"SAR",
+						"2023-01-30T21%3A00%3A00Z"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Top-Up Participant",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "",
+						"description": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"command\": \"PARTICIPANT_TOP_UP\",\n    \"parameters\": {\n        \"participantId\": \"SALOLK\",\n        \"amount\": \"200000000\",\n        \"reasonCode\": \"SUPP\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Debit cup participant",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "",
+						"description": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"parameters\": {\n        \"participantId\": \"SARBSG\",\n        \"account\": {\n            \"debitCap\": \"300000000\",\n            \"reasonForDebitCapChange\": \"updateDebitCap\"\n        }\n    },\n    \"command\": \"UPDATE_DEBIT_CAP_PARTICIPANT_SO\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Top-Up FA",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"command\": \"FUNDING_ACCOUNT_TOP_UP\",\n    \"parameters\": {\n        \"sharedFundingAccountId\": \"FSALOLK01\",\n        \"amount\": \"500000000\",\n        \"reasonCode\": \"SUPP\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update SITL",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"command\": \"FUNDING_ACCOUNT_TOP_UP\",\n    \"parameters\": {\n        \"sharedFundingAccountId\": \"FSALOLK01\",\n        \"amount\": \"500000000\",\n        \"reasonCode\": \"SUPP\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DrawDown FA",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e02fa78d-9743-4495-9b30-6d27b5fe3872",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"description": "generated based on SystemOperator  Password1",
+						"key": "Authorization",
+						"type": "text",
+						"value": "Basic U3lzdGVtT3BlcmF0b3I6UGFzc3dvcmQx",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json; charset=UTF-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"command\": \"FUNDING_ACCOUNT_DRAW_DOWN\",\n    \"parameters\": {\n        \"sharedFundingAccountId\": \"FSALOLK0101\",\n        \"amount\": \"500000000\",\n        \"reasonCode\": \"DISB\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://ips-node1.local:9080/ips/v1.0/operator/configuration-update/jobs/",
+					"protocol": "http",
+					"host": [
+						"ips-node1",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Participant - Create Asociated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8854bbae-1445-446f-8941-f0336a057b38",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "SYSTEM_OPERATOR",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{SystemOperator}}",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "{{contentType}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"command\": \"CREATE_PARTICIPANT\",\n    \"parameters\": {\n        \"participantId\": \"SAFADN\",\n        \"participantName\": \"SAFADN\",\n        \"participantGroup\": \"WG001\",\n        \"financialInstitutionId\": \"100000006\",\n        \"defaultConnectionId\": \"000000507C507\",\n        \"services\": \"3\",\n        \"allowedTpspIds\": [],\n        \"account\": {\n            \"accountType\": \"TRACKING\",\n            \"trackingModeType\": \"RESET\",\n            \"trackingPositionLimit\": \"3000000\",\n            \"sharedFundingAccountId\": \"FSARBSG0101\",\n            \"fundingAgentId\": \"FSARBSG01\"\n        },\n        \"lowThreshold\": {\n            \"lowThresholdIndicator\": \"percentage\",\n            \"lowThresholdValue\": \"10.0\"\n        },\n        \"highThreshold\": {\n            \"highThresholdIndicator\": \"percentage\",\n            \"highThresholdValue\": \"90.0\"\n        },\n        \"routing\": [\n            {\n                \"routingId\": \"SAFADN\"\n            }\n        ],\n        \"allowedConnectionIds\": [\n            \"000000507C507\"\n        ],\n        \"effectiveDate\": \"2022-11-25\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{boHost}}:{{boPort}}/ips/v1.0/operator/configuration-update/jobs",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{boHost}}"
+					],
+					"port": "{{boPort}}",
+					"path": [
+						"ips",
+						"v1.0",
+						"operator",
+						"configuration-update",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pacs.008",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"instructingRoutingKey\": \"SABARC\",\n    \"senderTokenRequest\": \"false\",\n    \"messageSpecType\": \"1\",\n    \"messageType\": \"credit\",\n    \"instructingBankAccount\": \"SA450011FGH0017080799237240028\",\n    \"instructedRoutingKey\": \"SAHSBC\",\n    \"instructedBankAccount\": \"SA450011FGH0034671901629361953\",\n    \"instructionID\": \"20230131SABARCBARC6B00011038000035\",\n    \"transactionDate\": \"2023-01-31T13:35:45\",\n    \"currency\": \"SAR\",\n    \"amount\": \"111\",\n    \"originalSettlementDateTime\": \"2023-01-31T13:35:45\",\n    \"originalSettlementDate\":\"2023-01-31T13:35:45\",\n    \"paymentTypeCtgyPurp\": \"OTHR\",\n    \"TxId\" : \"20230131SABARCBARC6B00011035000027\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/transaction/Request",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"transaction",
+						"Request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pacs.004 json",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"instructingRoutingKey\": \"SARBSG\",\n    \"senderTokenRequest\": \"false\",\n    \"messageSpecType\": \"1\",\n    \"messageType\": \"paymentReturnRequest\",\n    \"instructingBankAccount\": \"SA450011FGH0079212211936437518\",\n    \"instructedRoutingKey\": \"SABARC\",\n    \"instructedBankAccount\": \"SA450011FGH0086479739768074330\",\n    \"instructionID\": \"20230523SARBSGRBSG6B00011157000153\",\n    \"transactionDate\": \"2023-01-31T13:35:45\",\n    \"currency\": \"SAR\",\n    \"amount\": \"222\",\n    \"returnReasonCode\": \"CUST\",\n    \"TxId\" : \"20230131SABARCBARC6B00011035000028\",\n    \"originalMessageID\": \"M20220621SAHSBCHSBC6B00010828001661\",\n    \"messageName\": \"pacs.008.001.06\",\n    \"originalInstructionID\": \"20220621SAHSBCHSBC6B00010828000107\",\n    \"originalSettlementDateTime\": \"2023-05-23T08:19:53\",\n    \"originalTransactionID\": \"20220621SAHSBCHSBC6B00010828000107\",\n    \"originalSettlementDate\": \"2023-05-23\",\n    \"originalCurrency\": \"SAR\",\n    \"originalAmount\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/transaction/request",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"transaction",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pacs.008 XML",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"routingKey\": \"SARBSG\",\n\"message\": \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n<Message xmlns=\\\"urn:sama\\\" xmlns:ct=\\\"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.06\\\" xmlns:head=\\\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\\\">\n        <AppHdr>\n            <head:Fr>{\n\"routingKey\": \"SALOYD\",\n\"message\": \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><Message xmlns=\\\"urn:sama\\\" xmlns:ct=\\\"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.06\\\" xmlns:head=\\\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\\\">\n    <AppHdr>\n        <head:Fr>\n            <head:FIId>\n                <head:FinInstnId>\n                    <head:ClrSysMmbId>\n                        <head:MmbId>SALOYD</head:MmbId>\n                    </head:ClrSysMmbId>\n                </head:FinInstnId>\n            </head:FIId>\n        </head:Fr>\n        <head:To>\n            <head:FIId>\n                <head:FinInstnId>\n                    <head:ClrSysMmbId>\n                        <head:MmbId>SA9999</head:MmbId>\n                    </head:ClrSysMmbId>\n                </head:FinInstnId>\n            </head:FIId>\n        </head:To>\n        <head:BizMsgIdr>B20201122SAABCD00002BXXX20730997766</head:BizMsgIdr>\n        <head:MsgDefIdr>pacs.008.001.06</head:MsgDefIdr>\n            <head:BizSvc>E&amp;I</head:BizSvc>\n        <head:CreDt>2023-06-09T16:52:41</head:CreDt>\n            <head:CpyDplct>DUPL</head:CpyDplct>\n    </AppHdr>\n    <CreditTransfer>\n        <ct:FIToFICstmrCdtTrf>\n            <ct:GrpHdr>\n                <ct:MsgId>M20230609SALOYDLOYD6B00011356000040</ct:MsgId>\n                <ct:CreDtTm>2023-06-09T16:52:40</ct:CreDtTm>\n                <ct:NbOfTxs>1</ct:NbOfTxs>\n                <ct:TtlIntrBkSttlmAmt Ccy=\"SAR\">20.00</ct:TtlIntrBkSttlmAmt>\n                <ct:IntrBkSttlmDt>2023-06-09</ct:IntrBkSttlmDt>\n                <ct:SttlmInf>\n                    <ct:SttlmMtd>CLRG</ct:SttlmMtd>\n                    <ct:ClrSys>\n                        <ct:Cd>IPS</ct:Cd>\n                    </ct:ClrSys>\n                </ct:SttlmInf>\n            </ct:GrpHdr>\n            <ct:CdtTrfTxInf>\n            <ct:PmtId>\n                <ct:InstrId>20230609SALOYDLOYD6B00011356000040</ct:InstrId>\n                <ct:EndToEndId>20201122SA432100002BXXX20730997766</ct:EndToEndId>\n                <ct:TxId>20230609SALOYDLOYD6B00011356000040</ct:TxId>\n                <ct:ClrSysRef>1</ct:ClrSysRef>\n            </ct:PmtId>\n            <ct:PmtTpInf>\n                <ct:SvcLvl>\n                    <ct:Cd>SDVA</ct:Cd>\n                </ct:SvcLvl>\n                    <ct:LclInstrm>\n                        <ct:Prtry>OTH</ct:Prtry>\n                    </ct:LclInstrm>\n                    <ct:CtgyPurp>\n                            <ct:Prtry>WEL</ct:Prtry>\n                    </ct:CtgyPurp>\n            </ct:PmtTpInf>\n            <ct:IntrBkSttlmAmt Ccy=\\\"SAR\\\">20</ct:IntrBkSttlmAmt>\n            <ct:AccptncDtTm>2023-06-09T16:52:41</ct:AccptncDtTm>\n            <ct:ChrgBr>SLEV</ct:ChrgBr>\n            <ct:InstgAgt>\n                <ct:FinInstnId>\n                    <ct:ClrSysMmbId>\n                        <ct:MmbId>SALOYD</ct:MmbId>\n                    </ct:ClrSysMmbId>\n                </ct:FinInstnId>\n            </ct:InstgAgt>\n            <ct:InstdAgt>\n                <ct:FinInstnId>\n                    <ct:ClrSysMmbId>\n                        <ct:MmbId>SABARC</ct:MmbId>\n                    </ct:ClrSysMmbId>\n                </ct:FinInstnId>\n            </ct:InstdAgt>\n                <ct:UltmtDbtr>\n                    <ct:Nm>Ibrahim Zein</ct:Nm>\n                    <ct:PstlAdr>\n                            <ct:AdrTp>ADDR</ct:AdrTp>\n                            <ct:StrtNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:StrtNm>\n                            <ct:BldgNb>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:BldgNb>\n                            <ct:PstCd>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PstCd>\n                            <ct:TwnNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:TwnNm>\n                            <ct:CtrySubDvsn>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CtrySubDvsn>\n                            <ct:Ctry>SA</ct:Ctry>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                    </ct:PstlAdr>\n                    <ct:Id>\n                            <ct:PrvtId>\n                                    <ct:DtAndPlcOfBirth>\n                                            <ct:BirthDt>2000-03-02</ct:BirthDt>\n                                            <ct:PrvcOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PrvcOfBirth>\n                                            <ct:CityOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CityOfBirth>\n                                            <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                    </ct:DtAndPlcOfBirth>\n                                    <ct:Othr>\n                                        <ct:Id>GRBB204565PL9C</ct:Id>\n                                            <ct:SchmeNm>\n                                                    <ct:Prtry>IQMA</ct:Prtry>\n                                            </ct:SchmeNm>\n                                            <ct:Issr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Issr>\n                                    </ct:Othr>\n                            </ct:PrvtId>\n                    </ct:Id>\n                    <ct:CtryOfRes>SA</ct:CtryOfRes>\n                    <ct:CtctDtls>\n                            <ct:NmPrfx>DOCT</ct:NmPrfx>\n                            <ct:Nm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Nm>\n                            <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                            <ct:MobNb>+966-1235-1235</ct:MobNb>\n                            <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                            <ct:EmailAdr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:EmailAdr>\n                            <ct:Othr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Othr>\n                    </ct:CtctDtls>\n            </ct:UltmtDbtr>\n            <ct:Dbtr>\n                <ct:Nm>CdtTrfTxInf dbtr name</ct:Nm>\n                    <ct:PstlAdr>\n                            <ct:AdrTp>BIZZ</ct:AdrTp>\n                            <ct:StrtNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:StrtNm>\n                            <ct:BldgNb>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:BldgNb>\n                            <ct:PstCd>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PstCd>\n                            <ct:TwnNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:TwnNm>\n                            <ct:CtrySubDvsn>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CtrySubDvsn>\n                            <ct:Ctry>SA</ct:Ctry>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                    </ct:PstlAdr>\n                    <ct:Id>\n                            <ct:PrvtId>\n                                    <ct:DtAndPlcOfBirth>\n                                            <ct:BirthDt>1982-02-02</ct:BirthDt>\n                                            <ct:PrvcOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PrvcOfBirth>\n                                            <ct:CityOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CityOfBirth>\n                                            <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                    </ct:DtAndPlcOfBirth>\n                                    <ct:Othr>\n                                        <ct:Id>GRBB204565PL9L</ct:Id>\n                                            <ct:SchmeNm>\n                                                    <ct:Prtry>IQMA</ct:Prtry>\n                                            </ct:SchmeNm>\n                                            <ct:Issr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Issr>\n                                    </ct:Othr>\n                            </ct:PrvtId>\n                    </ct:Id>\n                    <ct:CtryOfRes>SA</ct:CtryOfRes>\n                    <ct:CtctDtls>\n                            <ct:NmPrfx>DOCT</ct:NmPrfx>\n                            <ct:Nm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Nm>\n                            <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                            <ct:MobNb>+966-1235-1235</ct:MobNb>\n                            <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                            <ct:EmailAdr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:EmailAdr>\n                            <ct:Othr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Othr>\n                    </ct:CtctDtls>\n            </ct:Dbtr>\n            <ct:DbtrAcct>\n                <ct:Id>\n                    <ct:IBAN>SA450011FGH0038171586773933272</ct:IBAN>\n                </ct:Id>\n                    <ct:Ccy>SAR</ct:Ccy>\n                    <ct:Nm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Nm>\n            </ct:DbtrAcct>\n            <ct:DbtrAgt>\n                <ct:FinInstnId>\n                    <ct:ClrSysMmbId>\n                        <ct:MmbId>SALOYD</ct:MmbId>\n                    </ct:ClrSysMmbId>\n                </ct:FinInstnId>\n            </ct:DbtrAgt>\n            <ct:CdtrAgt>\n                <ct:FinInstnId>\n                    <ct:ClrSysMmbId>\n                        <ct:MmbId>SABARC</ct:MmbId>\n                    </ct:ClrSysMmbId>\n                </ct:FinInstnId>\n            </ct:CdtrAgt>\n            <ct:Cdtr>\n                <ct:Nm>Creditor Name</ct:Nm>\n                    <ct:PstlAdr>\n                        <ct:AdrTp>HOME</ct:AdrTp>\n                        <ct:StrtNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:StrtNm>\n                        <ct:BldgNb>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:BldgNb>\n                        <ct:PstCd>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PstCd>\n                        <ct:TwnNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:TwnNm>\n                        <ct:CtrySubDvsn>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CtrySubDvsn>\n                        <ct:Ctry>SA</ct:Ctry>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                    </ct:PstlAdr>\n                    <ct:Id>\n                                                    <ct:PrvtId>\n                                    <ct:DtAndPlcOfBirth>\n                                        <ct:BirthDt>2000-03-02</ct:BirthDt>\n                                        <ct:PrvcOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PrvcOfBirth>\n                                        <ct:CityOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CityOfBirth>\n                                        <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                    </ct:DtAndPlcOfBirth>\n                                    <ct:Othr>\n                                        <ct:Id>GRBB204565PL9E</ct:Id>\n                                            <ct:SchmeNm>\n                                                \n                                                <ct:Prtry>IQMA</ct:Prtry>\n                                            </ct:SchmeNm>\n                                        <ct:Issr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Issr>\n                                    </ct:Othr>\n                            </ct:PrvtId>\n                    </ct:Id>\n                <ct:CtryOfRes>SA</ct:CtryOfRes>\n                    <ct:CtctDtls>\n                        <ct:NmPrfx>DOCT</ct:NmPrfx>\n                        <ct:Nm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Nm>\n                        <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                        <ct:MobNb>+966-1235-1235</ct:MobNb>\n                        <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                        <ct:EmailAdr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:EmailAdr>\n                        <ct:Othr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Othr>\n                    </ct:CtctDtls>\n            </ct:Cdtr>\n            <ct:CdtrAcct>\n                <ct:Id>\n                    <ct:IBAN>SA450011FGH0069931828199363716</ct:IBAN>\n                </ct:Id>\n                    <ct:Ccy>SAR</ct:Ccy>\n                    <ct:Nm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Nm>\n            </ct:CdtrAcct>\n            <ct:UltmtCdtr>\n                    <ct:Nm>Ibrahim Zein</ct:Nm>\n                        <ct:PstlAdr>\n                            <ct:AdrTp>DLVY</ct:AdrTp>\n                            <ct:StrtNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:StrtNm>\n                            <ct:BldgNb>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:BldgNb>\n                            <ct:PstCd>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PstCd>\n                            <ct:TwnNm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:TwnNm>\n                            <ct:CtrySubDvsn>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CtrySubDvsn>\n                            <ct:Ctry>SA</ct:Ctry>\n                            <ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine><ct:AdrLine>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AdrLine>\n                        </ct:PstlAdr>\n                    <ct:Id>\n                                                    <ct:PrvtId>\n                                <ct:DtAndPlcOfBirth>\n                                    <ct:BirthDt>1982-02-02</ct:BirthDt>\n                                    <ct:PrvcOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:PrvcOfBirth>\n                                    <ct:CityOfBirth>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:CityOfBirth>\n                                    <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                </ct:DtAndPlcOfBirth>\n                                <ct:Othr>\n                                    <ct:Id>GRBB204565PL9E</ct:Id>\n                                    <ct:SchmeNm>\n                                        <ct:Prtry>IQMA</ct:Prtry>\n                                    </ct:SchmeNm>\n                                    <ct:Issr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Issr>\n                                </ct:Othr>\n                            </ct:PrvtId>\n                    </ct:Id>\n                <ct:CtryOfRes>SA</ct:CtryOfRes>\n                <ct:CtctDtls>\n                    <ct:NmPrfx>DOCT</ct:NmPrfx>\n                    <ct:Nm>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Nm>\n                    <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                    <ct:MobNb>+966-1235-1235</ct:MobNb>\n                    <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                    <ct:EmailAdr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:EmailAdr>\n                    <ct:Othr>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Othr>\n                </ct:CtctDtls>\n            </ct:UltmtCdtr>\n                    <ct:RltdRmtInf>\n                            <ct:RmtId>remittanceid</ct:RmtId>\n                            <ct:RmtLctnDtls>\n                                    <ct:Mtd>FAXI</ct:Mtd>\n                                    <ct:ElctrncAdr>remit@example.com</ct:ElctrncAdr>\n                            </ct:RmtLctnDtls>\n                    </ct:RltdRmtInf>\n                <ct:RmtInf>\n                        <ct:Ustrd>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:Ustrd>\n                        <ct:Strd>\n                                    <ct:RfrdDocInf>\n                                            <ct:Nb>RmtInfoDocNumber</ct:Nb>\n                                            <ct:RltdDt>2018-11-10</ct:RltdDt>\n                                    </ct:RfrdDocInf>\n                                    <ct:AddtlRmtInf>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AddtlRmtInf>\n                                    <ct:AddtlRmtInf>ـ؀؁؂؃؄؅؆؇؈؉؊،؍؎؏</ct:AddtlRmtInf>\n                        </ct:Strd>\n                </ct:RmtInf>\n            </ct:CdtTrfTxInf>\n        </ct:FIToFICstmrCdtTrf>\n    </CreditTransfer>\n</Message>\"\n}\n                <head:FIId>\n                    <head:FinInstnId>\n                        <head:ClrSysMmbId>\n                            <head:MmbId>SARBSG</head:MmbId>\n                        </head:ClrSysMmbId>\n                    </head:FinInstnId>\n                </head:FIId>\n            </head:Fr>\n            <head:To>\n                <head:FIId>\n                    <head:FinInstnId>\n                        <head:ClrSysMmbId>\n                            <head:MmbId>SA9999</head:MmbId>\n                        </head:ClrSysMmbId>\n                    </head:FinInstnId>\n                </head:FIId>\n            </head:To>\n            <head:BizMsgIdr>B20201122SAABCD00002BXXX20730997766</head:BizMsgIdr>\n            <head:MsgDefIdr>pacs.008.001.06</head:MsgDefIdr>\n                <head:BizSvc>E&amp;I</head:BizSvc>\n            <head:CreDt>2023-06-01T12:00:04</head:CreDt>\n                <head:CpyDplct>DUPL</head:CpyDplct>\n        </AppHdr>\n        <CreditTransfer>\n        <ct:FIToFICstmrCdtTrf>\n            <ct:GrpHdr>\n                <ct:MsgId>M20230601SARBSGRBSG6B00011356000002</ct:MsgId>\n                <ct:CreDtTm>2023-06-01T12:00:03</ct:CreDtTm>\n                <ct:NbOfTxs>1</ct:NbOfTxs>\n                <ct:TtlIntrBkSttlmAmt Ccy=\\\"SAR\\\">20.00</ct:TtlIntrBkSttlmAmt>\n                <ct:IntrBkSttlmDt>2023-06-01</ct:IntrBkSttlmDt>\n                <ct:SttlmInf>\n                    <ct:SttlmMtd>CLRG</ct:SttlmMtd>\n                    <ct:ClrSys>\n                        <ct:Cd>IPS</ct:Cd>\n                    </ct:ClrSys>\n                </ct:SttlmInf>\n            </ct:GrpHdr>\n            <ct:CdtTrfTxInf>\n                <ct:PmtId>\n                    <ct:InstrId>20230601SARBSGRBSG6B00011356000003</ct:InstrId>\n                    <ct:EndToEndId>20201122SA432100002BXXX20730997766</ct:EndToEndId>\n                    <ct:TxId>20230601SARBSGRBSG6B00011356000003</ct:TxId>\n                    <ct:ClrSysRef>1</ct:ClrSysRef></ct:PmtId>\n                <ct:PmtTpInf>\n                    <ct:SvcLvl>\n                        <ct:Cd>SDVA</ct:Cd>\n                    </ct:SvcLvl>\n                    <ct:LclInstrm>\n                        <ct:Prtry>OTH</ct:Prtry></ct:LclInstrm>\n                        <ct:CtgyPurp>\n                            <ct:Prtry>WEL</ct:Prtry></ct:CtgyPurp></ct:PmtTpInf>\n                <ct:IntrBkSttlmAmt Ccy=\\\"SAR\\\">20</ct:IntrBkSttlmAmt>\n                <ct:AccptncDtTm>2023-06-01T12:00:04</ct:AccptncDtTm>\n                <ct:ChrgBr>SLEV</ct:ChrgBr>\n                <ct:InstgAgt>\n                    <ct:FinInstnId>\n                        <ct:ClrSysMmbId>\n                            <ct:MmbId>SARBSG</ct:MmbId>\n                        </ct:ClrSysMmbId>\n                    </ct:FinInstnId>\n                </ct:InstgAgt>\n                <ct:InstdAgt>\n                    <ct:FinInstnId>\n                        <ct:ClrSysMmbId>\n                            <ct:MmbId>SABARC</ct:MmbId>\n                        </ct:ClrSysMmbId>\n                    </ct:FinInstnId>\n                </ct:InstdAgt>\n                <ct:UltmtDbtr>\n                    <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                    <ct:PstlAdr>\n                        <ct:AdrTp>ADDR</ct:AdrTp>\n                        <ct:StrtNm>High Road</ct:StrtNm>\n                        <ct:BldgNb>1234</ct:BldgNb>\n                        <ct:PstCd>2100</ct:PstCd>\n                        <ct:TwnNm>Riyadh</ct:TwnNm>\n                        <ct:CtrySubDvsn>ultmt subdvsn</ct:CtrySubDvsn>\n                        <ct:Ctry>SA</ct:Ctry>\n                        <ct:AdrLine>8828 King Abdulaziz Road Al Amal Riyadh 12643 - 2121</ct:AdrLine>\n                    </ct:PstlAdr>\n                    <ct:Id>\n                        <ct:PrvtId>\n                                <ct:DtAndPlcOfBirth>\n                                    <ct:BirthDt>2000-03-02</ct:BirthDt>\n                                    <ct:PrvcOfBirth>ultimate dbtr province</ct:PrvcOfBirth>\n                                    <ct:CityOfBirth>Riyadh</ct:CityOfBirth>\n                                    <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                </ct:DtAndPlcOfBirth>\n                                <ct:Othr>\n                                <ct:Id>GRBB204565PL9C</ct:Id>\n                            <ct:SchmeNm>\n                                    <ct:Prtry>IQMA</ct:Prtry></ct:SchmeNm>\n                                    <ct:Issr>Kingdom of Saudi Arabia</ct:Issr></ct:Othr></ct:PrvtId></ct:Id>\n                    <ct:CtryOfRes>SA</ct:CtryOfRes>\n                    <ct:CtctDtls>\n                        <ct:NmPrfx>DOCT</ct:NmPrfx>\n                        <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                        <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                        <ct:MobNb>+966-1235-1235</ct:MobNb>\n                        <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                        <ct:EmailAdr>ultdtr@email.com</ct:EmailAdr>\n                        <ct:Othr>ultmt dbtr other</ct:Othr></ct:CtctDtls></ct:UltmtDbtr>\n                <ct:Dbtr>\n                    <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                    <ct:PstlAdr>\n                        <ct:AdrTp>BIZZ</ct:AdrTp>\n                        <ct:StrtNm>High Steet1</ct:StrtNm>\n                        <ct:BldgNb>1234</ct:BldgNb>\n                        <ct:PstCd>2100</ct:PstCd>\n                        <ct:TwnNm>Riyadh</ct:TwnNm>\n                        <ct:CtrySubDvsn>dbtr subdvsn</ct:CtrySubDvsn>\n                        <ct:Ctry>SA</ct:Ctry>\n                        <ct:AdrLine>8828 King Abdulaziz Road Al Amal Riyadh 12643 - 2121</ct:AdrLine>\n                    </ct:PstlAdr>\n                        <ct:Id>\n                            <ct:PrvtId>\n                                    <ct:DtAndPlcOfBirth>\n                                        <ct:BirthDt>1982-02-02</ct:BirthDt>\n                                        <ct:PrvcOfBirth>debtor province</ct:PrvcOfBirth>\n                                        <ct:CityOfBirth>Riyadh</ct:CityOfBirth>\n                                        <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                    </ct:DtAndPlcOfBirth>\n                                    <ct:Othr>\n                                    <ct:Id>GRBB204565PL9L</ct:Id>\n                                <ct:SchmeNm>\n                                        <ct:Prtry>IQMA</ct:Prtry></ct:SchmeNm>\n                                        <ct:Issr>Kingdom of Saudi Arabia</ct:Issr></ct:Othr></ct:PrvtId></ct:Id>\n                        <ct:CtryOfRes>SA</ct:CtryOfRes>\n                        <ct:CtctDtls>\n                            <ct:NmPrfx>DOCT</ct:NmPrfx>\n                            <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                            <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                            <ct:MobNb>+966-1235-1235</ct:MobNb>\n                            <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                            <ct:EmailAdr>dtr@email.com</ct:EmailAdr>\n                            <ct:Othr>dbtr other</ct:Othr></ct:CtctDtls></ct:Dbtr>\n                <ct:DbtrAcct>\n                    <ct:Id>\n                        <ct:IBAN>SA450011FGH0038171586773933272</ct:IBAN>\n                    </ct:Id>\n                    <ct:Ccy>SAR</ct:Ccy>\n                        <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm></ct:DbtrAcct>\n                <ct:DbtrAgt>\n                    <ct:FinInstnId>\n                        <ct:ClrSysMmbId>\n                            <ct:MmbId>SARBSG</ct:MmbId>\n                        </ct:ClrSysMmbId>\n                    </ct:FinInstnId>\n                </ct:DbtrAgt>\n                <ct:CdtrAgt>\n                    <ct:FinInstnId>\n                        <ct:ClrSysMmbId>\n                            <ct:MmbId>SABARC</ct:MmbId>\n                        </ct:ClrSysMmbId>\n                    </ct:FinInstnId>\n                </ct:CdtrAgt>\n                <ct:Cdtr>\n                    <ct:Nm>Creditor Name</ct:Nm>\n                    <ct:PstlAdr>\n                        <ct:AdrTp>HOME</ct:AdrTp>\n                        <ct:StrtNm>High Street</ct:StrtNm>\n                        <ct:BldgNb>1234</ct:BldgNb>\n                        <ct:PstCd>2100</ct:PstCd>\n                        <ct:TwnNm>Riyadh</ct:TwnNm>\n                        <ct:CtrySubDvsn>cdtr subdvsn</ct:CtrySubDvsn>\n                        <ct:Ctry>SA</ct:Ctry>\n                        <ct:AdrLine>8828 King Abdulaziz Road Al Amal Riyadh 12643 - 2121</ct:AdrLine>\n                    </ct:PstlAdr>\n                        <ct:Id>\n                            <ct:PrvtId>\n                                    <ct:DtAndPlcOfBirth>\n                                        <ct:BirthDt>2000-03-02</ct:BirthDt>\n                                        <ct:PrvcOfBirth>cdtr province</ct:PrvcOfBirth>\n                                        <ct:CityOfBirth>Riyadh</ct:CityOfBirth>\n                                        <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                    </ct:DtAndPlcOfBirth>\n                                    <ct:Othr>\n                                    <ct:Id>GRBB204565PL9E</ct:Id>\n                                <ct:SchmeNm>\n                                        <ct:Prtry>IQMA</ct:Prtry></ct:SchmeNm>\n                                        <ct:Issr>Kingdom of Saudi Arabia</ct:Issr></ct:Othr></ct:PrvtId></ct:Id>\n                        <ct:CtryOfRes>SA</ct:CtryOfRes>\n                        <ct:CtctDtls>\n                            <ct:NmPrfx>DOCT</ct:NmPrfx>\n                            <ct:Nm>Cdtr name</ct:Nm>\n                            <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                            <ct:MobNb>+966-1235-1235</ct:MobNb>\n                            <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                            <ct:EmailAdr>creditor@email.com</ct:EmailAdr>\n                            <ct:Othr>cdtr other</ct:Othr></ct:CtctDtls></ct:Cdtr>\n                <ct:CdtrAcct>\n                    <ct:Id>\n                        <ct:IBAN>SA450011FGH0069931828199363716</ct:IBAN>\n                    </ct:Id>\n                    <ct:Ccy>SAR</ct:Ccy>\n                        <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                </ct:CdtrAcct>\n                <ct:UltmtCdtr>\n                    <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                    <ct:PstlAdr>\n                        <ct:AdrTp>DLVY</ct:AdrTp>\n                        <ct:StrtNm>Street Name</ct:StrtNm>\n                        <ct:BldgNb>4321</ct:BldgNb>\n                        <ct:PstCd>2100</ct:PstCd>\n                        <ct:TwnNm>Riyadh</ct:TwnNm>\n                        <ct:CtrySubDvsn>ultmt cdtr subdvsn</ct:CtrySubDvsn>\n                        <ct:Ctry>SA</ct:Ctry>\n                        <ct:AdrLine>8828 King Abdulaziz Road Al Amal Riyadh 12643 - 2121</ct:AdrLine>\n                    </ct:PstlAdr>\n                    <ct:Id>\n                        <ct:PrvtId>\n                                <ct:DtAndPlcOfBirth>\n                                    <ct:BirthDt>1982-02-02</ct:BirthDt>\n                                    <ct:PrvcOfBirth>ultimate creditor province</ct:PrvcOfBirth>\n                                    <ct:CityOfBirth>Riyadh</ct:CityOfBirth>\n                                    <ct:CtryOfBirth>SA</ct:CtryOfBirth>\n                                </ct:DtAndPlcOfBirth>\n                                <ct:Othr>\n                                <ct:Id>GRBB204565PL9E</ct:Id>\n                            <ct:SchmeNm>\n                                    <ct:Prtry>IQMA</ct:Prtry></ct:SchmeNm>\n                                    <ct:Issr>Kingdom of Saudi Arabia</ct:Issr></ct:Othr></ct:PrvtId></ct:Id>\n                    <ct:CtryOfRes>SA</ct:CtryOfRes>\n                    <ct:CtctDtls>\n                        <ct:NmPrfx>DOCT</ct:NmPrfx>\n                        <ct:Nm>ابجدهوزحطيكلمنسعفصقرشتثخذضظغء</ct:Nm>\n                        <ct:PhneNb>+966-1235-1235</ct:PhneNb>\n                        <ct:MobNb>+966-1235-1235</ct:MobNb>\n                        <ct:FaxNb>+966-1235-1235</ct:FaxNb>\n                        <ct:EmailAdr>ucreditor@email.com</ct:EmailAdr>\n                        <ct:Othr>ucdtr other</ct:Othr></ct:CtctDtls>\n                </ct:UltmtCdtr>\n                    <ct:RltdRmtInf>\n                        <ct:RmtId>remittanceid</ct:RmtId>\n                        <ct:RmtLctnDtls>\n                            <ct:Mtd>FAXI</ct:Mtd>\n                            <ct:ElctrncAdr>remit@example.com</ct:ElctrncAdr></ct:RmtLctnDtls>\n                    </ct:RltdRmtInf>\n                    <ct:RmtInf>\n                        <ct:Ustrd>Ustrd</ct:Ustrd>\n                        <ct:Strd>\n                            <ct:RfrdDocInf>\n                                <ct:Nb>RmtInfoDocNumber</ct:Nb>\n                                <ct:RltdDt>2018-11-10</ct:RltdDt>\n                            </ct:RfrdDocInf>\n                            <ct:AddtlRmtInf>moreinfo</ct:AddtlRmtInf></ct:Strd></ct:RmtInf>\n            </ct:CdtTrfTxInf>\n        </ct:FIToFICstmrCdtTrf>\n        </CreditTransfer>\n</Message>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/transaction/xmlRequest",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"transaction",
+						"xmlRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pain.013 json",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"instructingRoutingKey\": \"SABARC\",\n    \"senderTokenRequest\": \"false\",\n    \"messageSpecType\": \"1\",\n    \"messageType\": \"requestForPayment\",\n    \"instructingBankAccount\": \"SA450011FGH0091963884785132082\",\n    \"instructedRoutingKey\": \"SAHSBC\",\n    \"instructedBankAccount\": \"SA450011FGH0028070260650683994\",\n    \"instructionID\": \"20230131SABARCBARC6B00011050000030\",\n    \"transactionDate\": \"2023-01-31T13:35:45\",\n    \"currency\": \"SAR\",\n    \"amount\": \"222\",\n    \"originalSettlementDateTime\": \"2023-01-31T13:35:45\",\n    \"originalSettlementDate\":\"2023-01-31T13:35:45\",\n    \"paymentTypeCtgyPurp\": \"OTHR\",\n    \"TxId\" : \"20230131SABARCBARC6B00011035000027\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/transaction/request",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"transaction",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pain.013 xml",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "alpha",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Password2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"routingKey\": \"SALOYD\",\n\"message\": \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n<Message xmlns=\\\"urn:sama\\\" xmlns:head=\\\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\\\" xmlns:pr=\\\"urn:iso:std:iso:20022:tech:xsd:pain.013.001.05\\\">\n    <AppHdr>\n        <head:Fr>\n            <head:FIId>\n                <head:FinInstnId>\n                    <head:ClrSysMmbId>\n                        <head:MmbId>SALOYD</head:MmbId>\n                    </head:ClrSysMmbId>\n                </head:FinInstnId>\n            </head:FIId>\n        </head:Fr>\n        <head:To>\n            <head:FIId>\n                <head:FinInstnId>\n                    <head:ClrSysMmbId>\n                        <head:MmbId>SA9999</head:MmbId>\n                    </head:ClrSysMmbId>\n                </head:FinInstnId>\n            </head:FIId>\n        </head:To>\n        <head:BizMsgIdr>B20220216SALOLKLOLK6B00010941117805</head:BizMsgIdr>\n        <head:MsgDefIdr>pain.013.001.05</head:MsgDefIdr>\n        <head:BizSvc>E&amp;I</head:BizSvc>\n        <head:CreDt>2023-06-15T12:21:01</head:CreDt>\n    </AppHdr>\n\n    <PaymentRequest>\n        <pr:CdtrPmtActvtnReq>\n            <pr:GrpHdr>\n                <pr:MsgId>M20230615SALOYDLOYD6B00011356000069</pr:MsgId>\n                <pr:CreDtTm>2023-06-15T12:21:02</pr:CreDtTm>\n                <pr:NbOfTxs>1</pr:NbOfTxs>\n                <pr:InitgPty>\n                    <pr:Id>\n                        <pr:OrgId>\n                            <pr:Othr>\n                                <pr:Id>SALOYD</pr:Id>\n                            </pr:Othr>\n                        </pr:OrgId>\n                    </pr:Id>\n                </pr:InitgPty>\n            </pr:GrpHdr>\n            <pr:PmtInf>\n                <pr:PmtInfId>20230615SALOYDLOYD6B00011356000069</pr:PmtInfId>\n                <pr:PmtMtd>TRF</pr:PmtMtd>\n                <pr:ReqdExctnDt>2022-04-18</pr:ReqdExctnDt>\n                <pr:Dbtr>\n                        <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                    <pr:PstlAdr>\n                        <pr:AdrTp>BIZZ</pr:AdrTp>\n                        <pr:StrtNm>ـ؀؉؊،؍؎؏</pr:StrtNm>\n                        <pr:BldgNb>1234</pr:BldgNb>\n                        <pr:PstCd>2100</pr:PstCd>\n                        <pr:TwnNm>Riyadh</pr:TwnNm>\n                        <pr:CtrySubDvsn>dbtr subdvsn</pr:CtrySubDvsn>\n                        <pr:Ctry>SA</pr:Ctry>\n                        <pr:AdrLine>8828</pr:AdrLine>\n                        <pr:AdrLine>King Abdulaziz Road</pr:AdrLine>\n                        <pr:AdrLine>Al Amal</pr:AdrLine>\n                        <pr:AdrLine>Riyadh</pr:AdrLine>\n                        <pr:AdrLine>12643</pr:AdrLine>\n                    </pr:PstlAdr>\n\n                    <pr:Id>\n                        <pr:PrvtId>\n                            <pr:DtAndPlcOfBirth>\n                                <pr:BirthDt>1982-02-02</pr:BirthDt>\n                                <pr:PrvcOfBirth>dbtr province</pr:PrvcOfBirth>\n                                <pr:CityOfBirth>Riyadh</pr:CityOfBirth>\n                                <pr:CtryOfBirth>SA</pr:CtryOfBirth>\n                            </pr:DtAndPlcOfBirth>\n\n                            <pr:Othr>\n                                <pr:Id>GRBB204565PL9D</pr:Id>\n                                <pr:SchmeNm>\n                                    <pr:Cd>CCPT</pr:Cd>\n                                </pr:SchmeNm>\n                                <pr:Issr>Kingdom of Saudi Arabia</pr:Issr>\n                            </pr:Othr>\n                        </pr:PrvtId>\n                    </pr:Id>\n                    <pr:CtryOfRes>SA</pr:CtryOfRes>\n                    <pr:CtctDtls>\n                        <pr:NmPrfx>DOCT</pr:NmPrfx>\n                            <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                        <pr:PhneNb>+966-1234-1234</pr:PhneNb>\n                        <pr:MobNb>+966-1234-1234</pr:MobNb>\n                        <pr:FaxNb>+966-1234-1234</pr:FaxNb>\n                        <pr:EmailAdr>debtor@email.com</pr:EmailAdr>\n                        <pr:Othr>dbtr other</pr:Othr>\n                    </pr:CtctDtls>\n                </pr:Dbtr>\n\n                <pr:DbtrAcct>\n                    <pr:Id>\n                        <pr:IBAN>SA450011FGH0068217789237564293</pr:IBAN>\n                    </pr:Id>\n                    <pr:Ccy>SAR</pr:Ccy>\n                        <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                </pr:DbtrAcct>\n\n                <pr:DbtrAgt>\n                    <pr:FinInstnId>\n                        <pr:ClrSysMmbId>\n                            <pr:MmbId>SABARC</pr:MmbId>\n                        </pr:ClrSysMmbId>\n                    </pr:FinInstnId>\n                </pr:DbtrAgt>\n\n                <pr:CdtTrfTx>\n                    <pr:PmtId>\n                        <pr:InstrId>20230615SALOYDLOYD6B00011356000069</pr:InstrId>\n                        <pr:EndToEndId>20201122SA432100002BXXX20730997766</pr:EndToEndId>\n                    </pr:PmtId>\n                    <!--Optional:-->\n                    <pr:PmtTpInf>\n                        <!--Optional:-->\n                        <pr:SvcLvl>\n                            <pr:Cd>SDVA</pr:Cd>\n                        </pr:SvcLvl>\n                        <!--Optional:-->\n                        <pr:LclInstrm>\n                            <pr:Prtry>STO</pr:Prtry>\n                        </pr:LclInstrm>\n                    </pr:PmtTpInf>\n                    <pr:Amt>\n                        <pr:InstdAmt Ccy=\\\"SAR\\\">10.00</pr:InstdAmt>\n                    </pr:Amt>\n                    <pr:ChrgBr>SLEV</pr:ChrgBr>\n\n                    <pr:UltmtDbtr>\n                            <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                        <pr:PstlAdr>\n                            <pr:AdrTp>ADDR</pr:AdrTp>\n                            <pr:StrtNm>ـ؀؉؊،؍؎؏</pr:StrtNm>\n                            <pr:BldgNb>1234</pr:BldgNb>\n                            <pr:PstCd>2100</pr:PstCd>\n                            <pr:TwnNm>Riyadh</pr:TwnNm>\n                            <pr:CtrySubDvsn>ultmt subdvsn</pr:CtrySubDvsn>\n                            <pr:Ctry>SA</pr:Ctry>\n                            <pr:AdrLine>8828</pr:AdrLine>\n                            <pr:AdrLine>King Abdulaziz Road</pr:AdrLine>\n                            <pr:AdrLine>Al Amal</pr:AdrLine>\n                            <pr:AdrLine>Riyadh</pr:AdrLine>\n                            <pr:AdrLine>12643</pr:AdrLine>\n                        </pr:PstlAdr>\n                        <pr:Id>\n                            <pr:OrgId>\n                                <pr:Othr>\n                                    <pr:Id>ultmt otherid</pr:Id>\n                                </pr:Othr>\n                            </pr:OrgId>\n                        </pr:Id>\n\n                        <pr:CtryOfRes>SA</pr:CtryOfRes>\n\n                        <pr:CtctDtls>\n                            <pr:NmPrfx>DOCT</pr:NmPrfx>\n                                <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                            <pr:PhneNb>+966-1234-1234</pr:PhneNb>\n                            <pr:MobNb>+966-1234-1234</pr:MobNb>\n                            <pr:FaxNb>+966-1234-1234</pr:FaxNb>\n                            <pr:EmailAdr>example@email.com</pr:EmailAdr>\n                            <pr:Othr>ultmt dbtr other</pr:Othr>\n                        </pr:CtctDtls>\n                    </pr:UltmtDbtr>\n\n                    <pr:CdtrAgt>\n                        <pr:FinInstnId>\n                            <pr:ClrSysMmbId>\n                                <pr:MmbId>SALOYD</pr:MmbId>\n                            </pr:ClrSysMmbId>\n                        </pr:FinInstnId>\n                    </pr:CdtrAgt>\n\n                    <pr:Cdtr>\n                        <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n\n                        <pr:PstlAdr>\n                            <pr:AdrTp>HOME</pr:AdrTp>\n                            <pr:StrtNm>ـ؀؉؊،؍؎؏</pr:StrtNm>\n                            <pr:BldgNb>1234</pr:BldgNb>\n                            <pr:PstCd>2100</pr:PstCd>\n                            <pr:TwnNm>Riyadh</pr:TwnNm>\n                            <pr:CtrySubDvsn>cdtr subdvsn</pr:CtrySubDvsn>\n                            <pr:Ctry>SA</pr:Ctry>\n                            <pr:AdrLine>8828</pr:AdrLine>\n                            <pr:AdrLine>King Abdulaziz Road</pr:AdrLine>\n                            <pr:AdrLine>Al Amal</pr:AdrLine>\n                            <pr:AdrLine>Riyadh</pr:AdrLine>\n                            <pr:AdrLine>12643</pr:AdrLine>\n                        </pr:PstlAdr>\n\n                        <pr:Id>\n                            <pr:OrgId>\n                                <pr:Othr>\n                                    <pr:Id>cdtr otherid</pr:Id>\n                                </pr:Othr>\n                            </pr:OrgId>\n                        </pr:Id>\n\n                        <pr:CtryOfRes>SA</pr:CtryOfRes>\n\n                        <pr:CtctDtls>\n                            <pr:NmPrfx>DOCT</pr:NmPrfx>\n                                <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                            <pr:PhneNb>+966-1234-1234</pr:PhneNb>\n                            <pr:MobNb>+966-1234-1234</pr:MobNb>\n                            <pr:FaxNb>+966-1234-1234</pr:FaxNb>\n                            <pr:EmailAdr>creditor@email.com</pr:EmailAdr>\n                            <pr:Othr>cdtr other</pr:Othr>\n                        </pr:CtctDtls>\n                    </pr:Cdtr>\n\n                    <pr:CdtrAcct>\n                        <pr:Id>\n                            <pr:IBAN>SA450011FGH0071196130104574669</pr:IBAN>\n                        </pr:Id>\n                        <pr:Ccy>SAR</pr:Ccy>\n                            <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                    </pr:CdtrAcct>\n                    <!--Optional:-->\n                    <pr:UltmtCdtr>\n                            <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                        <pr:PstlAdr>\n                            <pr:AdrTp>DLVY</pr:AdrTp>\n                            <pr:StrtNm>ـ؀؉؊،؍؎؏</pr:StrtNm>\n                            <pr:BldgNb>4321</pr:BldgNb>\n                            <pr:PstCd>2100</pr:PstCd>\n                            <pr:TwnNm>Riyadh</pr:TwnNm>\n                            <pr:CtrySubDvsn>ultmt cdtr subdvsn</pr:CtrySubDvsn>\n                            <pr:Ctry>SA</pr:Ctry>\n                            <pr:AdrLine>8828</pr:AdrLine>\n                            <pr:AdrLine>King Abdulaziz Road</pr:AdrLine>\n                            <pr:AdrLine>Al Amal</pr:AdrLine>\n                            <pr:AdrLine>Riyadh</pr:AdrLine>\n                            <pr:AdrLine>12643</pr:AdrLine>\n                        </pr:PstlAdr>\n\n                        <pr:Id>\n                            <pr:OrgId>\n                                <pr:Othr>\n                                    <pr:Id>ultmt other id</pr:Id>\n                                </pr:Othr>\n                            </pr:OrgId>\n                        </pr:Id>\n\n                        <pr:CtryOfRes>SA</pr:CtryOfRes>\n\n                        <pr:CtctDtls>\n                            <pr:NmPrfx>DOCT</pr:NmPrfx>\n                                <pr:Nm>ـ؀؉؊،؍؎؏</pr:Nm>\n                            <pr:PhneNb>+966-1234-1234</pr:PhneNb>\n                            <pr:MobNb>+966-1234-1234</pr:MobNb>\n                            <pr:FaxNb>+966-1234-1234</pr:FaxNb>\n                            <pr:EmailAdr>ucreditor@email.com</pr:EmailAdr>\n                            <pr:Othr>ucdtr other</pr:Othr>\n                        </pr:CtctDtls>\n                    </pr:UltmtCdtr>\n                    <!--0 to 10 repetitions:-->\n                    <pr:InstrForCdtrAgt>\n                        <pr:InstrInf>info1</pr:InstrInf>\n                    </pr:InstrForCdtrAgt>\n                    <!--0 to 10 repetitions:-->\n                    <pr:RltdRmtInf>\n                        <pr:RmtId>remittance</pr:RmtId>\n                        <pr:RmtLctnDtls>\n                            <pr:Mtd>FAXI</pr:Mtd>\n                            <pr:ElctrncAdr>remit@example.com</pr:ElctrncAdr>\n                        </pr:RmtLctnDtls>\n                    </pr:RltdRmtInf>\n                    <pr:RltdRmtInf>\n                        <pr:RmtId>id</pr:RmtId>\n                    </pr:RltdRmtInf>\n                    <!--Optional:-->\n                    <pr:RmtInf>\n                        <pr:Ustrd>Unstructured Remittance Information</pr:Ustrd>\n                        <pr:Strd>\n                            <pr:RfrdDocInf>\n                                <pr:Nb>not validated number</pr:Nb>\n                                <pr:RltdDt>2018-11-10</pr:RltdDt>\n                            </pr:RfrdDocInf>\n                            <ct:AddtlRmtInf>ـ؀؉؊،؍؎؏</ct:AddtlRmtInf>\n                            <ct:AddtlRmtInf>ـ؀؉؊،؍؎؏</ct:AddtlRmtInf>\n                        </pr:Strd>\n                    </pr:RmtInf>\n                </pr:CdtTrfTx>\n            </pr:PmtInf>\n        </pr:CdtrPmtActvtnReq>\n    </PaymentRequest>\n</Message>\"\n}",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ips-simulator.local:18800/transaction/xmlRequest",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "18800",
+					"path": [
+						"transaction",
+						"xmlRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactionsSummary",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0373fc53-80b2-4bba-8916-0973b8e0b411",
+						"exec": [
+							"const username = 'alpha';",
+							"const password = 'Password2';",
+							"",
+							"const encodedCredentials = btoa('${username}:${password}');",
+							"",
+							"pm.request.headers.add({",
+							"    key:'Authorization',",
+							"    value:'Basic $(encodedCredentials}'",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://ips-simulator.local:9080/ips-console/transactionsSummary",
+					"protocol": "http",
+					"host": [
+						"ips-simulator",
+						"local"
+					],
+					"port": "9080",
+					"path": [
+						"ips-console",
+						"transactionsSummary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chromedriver",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
