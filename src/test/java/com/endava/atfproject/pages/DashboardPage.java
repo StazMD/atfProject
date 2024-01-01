@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.endava.atfproject.WebDriverSingleton.getDriver;
+import static com.endava.atfproject.WebDriverFactory.getDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DashboardPage extends Hook {

@@ -1,14 +1,17 @@
 package com.endava.atfproject.pages;
 
 import com.endava.atfproject.WebDriverFactory;
+import com.endava.atfproject.config.PropertyReader;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class AddProductPage {
 
-    org.openqa.selenium.WebDriver driver;
+    WebDriver driver;
+    PropertyReader url = new PropertyReader();
 
     @FindBy(name = "username")
     private WebElement usernameField;
@@ -16,8 +19,9 @@ public class LoginPage {
     @FindBy(name = "password")
     private WebElement passwordField;
 
-    public LoginPage() {
+    public AddProductPage() {
         driver = WebDriverFactory.getDriver();
+        String newUrl = url.getProperty("url");
         PageFactory.initElements(driver, this);
     }
 
