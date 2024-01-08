@@ -1,6 +1,6 @@
-package com.endava.atfproject;
+package steps.common;
 
-import com.endava.atfproject.config.YamlReader;
+import config.PropertyReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,13 +8,13 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class WebDriverFactory {
 
-    public volatile static WebDriver driver;
+    private volatile static WebDriver driver;
 
-    public static WebDriver getDriver() {
+    public static WebDriver setupDriver() {
         if (driver == null) {
-            YamlReader yamlReader = new YamlReader();
-            String browserType = yamlReader.getProperty("browser");
-            String browserUrl = yamlReader.getProperty("url");
+            System.out.println("Opening WebDriver");
+            String browserType = PropertyReader.getProperty("browser");
+            String browserUrl = PropertyReader.getProperty("url");
 
             switch (browserType) {
                 case "chrome":
@@ -34,9 +34,15 @@ public class WebDriverFactory {
         return driver;
     }
 
-    public static void closeDriver() {
+    public static WebDriver getDriver() {
+        return setupDriver();
+    }
+
+    public static void quitDriver() {
         if (driver != null) {
+            System.out.println("Quitting WebDriver");
             driver.quit();
+            driver = null;
         }
     }
 }
