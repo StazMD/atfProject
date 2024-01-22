@@ -12,7 +12,6 @@ public class PropertyReader {
     private PropertyReader() {
     }
 
-    //method should be static so that it can be called without creating an instance of PropertyReader
     private static synchronized void loadProperties() {
         if (properties == null) {
             properties = new Properties();

@@ -8,15 +8,16 @@ import utils.TestDataGenerator;
 
 import java.util.List;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-
 public class ContactListPage extends BasePage {
 
     private String firstNameData;
     private String lastNameData;
 
     String contactListUrl = PropertyReader.getProperty("contactListPath");
+
+    public ContactListPage() {
+        super();
+    }
 
     private final By headerElement = By.xpath("/html/body/div/header/h1");
     private final By addContactButtonElement = By.xpath("//*[@id='add-contact']");
@@ -36,27 +37,21 @@ public class ContactListPage extends BasePage {
     private final By contactsTable = By.xpath("//*[@id='myTable']");
     private final By contactTableBodyRowElement = By.className("contactTableBodyRow");
 
-    public ContactListPage() {
-        super();
+
+    public boolean assertHeader(String headerText, boolean shouldBePresent) {
+        try {
+            //TODO fix assert
+            webDriverHelper.findElement(headerElement);
+            log.info(headerText + "is displaying");
+            return shouldBePresent;
+        } catch (NoSuchElementException e) {
+            log.info(headerText + " is not displaying");
+            return !shouldBePresent;
+        }
     }
 
-    public void assertHeader(String headerText, boolean shouldBePresent) {
-        await().atMost(10, SECONDS)
-                .pollInterval(1, SECONDS)
-                .until(() -> {
-                    try {
-                        //TODO fix assert
-                        webDriverHelper.findElement(headerElement);
-                        log.info(headerText + "is displaying");
-                        return shouldBePresent;
-                    } catch (NoSuchElementException e) {
-                        log.info(headerText + " is not displaying");
-                        return !shouldBePresent;
-                    }
-                });
-    }
 
-    public void AddNewContactButton() {
+    public void addNewContactPageWithButton() {
         WebElement addContactButton = webDriverHelper.findElement(addContactButtonElement);
         addContactButton.click();
     }
@@ -81,7 +76,6 @@ public class ContactListPage extends BasePage {
         fillField(countryElement, TestDataGenerator.getCountry());
 
         clickSubmitButton();
-
     }
 
 //    public void assertFirstLastNameElement() {
@@ -95,28 +89,32 @@ public class ContactListPage extends BasePage {
 //        Assertions.assertThat(contactTable.getText()).contains(firstNameLastName);
 //    }
 
-    public void assertEntry() {
+    public WebElement findEntry() {
         String firstNameLastName = firstNameData + " " + lastNameData;
         log.info(firstNameLastName);
         driver.get(contactListUrl);
         WebElement table = webDriverHelper.findElement(contactsTable);
         List<WebElement> rows = table.findElements(contactTableBodyRowElement);
-        boolean entryFound = false;
         for (WebElement row : rows) {
             List<WebElement> cells = row.findElements(By.tagName("td"));
             for (WebElement cell : cells) {
                 if (cell.getText().equals(firstNameLastName)) {
                     log.info("Entry found: " + firstNameLastName);
-                    entryFound = true;
-                    break;
+                    return cell;
                 }
             }
-            if (entryFound) {
-                break;
-            }
         }
-        if (!entryFound) {
-            throw new NoSuchElementException("Entry not found: " + firstNameLastName);
+        return null;
+    }
+
+    public void getContactDetails() {
+        WebElement contact = findEntry();
+        if (contact != null) {
+            contact.click();
+        } else {
+            log.info("Entry to click on was not found.");
         }
     }
+
+
 }
