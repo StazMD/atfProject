@@ -16,7 +16,6 @@ public class SignUpTest {
         this.contactListPage = contactListPage;
     }
 
-
     @And("adding user page opening")
     public void addingUserPageOpening() {
         signUpPage.assertSignAddPage();

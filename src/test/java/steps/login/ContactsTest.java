@@ -1,18 +1,15 @@
-package steps.contacts;
+package steps.login;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.ContactListPage;
-import pages.MainPage;
 
 public class ContactsTest {
 
-    private final MainPage mainPage;
     private final ContactListPage contactListPage;
 
-    public ContactsTest(MainPage mainPage, ContactListPage contactListPage) {
-        this.mainPage = mainPage;
+    public ContactsTest(ContactListPage contactListPage) {
         this.contactListPage = contactListPage;
     }
 
@@ -22,13 +19,14 @@ public class ContactsTest {
         contactListPage.assertHeader("Add Contact", true);
     }
 
-    @And("all fields populated with valid data")
+    @And("all fields submitted with valid data")
     public void allFieldsPopulatedWithValidData() {
-        contactListPage.populatingContactFields();
+        contactListPage.fillingContactFields();
     }
 
-    @Then("contact is successfully created")
+    @Then("contact is successfully created and displaying in contact list")
     public void contactIsSuccessfullyCreated() {
+        contactListPage.assertEntry();
 
     }
 }

@@ -1,18 +1,22 @@
 package pages;
 
+import config.PropertyReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import utils.TestDataGenerator;
+
+import java.util.List;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 
 public class ContactListPage extends BasePage {
 
-    public ContactListPage() {
-        super();
-    }
+    private String firstNameData;
+    private String lastNameData;
+
+    String contactListUrl = PropertyReader.getProperty("contactListPath");
 
     private final By headerElement = By.xpath("/html/body/div/header/h1");
     private final By addContactButtonElement = By.xpath("//*[@id='add-contact']");
@@ -29,60 +33,90 @@ public class ContactListPage extends BasePage {
     private final By postalCodeElement = By.xpath("//*[@id='postalCode']");
     private final By countryElement = By.xpath("//*[@id='country']");
 
+    private final By contactsTable = By.xpath("//*[@id='myTable']");
+    private final By contactTableBodyRowElement = By.className("contactTableBodyRow");
+
+    public ContactListPage() {
+        super();
+    }
 
     public void assertHeader(String headerText, boolean shouldBePresent) {
         await().atMost(10, SECONDS)
                 .pollInterval(1, SECONDS)
                 .until(() -> {
                     try {
-                        driver.findElement(headerElement);
-                        log.info("Header of the Contact List is displaying");
+                        //TODO fix assert
+                        webDriverHelper.findElement(headerElement);
+                        log.info(headerText + "is displaying");
                         return shouldBePresent;
                     } catch (NoSuchElementException e) {
-                        log.info("Header of the Contact List is not displaying");
+                        log.info(headerText + " is not displaying");
                         return !shouldBePresent;
                     }
                 });
     }
 
     public void AddNewContactButton() {
-        WebElement addContactButton = driver.findElement(addContactButtonElement);
+        WebElement addContactButton = webDriverHelper.findElement(addContactButtonElement);
         addContactButton.click();
     }
 
-    public void populatingContactFields() {
-        String firstName = driver.findElement(firstNameElement);
-        sendKeys(firstName, TestDataGenerator.getRandomFirstName());
-        driver.findElement(lastNameElement).sendKeys(TestDataGenerator.getRandomLastName());
-        driver.findElement(birthdateElement).sendKeys(TestDataGenerator.getRandomDate());
-        driver.findElement(emailElement).sendKeys(TestDataGenerator.getRandomEmail());
-        driver.findElement(phoneElement).sendKeys(TestDataGenerator.getRandomPhoneNumber());
-        driver.findElement(street1Element).sendKeys(TestDataGenerator.getRandomStreetAddress());
-        driver.findElement(street2Element).sendKeys(TestDataGenerator.getRandomStreetAddress());
-        driver.findElement(cityElement).sendKeys(TestDataGenerator.getRandomCity());
-        driver.findElement(stateProvinceElement).sendKeys(TestDataGenerator.getState());
-        driver.findElement(postalCodeElement).sendKeys(TestDataGenerator.getPostalCode());
-        driver.findElement(countryElement).sendKeys(TestDataGenerator.getCountry());
+    private void fillField(By locator, String value) {
+        webDriverHelper.findElement(locator).sendKeys(value);
+    }
+
+    public void fillingContactFields() {
+        firstNameData = TestDataGenerator.getRandomFirstName();
+        fillField(firstNameElement, firstNameData);
+        lastNameData = TestDataGenerator.getRandomLastName();
+        fillField(lastNameElement, lastNameData);
+        fillField(birthdateElement, TestDataGenerator.getRandomDate());
+        fillField(emailElement, TestDataGenerator.getRandomEmail());
+        fillField(phoneElement, TestDataGenerator.getRandomPhoneNumber());
+        fillField(street1Element, TestDataGenerator.getRandomStreetAddress());
+        fillField(street2Element, TestDataGenerator.getRandomStreetAddress());
+        fillField(cityElement, TestDataGenerator.getRandomCity());
+        fillField(stateProvinceElement, TestDataGenerator.getState());
+        fillField(postalCodeElement, TestDataGenerator.getPostalCode());
+        fillField(countryElement, TestDataGenerator.getCountry());
+
         clickSubmitButton();
+
     }
 
-    private final String firstNameLastName = firstNameElement + lastNameElement;
+//    public void assertFirstLastNameElement() {
+//        String firstNameLastName = firstNameData + " " + lastNameData;
+//        driver.get(contactListUrl);
+//        await().atMost(10, SECONDS).until(() -> driver
+//                .findElement(firstLastNameElement)
+//                .isDisplayed());
+//        WebElement contactTable = driver.findElement(firstLastNameElement);
+//        log.info(firstNameLastName);
+//        Assertions.assertThat(contactTable.getText()).contains(firstNameLastName);
+//    }
 
-    public void assertContactListTable(boolean shouldBePresent) {
-
-        await().atMost(10, SECONDS)
-                .pollInterval(1, SECONDS)
-                .until(() -> {
-                    try {
-                        driver.findElement(headerElement);
-                        log.info("Header of the Contact List is displaying");
-                        return shouldBePresent;
-                    } catch (NoSuchElementException e) {
-                        log.info("Header of the Contact List is not displaying");
-                        return !shouldBePresent;
-                    }
-                });
+    public void assertEntry() {
+        String firstNameLastName = firstNameData + " " + lastNameData;
+        log.info(firstNameLastName);
+        driver.get(contactListUrl);
+        WebElement table = webDriverHelper.findElement(contactsTable);
+        List<WebElement> rows = table.findElements(contactTableBodyRowElement);
+        boolean entryFound = false;
+        for (WebElement row : rows) {
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            for (WebElement cell : cells) {
+                if (cell.getText().equals(firstNameLastName)) {
+                    log.info("Entry found: " + firstNameLastName);
+                    entryFound = true;
+                    break;
+                }
+            }
+            if (entryFound) {
+                break;
+            }
+        }
+        if (!entryFound) {
+            throw new NoSuchElementException("Entry not found: " + firstNameLastName);
+        }
     }
-
-
 }

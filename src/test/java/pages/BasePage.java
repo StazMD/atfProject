@@ -6,15 +6,18 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import steps.common.WebDriverFactory;
+import utils.WebDriverHelper;
 
 public abstract class BasePage {
 
-    protected final WebDriver driver;
+    protected WebDriver driver;
+    protected WebDriverHelper webDriverHelper;
     protected Logger log;
 
     public BasePage() {
         this.driver = WebDriverFactory.getDriver();
         this.log = LoggerFactory.getLogger(this.getClass());
+        this.webDriverHelper = new WebDriverHelper(driver);
     }
 
     public void clickSubmitButton() {
@@ -22,6 +25,4 @@ public abstract class BasePage {
         WebElement submitButton = driver.findElement(submitButtonElement);
         submitButton.click();
     }
-
-
 }
