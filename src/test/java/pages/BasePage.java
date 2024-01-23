@@ -12,28 +12,32 @@ import utils.WaitUtils;
 public class BasePage {
 
     protected WebDriver driver;
-    protected Logger log;
+    protected static Logger log;
 
     public BasePage() {
         this.driver = WebDriverFactory.getDriver();
-        this.log = LoggerFactory.getLogger(this.getClass());
+        log = LoggerFactory.getLogger(this.getClass());
     }
 
-    public void clickSubmitButton() {
+    public static void clickSubmitButton() {
         By submitButtonElement = By.xpath("//*[@id='submit']");
         WebElement submitButton = WaitUtils.waitForElement(submitButtonElement, 10);
         submitButton.click();
     }
 
-    public boolean assertHeader(String headerText, boolean shouldBePresent) {
+    public void assertHeader(String headerText, boolean shouldBePresent) {
         try {
             By headerElement = By.xpath("//body//h1");
             WaitUtils.waitForTextInElement(headerElement, headerText);
             log.info(headerText + " header is displaying");
-            return shouldBePresent;
         } catch (NoSuchElementException e) {
             log.info(headerText + " header is not displaying");
-            return !shouldBePresent;
         }
+    }
+
+    public static void sendKeys(By locator, String keysToSend) {
+        WebElement element = WaitUtils.waitForElement(locator, 10);
+        log.info("Field [" + locator + "]: " + keysToSend);
+        element.sendKeys(keysToSend);
     }
 }

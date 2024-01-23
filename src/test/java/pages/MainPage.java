@@ -1,5 +1,6 @@
 package pages;
 
+import config.PropertyReader;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,12 +12,18 @@ public class MainPage extends BasePage {
         super();
     }
 
+    String browserUrl = PropertyReader.getProperty("url");
+
     private final By headerElement = By.xpath("/html/body/h1");
     private final By emailElement = By.xpath("//*[@id='email']");
     private final By passwordElement = By.xpath("//*[@id='password']");
     private final By signUpButtonElement = By.xpath("//*[@id='signup']");
 
-    public void assertHeadText() {
+    public void openMainPage() {
+        driver.get(browserUrl);
+    }
+
+    public void assertMainPageHeadText() {
         WebElement header = WaitUtils.waitForElement(headerElement, 10);
         Assertions.assertThat(header.getText()).contains("Contact List App");
     }
@@ -29,9 +36,8 @@ public class MainPage extends BasePage {
         clickSubmitButton();
     }
 
-    public void signUpButton() {
+    public void clickSignUpButton() {
         WebElement signUpButton = WaitUtils.waitForElement(signUpButtonElement, 10);
         signUpButton.click();
     }
-
 }

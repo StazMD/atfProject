@@ -1,8 +1,8 @@
 package steps.tests;
 
+import api.ApiTest;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import pages.BasePage;
 import pages.SignUpPage;
 
@@ -10,11 +10,15 @@ public class SignUpTest {
 
     private final SignUpPage signUpPage;
     private final BasePage basePage;
+    private final ApiTest apiTest;
 
-    public SignUpTest(SignUpPage signUpPage, BasePage basePage) {
+    public SignUpTest(SignUpPage signUpPage, BasePage basePage, ApiTest apiTest) {
         this.signUpPage = signUpPage;
         this.basePage = basePage;
+        this.apiTest = apiTest;
     }
+
+//    UserData userData = new SignUpPage().generateValidUserData();
 
     @And("[Submit] button is clicked")
     public void submitButtonIsClicked() throws InterruptedException {
@@ -26,29 +30,36 @@ public class SignUpTest {
         basePage.assertHeader("Contact List", true);
     }
 
-    @And("new user is not created")
-    public void newUserIsNotCreated() {
-        basePage.assertHeader("Contact List", false);
-    }
-
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
-        signUpPage.populateUserFieldsWithData(true, true, true, true);
+        signUpPage.fillValidUserData(new SignUpPage().generateValidUserData());
     }
 
-    @When("{string} field submitted with invalid data")
-    public void populateUserFieldsWithInvalidData(String fieldName) {
+    @And("new user was created")
+    public void newUserWasAdded() {
+        apiTest.getUserProfile(new SignUpPage().generateValidUserData());
+    }
+
+    @And("{string} field submitted with invalid data")
+    public void fieldSubmittedWithInvalidData(String fieldName) {
         boolean invalidFirstName = fieldName.equals("firstname");
         boolean invalidLastName = fieldName.equals("lastname");
         boolean invalidEmail = fieldName.equals("email");
         boolean invalidPassword = fieldName.equals("password");
 
-        signUpPage.populateUserFieldsWithData(!invalidFirstName, !invalidLastName, !invalidEmail, !invalidPassword);
+        signUpPage.generateInvalidData(invalidFirstName, invalidLastName, invalidEmail, invalidPassword);
+        signUpPage.fillValidUserData(new SignUpPage().generateValidUserData());
     }
 
     @Then("error is displaying")
     public void errorIsAppearing() {
         signUpPage.errorAlert();
+    }
+
+    @And("new user is not created")
+    public void newUserIsNotCreated() {
+        basePage.assertHeader("Contact List", false);
+        apiTest.getUserProfile(new SignUpPage().generateValidUserData());
     }
 
 }

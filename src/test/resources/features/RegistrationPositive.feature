@@ -1,4 +1,4 @@
-@UI
+@UI @API
 Feature: Positive Registration Feature
 
   Background: Opening main page
@@ -7,4 +7,4 @@ Feature: Positive Registration Feature
   Scenario: Register user using valid data
     When adding user page opening
     And all fields are submitted with valid data
-    Then list of contacts is opened
+    Then new user was created

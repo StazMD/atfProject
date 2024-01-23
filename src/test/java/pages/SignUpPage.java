@@ -1,9 +1,10 @@
 package pages;
 
+import api.UserData;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import utils.TestDataGenerator;
+import utils.TestDataGeneratorUtils;
 import utils.WaitUtils;
 
 public class SignUpPage extends BasePage {
@@ -14,10 +15,10 @@ public class SignUpPage extends BasePage {
 
     private final By signUpHeadElement = By.xpath("/html/body/div/h1");
 
-    private final By firstNameElement = By.xpath("//*[@id='firstName']");
-    private final By lastNameElement = By.xpath("//*[@id='lastName']");
-    private final By emailElement = By.xpath("//*[@id='email']");
-    private final By passwordElement = By.xpath("//*[@id='password']");
+    private static final By firstNameElement = By.xpath("//*[@id='firstName']");
+    private static final By lastNameElement = By.xpath("//*[@id='lastName']");
+    private static final By emailElement = By.xpath("//*[@id='email']");
+    private static final By passwordElement = By.xpath("//*[@id='password']");
 
     private final By errorElement = By.xpath("//*[@id='error']");
 
@@ -26,31 +27,48 @@ public class SignUpPage extends BasePage {
         Assertions.assertThat(signUpHeader.getText()).contains("Add User");
     }
 
-    public void populateUserFieldsWithData(boolean firstNameField, boolean positiveLastName, boolean positiveEmail, boolean positivePassword) {
-        String firstName = firstNameField
-                ? TestDataGenerator.getRandomFirstName()
-                : TestDataGenerator.getNegativeRandomFirstName();
-        String lastName = positiveLastName
-                ? TestDataGenerator.getRandomLastName()
-                : TestDataGenerator.getNegativeRandomLastName();
-        String email = positiveEmail
-                ? TestDataGenerator.getRandomEmail()
-                : TestDataGenerator.getNegativeRandomEmail();
-        String password = positivePassword
-                ? TestDataGenerator.getRandomPassword()
-                : TestDataGenerator.getNegativeRandomPassword();
+    public UserData generateValidUserData() {
+        String firstName = TestDataGeneratorUtils.getRandomFirstName();
+        String lastName = TestDataGeneratorUtils.getRandomLastName();
+        String email = TestDataGeneratorUtils.getRandomEmail();
+        String password = TestDataGeneratorUtils.getRandomPassword();
 
-        sendKeys(firstNameElement, firstName);
-        sendKeys(lastNameElement, lastName);
-        sendKeys(emailElement, email);
-        sendKeys(passwordElement, password);
+        return new UserData(firstName, lastName, email, password);
+    }
+
+//    public UserData generateInvalidUserData() {
+//        String firstName = TestDataGenerator.getNegativeRandomFirstName();
+//        String lastName = TestDataGenerator.getNegativeRandomLastName();
+//        String email = TestDataGenerator.getNegativeRandomEmail();
+//        String password = TestDataGenerator.getNegativeRandomPassword();
+//
+//        return new UserData(firstName, lastName, email, password);
+//    }
+
+    public void fillValidUserData(UserData userData) {
+        sendKeys(firstNameElement, userData.getFirstName());
+        sendKeys(lastNameElement, userData.getLastName());
+        sendKeys(emailElement, userData.getEmail());
+        sendKeys(passwordElement, userData.getPassword());
+
         clickSubmitButton();
     }
 
-    private void sendKeys(By locator, String keysToSend) {
-        WebElement element = WaitUtils.waitForElement(locator, 10);
-        log.info("Field [" + locator + "]: " + keysToSend);
-        element.sendKeys(keysToSend);
+    public UserData generateInvalidData(boolean invalidFirstName, boolean invalidLastName, boolean invalidEmail, boolean invalidPassword) {
+        String firstName = invalidFirstName
+                ? TestDataGeneratorUtils.getNegativeRandomFirstName()
+                : TestDataGeneratorUtils.getRandomFirstName();
+        String lastName = invalidLastName
+                ? TestDataGeneratorUtils.getNegativeRandomLastName()
+                : TestDataGeneratorUtils.getRandomLastName();
+        String email = invalidEmail
+                ? TestDataGeneratorUtils.getNegativeRandomEmail()
+                : TestDataGeneratorUtils.getRandomEmail();
+        String password = invalidPassword
+                ? TestDataGeneratorUtils.getNegativeRandomPassword()
+                : TestDataGeneratorUtils.getRandomPassword();
+
+        return new UserData(firstName, lastName, email, password);
     }
 
     public void errorAlert() {

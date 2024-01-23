@@ -4,7 +4,7 @@ import com.github.javafaker.Faker;
 
 import java.text.SimpleDateFormat;
 
-public class TestDataGenerator {
+public class TestDataGeneratorUtils {
     private static final Faker faker = new Faker();
 
     public static String getRandomFirstName() {

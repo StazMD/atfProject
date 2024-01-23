@@ -3,7 +3,7 @@ package pages;
 import config.PropertyReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import utils.TestDataGenerator;
+import utils.TestDataGeneratorUtils;
 import utils.WaitUtils;
 
 import java.util.List;
@@ -12,9 +12,7 @@ public class ContactListPage extends BasePage {
 
     private String firstNameData;
     private String lastNameData;
-
-
-    String contactListUrl = PropertyReader.getProperty("contactListPath");
+    private final String contactListUrl = PropertyReader.getProperty("contactListPath");
 
     public ContactListPage() {
         super();
@@ -42,24 +40,20 @@ public class ContactListPage extends BasePage {
         addContactButton.click();
     }
 
-    private void fillField(By locator, String value) {
-        WaitUtils.waitForElement(locator, 10).sendKeys(value);
-    }
-
     public void fillingContactFields() {
-        firstNameData = TestDataGenerator.getRandomFirstName();
-        fillField(firstNameElement, firstNameData);
-        lastNameData = TestDataGenerator.getRandomLastName();
-        fillField(lastNameElement, lastNameData);
-        fillField(birthdateElement, TestDataGenerator.getRandomDate());
-        fillField(emailElement, TestDataGenerator.getRandomEmail());
-        fillField(phoneElement, TestDataGenerator.getRandomPhoneNumber());
-        fillField(street1Element, TestDataGenerator.getRandomStreetAddress());
-        fillField(street2Element, TestDataGenerator.getRandomStreetAddress());
-        fillField(cityElement, TestDataGenerator.getRandomCity());
-        fillField(stateProvinceElement, TestDataGenerator.getState());
-        fillField(postalCodeElement, TestDataGenerator.getPostalCode());
-        fillField(countryElement, TestDataGenerator.getCountry());
+        firstNameData = TestDataGeneratorUtils.getRandomFirstName();
+        sendKeys(firstNameElement, firstNameData);
+        lastNameData = TestDataGeneratorUtils.getRandomLastName();
+        sendKeys(lastNameElement, lastNameData);
+        sendKeys(birthdateElement, TestDataGeneratorUtils.getRandomDate());
+        sendKeys(emailElement, TestDataGeneratorUtils.getRandomEmail());
+        sendKeys(phoneElement, TestDataGeneratorUtils.getRandomPhoneNumber());
+        sendKeys(street1Element, TestDataGeneratorUtils.getRandomStreetAddress());
+        sendKeys(street2Element, TestDataGeneratorUtils.getRandomStreetAddress());
+        sendKeys(cityElement, TestDataGeneratorUtils.getRandomCity());
+        sendKeys(stateProvinceElement, TestDataGeneratorUtils.getState());
+        sendKeys(postalCodeElement, TestDataGeneratorUtils.getPostalCode());
+        sendKeys(countryElement, TestDataGeneratorUtils.getCountry());
         clickSubmitButton();
     }
 

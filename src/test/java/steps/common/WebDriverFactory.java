@@ -14,7 +14,7 @@ public class WebDriverFactory {
         if (driver == null) {
             System.out.println("Opening WebDriver");
             String browserType = PropertyReader.getProperty("browser");
-            String browserUrl = PropertyReader.getProperty("url");
+//            String browserUrl = PropertyReader.getProperty("url");
 
             switch (browserType) {
                 case "chrome":
@@ -29,7 +29,7 @@ public class WebDriverFactory {
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
             driver.manage().window().maximize();
-            driver.get(browserUrl);
+//            driver.get(browserUrl);
         }
         return driver;
     }

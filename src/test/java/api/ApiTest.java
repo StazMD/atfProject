@@ -1,37 +1,42 @@
 package api;
 
+import config.PropertyReader;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ApiTest {
-    public static void main(String[] args) {
-        // Установка базового URI
-        RestAssured.baseURI = "https://thinking-tester-contact-list.herokuapp.com";
 
-        // Создание объекта запроса
-        UserRegistration user = new UserRegistration("Test", "User", "test@fake.com", "myPassword");
+    private final String URL = PropertyReader.getProperty("url");
 
-        // Выполнение POST запроса
+    public void getUserProfile(UserData userData) {
+
+        String email = userData.getEmail();
+        String password = userData.getPassword();
+        
+        String token = TokenService.getJwtToken(email, password);
+
+        RestAssured.defaultParser = Parser.JSON;
         Response response = given()
-                .header("Content-Type", "application/json")
-                .body(user)
+                .header("Authorization", "Bearer " + token)
+                .contentType(ContentType.JSON)
                 .when()
-                .post("/users")
-                .then()
-                .statusCode(200)  // Проверяем, что статус код ответа 200
-                .extract()
-                .response();
+                .get(URL + "/users/me")
+                .then().log().all()
+                .assertThat().statusCode(200)
+                .extract().response();
 
-        // Десериализация ответа
-        ApiResponse userResponse = response.as(ApiResponse.class);
-
-        // Получение токена
-        String token = userResponse.getToken();
-
-        // Выводим токен или используем его для последующих запросов
-        System.out.println("Token: " + token);
+        assertThat(userData)
+                .as("Verify User Data")
+                .satisfies(user -> {
+                    assertThat(user.getFirstName()).isEqualTo(response.jsonPath().getString("firstName"));
+                    assertThat(user.getLastName()).isEqualTo(response.jsonPath().getString("lastName"));
+                    assertThat(user.getEmail()).isEqualTo(response.jsonPath().getString("email"));
+                });
     }
 }
 
