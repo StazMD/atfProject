@@ -1,37 +1,24 @@
 package api;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
 public class ApiTest {
-    public static void main(String[] args) {
-        // Установка базового URI
-        RestAssured.baseURI = "https://thinking-tester-contact-list.herokuapp.com";
 
-        // Создание объекта запроса
-        UserRegistration user = new UserRegistration("Test", "User", "test@fake.com", "myPassword");
+    @Test
+    public void testApiWithJwtToken() {
+        TokenService tokenService = new TokenService();
+        String token = tokenService.getJwtToken("TestUser@mail.com", "TestUserTestUser");
 
-        // Выполнение POST запроса
-        Response response = given()
-                .header("Content-Type", "application/json")
-                .body(user)
+        given()
+                .header("Authorization", "Bearer " + token)
                 .when()
-                .post("/users")
-                .then()
-                .statusCode(200)  // Проверяем, что статус код ответа 200
-                .extract()
-                .response();
-
-        // Десериализация ответа
-        ApiResponse userResponse = response.as(ApiResponse.class);
-
-        // Получение токена
-        String token = userResponse.getToken();
-
-        // Выводим токен или используем его для последующих запросов
-        System.out.println("Token: " + token);
+                .get("https://thinking-tester-contact-list.herokuapp.com/users/me") // Измените на ваш protected endpoint
+                .then().log().all()
+                .assertThat()
+                .statusCode(200);
     }
+
 }
 

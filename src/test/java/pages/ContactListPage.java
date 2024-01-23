@@ -12,9 +12,7 @@ public class ContactListPage extends BasePage {
 
     private String firstNameData;
     private String lastNameData;
-
-
-    String contactListUrl = PropertyReader.getProperty("contactListPath");
+    private final String contactListUrl = PropertyReader.getProperty("contactListPath");
 
     public ContactListPage() {
         super();
