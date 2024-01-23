@@ -1,15 +1,18 @@
-package steps.mainPage;
+package steps.tests;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import pages.MainPage;
+import pages.SignUpPage;
 
 public class MainPageTest {
 
     private final MainPage mainPage;
+    private final SignUpPage signUpPage;
 
-    public MainPageTest(MainPage mainPage) {
+    public MainPageTest(MainPage mainPage, SignUpPage signUpPage) {
         this.mainPage = mainPage;
+        this.signUpPage = signUpPage;
     }
 
     @Given("main page is opened")
@@ -17,9 +20,10 @@ public class MainPageTest {
         mainPage.assertHeadText();
     }
 
-    @And("add user button is clicked")
-    public void addUserButtonIsClicked() {
+    @And("adding user page opening")
+    public void openAddUserPage() {
         mainPage.signUpButton();
+        signUpPage.assertSignUpPage();
     }
 
 }

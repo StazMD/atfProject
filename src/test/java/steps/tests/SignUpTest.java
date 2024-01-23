@@ -1,47 +1,42 @@
-package steps.login;
+package steps.tests;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.ContactListPage;
+import pages.BasePage;
 import pages.SignUpPage;
 
 public class SignUpTest {
 
     private final SignUpPage signUpPage;
-    private final ContactListPage contactListPage;
+    private final BasePage basePage;
 
-    public SignUpTest(SignUpPage signUpPage, ContactListPage contactListPage) {
+    public SignUpTest(SignUpPage signUpPage, BasePage basePage) {
         this.signUpPage = signUpPage;
-        this.contactListPage = contactListPage;
-    }
-
-    @And("adding user page opening")
-    public void addingUserPageOpening() {
-        signUpPage.assertSignAddPage();
+        this.basePage = basePage;
     }
 
     @And("[Submit] button is clicked")
-    public void submitButtonIsClicked() {
+    public void submitButtonIsClicked() throws InterruptedException {
         signUpPage.clickSubmitButton();
     }
 
     @Then("new user is created")
     public void newUserIsCreated() {
-        contactListPage.assertHeader("Contact List", true);
+        basePage.assertHeader("Contact List", true);
     }
 
     @And("new user is not created")
     public void newUserIsNotCreated() {
-        contactListPage.assertHeader("Contact List", false);
+        basePage.assertHeader("Contact List", false);
     }
 
-    @And("all fields are populated with correct data")
+    @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
         signUpPage.populateUserFieldsWithData(true, true, true, true);
     }
 
-    @When("{string} field populated with invalid data")
+    @When("{string} field submitted with invalid data")
     public void populateUserFieldsWithInvalidData(String fieldName) {
         boolean invalidFirstName = fieldName.equals("firstname");
         boolean invalidLastName = fieldName.equals("lastname");

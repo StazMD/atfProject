@@ -1,20 +1,20 @@
-package steps.login;
+package steps.tests;
 
 import config.PropertyReader;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.ContactListPage;
+import pages.BasePage;
 import pages.MainPage;
 
 public class LogInTest {
 
     private final MainPage mainPage;
-    private final ContactListPage contactListPage;
+    private final BasePage basePage;
 
-    public LogInTest(MainPage mainPage, ContactListPage contactListPage) {
+    public LogInTest(MainPage mainPage, BasePage basePage) {
         this.mainPage = mainPage;
-        this.contactListPage = contactListPage;
+        this.basePage = basePage;
     }
 
     @When("valid {string} and {string} were entered")
@@ -26,7 +26,7 @@ public class LogInTest {
 
     @Then("user was successfully logged in")
     public void userWasSuccessfullyLoggedIn() {
-        contactListPage.assertHeader("Contact List", true);
+        basePage.assertHeader("Contact List", true);
     }
 
     @And("user is logged in with email {string} and password {string}")

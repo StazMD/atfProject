@@ -4,9 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import utils.TestDataGenerator;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
+import utils.WaitUtils;
 
 public class SignUpPage extends BasePage {
 
@@ -23,8 +21,8 @@ public class SignUpPage extends BasePage {
 
     private final By errorElement = By.xpath("//*[@id='error']");
 
-    public void assertSignAddPage() {
-        WebElement signUpHeader = driver.findElement(signUpHeadElement);
+    public void assertSignUpPage() {
+        WebElement signUpHeader = WaitUtils.waitForElement(signUpHeadElement, 10);
         Assertions.assertThat(signUpHeader.getText()).contains("Add User");
     }
 
@@ -50,15 +48,13 @@ public class SignUpPage extends BasePage {
     }
 
     private void sendKeys(By locator, String keysToSend) {
-        WebElement element = driver.findElement(locator);
+        WebElement element = WaitUtils.waitForElement(locator, 10);
         log.info("Field [" + locator + "]: " + keysToSend);
         element.sendKeys(keysToSend);
     }
 
     public void errorAlert() {
-        WebElement errorAlert = driver.findElement(errorElement);
-        await().atMost(10, SECONDS)
-                .until(errorAlert::isDisplayed);
+        WebElement errorAlert = WaitUtils.waitForElement(errorElement, 10);
         String actualErrorMessage = errorAlert.getText();
         log.info(actualErrorMessage);
         String expectedPattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|User validation failed: email: Email is invalid|User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";

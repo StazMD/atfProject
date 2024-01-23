@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import utils.WaitUtils;
 
 public class ContactDetailsPage extends BasePage {
 
@@ -12,7 +13,7 @@ public class ContactDetailsPage extends BasePage {
     private final By deleteContactButtonElement = By.xpath("//*[@id='delete']");
 
     public void deleteAction() {
-        webDriverHelper.findElement(deleteContactButtonElement).click();
+        WaitUtils.waitForElement(deleteContactButtonElement, 10).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
     }

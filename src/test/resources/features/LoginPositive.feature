@@ -1,3 +1,4 @@
+@UI
 Feature: Positive Login Feature
 
   Background: Opening main page
