@@ -10,4 +10,4 @@ Feature: Positive Login Feature
     Then user was successfully logged in
     Examples:
       | userEmail         | userPassword     |
-      | TestUser@mail.com | TestUserTestUser |
+      | testuser@mail.com | TestUserTestUser |

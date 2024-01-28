@@ -2,42 +2,44 @@ package pages;
 
 import config.PropertyReader;
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import utils.WaitUtils;
+import org.openqa.selenium.support.FindBy;
 
 public class MainPage extends BasePage {
+
+    String browserUrl = PropertyReader.getProperty("url");
+
+    @FindBy(xpath = "/html/body/h1")
+    private WebElement header;
+
+    @FindBy(xpath = "//*[@id='email']")
+    private WebElement email;
+
+    @FindBy(xpath = "//*[@id='password']")
+    private WebElement password;
+
+    @FindBy(xpath = "//*[@id='signup']")
+    private WebElement signUpButton;
 
     public MainPage() {
         super();
     }
-
-    String browserUrl = PropertyReader.getProperty("url");
-
-    private final By headerElement = By.xpath("/html/body/h1");
-    private final By emailElement = By.xpath("//*[@id='email']");
-    private final By passwordElement = By.xpath("//*[@id='password']");
-    private final By signUpButtonElement = By.xpath("//*[@id='signup']");
 
     public void openMainPage() {
         driver.get(browserUrl);
     }
 
     public void assertMainPageHeadText() {
-        WebElement header = WaitUtils.waitForElement(headerElement, 10);
         Assertions.assertThat(header.getText()).contains("Contact List App");
     }
 
     public void loginUser(String userEmail, String userPassword) {
-        WebElement loginEmail = WaitUtils.waitForElement(emailElement, 10);
-        WebElement loginPassword = WaitUtils.waitForElement(passwordElement, 10);
-        loginEmail.sendKeys(userEmail);
-        loginPassword.sendKeys(userPassword);
+        email.sendKeys(userEmail);
+        password.sendKeys(userPassword);
         clickSubmitButton();
     }
 
     public void clickSignUpButton() {
-        WebElement signUpButton = WaitUtils.waitForElement(signUpButtonElement, 10);
         signUpButton.click();
     }
 }

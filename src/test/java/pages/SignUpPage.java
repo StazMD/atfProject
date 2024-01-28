@@ -15,10 +15,10 @@ public class SignUpPage extends BasePage {
 
     private final By signUpHeadElement = By.xpath("/html/body/div/h1");
 
-    private static final By firstNameElement = By.xpath("//*[@id='firstName']");
-    private static final By lastNameElement = By.xpath("//*[@id='lastName']");
-    private static final By emailElement = By.xpath("//*[@id='email']");
-    private static final By passwordElement = By.xpath("//*[@id='password']");
+    private final By firstNameElement = By.xpath("//*[@id='firstName']");
+    private final By lastNameElement = By.xpath("//*[@id='lastName']");
+    private final By emailElement = By.xpath("//*[@id='email']");
+    private final By passwordElement = By.xpath("//*[@id='password']");
 
     private final By errorElement = By.xpath("//*[@id='error']");
 
@@ -36,20 +36,11 @@ public class SignUpPage extends BasePage {
         return new UserData(firstName, lastName, email, password);
     }
 
-//    public UserData generateInvalidUserData() {
-//        String firstName = TestDataGenerator.getNegativeRandomFirstName();
-//        String lastName = TestDataGenerator.getNegativeRandomLastName();
-//        String email = TestDataGenerator.getNegativeRandomEmail();
-//        String password = TestDataGenerator.getNegativeRandomPassword();
-//
-//        return new UserData(firstName, lastName, email, password);
-//    }
-
-    public void fillValidUserData(UserData userData) {
-        sendKeys(firstNameElement, userData.getFirstName());
-        sendKeys(lastNameElement, userData.getLastName());
-        sendKeys(emailElement, userData.getEmail());
-        sendKeys(passwordElement, userData.getPassword());
+    public void fillUserData(UserData userData) {
+        sendKeysUtils(firstNameElement, userData.getFirstName());
+        sendKeysUtils(lastNameElement, userData.getLastName());
+        sendKeysUtils(emailElement, userData.getEmail());
+        sendKeysUtils(passwordElement, userData.getPassword());
 
         clickSubmitButton();
     }

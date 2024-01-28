@@ -39,7 +39,7 @@ public class ContactsTest {
     @When("contact deleted")
     public void contactDeleted() {
         contactListPage.getContactDetails();
-        contactDetailsPage.deleteAction();
+        contactDetailsPage.deleteContactButton();
     }
 
     @Then("contact is no longer in the list of contacts")

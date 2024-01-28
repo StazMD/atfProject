@@ -17,9 +17,8 @@ public class ApiTest {
 
         String email = userData.getEmail();
         String password = userData.getPassword();
-        
         String token = TokenService.getJwtToken(email, password);
-
+        System.out.println(token);
         RestAssured.defaultParser = Parser.JSON;
         Response response = given()
                 .header("Authorization", "Bearer " + token)

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.concurrent.TimeUnit;
+
 public class WebDriverFactory {
 
     private volatile static WebDriver driver;
@@ -29,6 +31,7 @@ public class WebDriverFactory {
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
             driver.manage().window().maximize();
+            driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 //            driver.get(browserUrl);
         }
         return driver;

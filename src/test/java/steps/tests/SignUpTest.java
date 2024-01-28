@@ -1,6 +1,7 @@
 package steps.tests;
 
 import api.ApiTest;
+import api.UserData;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import pages.BasePage;
@@ -18,26 +19,23 @@ public class SignUpTest {
         this.apiTest = apiTest;
     }
 
-//    UserData userData = new SignUpPage().generateValidUserData();
+    UserData userData = new SignUpPage().generateValidUserData();
+    UserData invalidUserData = new SignUpPage().generateInvalidData(true, true, true, true);
 
     @And("[Submit] button is clicked")
     public void submitButtonIsClicked() throws InterruptedException {
         signUpPage.clickSubmitButton();
     }
 
-    @Then("new user is created")
-    public void newUserIsCreated() {
-        basePage.assertHeader("Contact List", true);
-    }
-
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
-        signUpPage.fillValidUserData(new SignUpPage().generateValidUserData());
+        signUpPage.fillUserData(userData);
     }
 
     @And("new user was created")
     public void newUserWasAdded() {
-        apiTest.getUserProfile(new SignUpPage().generateValidUserData());
+        basePage.assertHeader("Contact List", true);
+        apiTest.getUserProfile(userData);
     }
 
     @And("{string} field submitted with invalid data")
@@ -48,7 +46,7 @@ public class SignUpTest {
         boolean invalidPassword = fieldName.equals("password");
 
         signUpPage.generateInvalidData(invalidFirstName, invalidLastName, invalidEmail, invalidPassword);
-        signUpPage.fillValidUserData(new SignUpPage().generateValidUserData());
+//        signUpPage.fillUserData(invalidUserData);
     }
 
     @Then("error is displaying")
@@ -59,7 +57,7 @@ public class SignUpTest {
     @And("new user is not created")
     public void newUserIsNotCreated() {
         basePage.assertHeader("Contact List", false);
-        apiTest.getUserProfile(new SignUpPage().generateValidUserData());
+        apiTest.getUserProfile(userData);
     }
 
 }

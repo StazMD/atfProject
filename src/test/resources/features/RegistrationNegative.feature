@@ -1,11 +1,10 @@
 @UI @API
 Feature: Negative Registration Feature
-#
-#  Background: Opening main page
-#    Given main page is opened
+
+  Background: Opening main page
+    Given main page is opened
 
   Scenario Outline: Register user using invalid data
-    Given main page is opened
     When adding user page opening
     And "<fieldName>" field submitted with invalid data
     Then error is displaying
@@ -13,6 +12,6 @@ Feature: Negative Registration Feature
     Examples:
       | fieldName |
       | firstname |
-#      | lastname  |
-#      | email     |
-#      | password  |
+      | lastname  |
+      | email     |
+      | password  |

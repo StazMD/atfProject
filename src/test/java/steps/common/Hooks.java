@@ -25,7 +25,7 @@ public class Hooks {
         mainPage.loginUser("TestUser@mail.com", "TestUserTestUser");
     }
 
-    @After
+    @After("@UI or @login")
     public void tearDown() {
         System.out.println("tearDown quitting driver");
         WebDriverFactory.quitDriver();
