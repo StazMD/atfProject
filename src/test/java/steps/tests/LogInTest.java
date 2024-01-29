@@ -1,6 +1,5 @@
 package steps.tests;
 
-import config.PropertyReader;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.BasePage;
@@ -10,10 +9,6 @@ public class LogInTest {
 
     private final MainPage mainPage;
     private final BasePage basePage;
-
-
-    String email = PropertyReader.getProperty("userEmail");
-    String password = PropertyReader.getProperty("userPassword");
 
     public LogInTest(MainPage mainPage, BasePage basePage) {
         this.mainPage = mainPage;
@@ -27,6 +22,12 @@ public class LogInTest {
 
     @Then("user was successfully logged in")
     public void userWasSuccessfullyLoggedIn() {
-        basePage.assertHeader("Contact List", true);
+        mainPage.loginUser("testuser@mail.com", "TestUserTestUser");
+        basePage.assertHeader("Contact List");
+    }
+
+    @Then("user was successfully logged in the application")
+    public void userWasSuccessfullyLoggedInTheApplication() {
+        basePage.assertHeader("Contact List");
     }
 }

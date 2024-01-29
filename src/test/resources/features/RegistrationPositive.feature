@@ -1,4 +1,4 @@
-@UI @API
+@UI
 Feature: Positive Registration Feature
 
   Background: Opening main page

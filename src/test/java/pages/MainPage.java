@@ -1,7 +1,6 @@
 package pages;
 
 import config.PropertyReader;
-import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -23,14 +22,6 @@ public class MainPage extends BasePage {
 
     public MainPage() {
         super();
-    }
-
-    public void openMainPage() {
-        driver.get(browserUrl);
-    }
-
-    public void assertMainPageHeadText() {
-        Assertions.assertThat(header.getText()).contains("Contact List App");
     }
 
     public void loginUser(String userEmail, String userPassword) {

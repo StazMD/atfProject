@@ -22,28 +22,23 @@ public class ContactsTest {
     @And("contact was created")
     public void contactWasCreated() {
         contactListPage.addNewContactPageWithButton();
-        basePage.assertHeader("Add Contact", true);
+        basePage.assertHeader("Add Contact");
         contactListPage.fillingContactFields();
     }
 
     @Then("contact displaying in contact list")
-    public void contactDisplayingInContactList() {
-        contactListPage.findEntry();
-    }
-
-    @And("list of contacts is opened")
-    public void listOfContactsIsOpened() {
-        basePage.assertHeader("Contact List", true);
+    public void contactDisplayingInContactList() throws InterruptedException {
+        contactListPage.verifyEntryIsPresent();
     }
 
     @When("contact deleted")
-    public void contactDeleted() {
+    public void contactDeleted() throws InterruptedException {
         contactListPage.getContactDetails();
         contactDetailsPage.deleteContactButton();
     }
 
     @Then("contact is no longer in the list of contacts")
     public void contactIsNoLongerInTheListOfContacts() {
-        contactListPage.findEntry();
+        contactListPage.verifyEntryIsAbsent();
     }
 }

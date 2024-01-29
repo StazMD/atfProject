@@ -2,9 +2,11 @@ package pages;
 
 import config.PropertyReader;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.TestDataGeneratorUtils;
+import utils.WaitUtils;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ public class ContactListPage extends BasePage {
 
     private String firstNameData;
     private String lastNameData;
+    private String firstNameLastName;
+
     private final String contactListUrl = PropertyReader.getProperty("contactListPath");
 
     @FindBy(xpath = "//*[@id='add-contact']")
@@ -88,14 +92,16 @@ public class ContactListPage extends BasePage {
         String countryData = TestDataGeneratorUtils.getCountry();
         countryElement.sendKeys(countryData);
 
+        firstNameLastName = firstNameData + " " + lastNameData;
+
         clickSubmitButton();
     }
 
-    public WebElement findEntry() {
-        driver.get(contactListUrl);
-        String firstNameLastName = firstNameData + " " + lastNameData;
-        for (WebElement row : contactTableBodyRowElements) {
-            List<WebElement> cells = row.findElements(By.tagName("td"));
+
+    public WebElement verifyEntryIsPresent() {
+        WaitUtils.waitForElement(contactsTable, 10);
+        for (WebElement contactsTable : contactTableBodyRowElements) {
+            List<WebElement> cells = contactsTable.findElements(By.tagName("td"));
             for (WebElement cell : cells) {
                 if (cell.getText().equals(firstNameLastName)) {
                     log.info("Entry found: " + firstNameLastName);
@@ -103,15 +109,28 @@ public class ContactListPage extends BasePage {
                 }
             }
         }
-        return null;
+        throw new NoSuchElementException("Entry with name " + firstNameLastName + " not found.");
+    }
+
+    public void verifyEntryIsAbsent() {
+        WaitUtils.waitForElement(contactsTable, 10);
+        for (WebElement contactsTable : contactTableBodyRowElements) {
+            List<WebElement> cells = contactsTable.findElements(By.tagName("td"));
+            for (WebElement cell : cells) {
+                if (cell.getText().equals(firstNameLastName)) {
+                    log.info("Entry still present: " + firstNameLastName);
+                }
+            }
+        }
+        log.info("Entry absent as expected: " + firstNameLastName);
     }
 
     public void getContactDetails() {
-        WebElement contact = findEntry();
+        WebElement contact = verifyEntryIsPresent();
         if (contact != null) {
             contact.click();
         } else {
-            log.info("Entry to click on was not found.");
+            log.info("Entry to open was not found.");
         }
     }
 }

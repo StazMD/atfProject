@@ -21,10 +21,7 @@ public class TokenService {
                 .body(requestBody)
                 .post(URL + "/users/login");
 
-        String token = response.path("token");
-        System.out.println(token);
-
-        return response.path("token");
+        return response.path("token").toString();
     }
 }
 

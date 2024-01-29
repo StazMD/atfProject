@@ -14,11 +14,9 @@ public class ApiTest {
     private final String URL = PropertyReader.getProperty("url");
 
     public void getUserProfile(UserData userData) {
-
         String email = userData.getEmail();
         String password = userData.getPassword();
         String token = TokenService.getJwtToken(email, password);
-        System.out.println(token);
         RestAssured.defaultParser = Parser.JSON;
         Response response = given()
                 .header("Authorization", "Bearer " + token)
@@ -36,6 +34,21 @@ public class ApiTest {
                     assertThat(user.getLastName()).isEqualTo(response.jsonPath().getString("lastName"));
                     assertThat(user.getEmail()).isEqualTo(response.jsonPath().getString("email"));
                 });
+    }
+
+    public void userNotExisted(UserData userData) {
+        String email = userData.getEmail();
+        String password = userData.getPassword();
+        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", email, password);
+        System.out.println(requestBody);
+        RestAssured.defaultParser = Parser.JSON;
+        given()
+                .header("Accept", "application/json")
+                .body(requestBody)
+                .when()
+                .post(URL + "/users/login")
+                .then().log().all()
+                .assertThat().statusCode(401);
     }
 }
 

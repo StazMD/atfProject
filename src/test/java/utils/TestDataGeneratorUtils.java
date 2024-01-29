@@ -1,6 +1,8 @@
 package utils;
 
+import api.UserData;
 import com.github.javafaker.Faker;
+import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 
@@ -71,5 +73,20 @@ public class TestDataGeneratorUtils {
 
     public static String getCountry() {
         return faker.address().country();
+    }
+
+    public static UserData generateCredentials() {
+        String firstname = faker.name().firstName();
+        String lastname = getRandomLastName();
+        String email = getRandomEmail();
+        String password = getRandomPassword();
+
+        return new UserData(firstname, lastname, email, password);
+
+    }
+
+    @Test
+    public void printFN() {
+        System.out.println(new UserData().getFirstName());
     }
 }
