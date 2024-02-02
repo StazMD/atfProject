@@ -1,18 +1,15 @@
-package steps.tests;
+package stepDefinition.UI;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.BasePage;
 import pages.MainPage;
 
 public class LogInTest {
 
     private final MainPage mainPage;
-    private final BasePage basePage;
 
-    public LogInTest(MainPage mainPage, BasePage basePage) {
+    public LogInTest(MainPage mainPage) {
         this.mainPage = mainPage;
-        this.basePage = basePage;
     }
 
     @When("valid {string} and {string} were entered")
@@ -23,11 +20,11 @@ public class LogInTest {
     @Then("user was successfully logged in")
     public void userWasSuccessfullyLoggedIn() {
         mainPage.loginUser("testuser@mail.com", "TestUserTestUser");
-        basePage.assertHeader("Contact List");
+        mainPage.assertHeader("Contact List");
     }
 
     @Then("user was successfully logged in the application")
     public void userWasSuccessfullyLoggedInTheApplication() {
-        basePage.assertHeader("Contact List");
+        mainPage.assertHeader("Contact List");
     }
 }

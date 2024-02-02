@@ -28,22 +28,8 @@ public class SignUpPage extends BasePage {
     @FindBy(id = "error")
     private WebElement error;
 
-    public static UserData generateValidUserData() {
-        UserData userData = new UserData();
-        userData.setFirstName(TestDataGeneratorUtils.getRandomFirstName());
-        userData.setLastName(TestDataGeneratorUtils.getRandomLastName());
-        userData.setEmail(TestDataGeneratorUtils.getRandomEmail());
-        userData.setPassword(TestDataGeneratorUtils.getRandomPassword());
-        return userData;
-    }
-
-    public static UserData generateInvalidValidUserData() {
-        UserData userData = new UserData();
-        userData.setFirstName(TestDataGeneratorUtils.getRandomFirstName());
-        userData.setLastName(TestDataGeneratorUtils.getRandomLastName());
-        userData.setEmail(TestDataGeneratorUtils.getRandomEmail());
-        userData.setPassword(TestDataGeneratorUtils.getRandomPassword());
-        return userData;
+    public void generateValidUserData() {
+        new TestDataGeneratorUtils().generateCredentials();
     }
 
     public void fillUserData(UserData userData) {

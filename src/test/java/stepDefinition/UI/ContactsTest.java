@@ -1,9 +1,8 @@
-package steps.tests;
+package stepDefinition.UI;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.BasePage;
 import pages.ContactDetailsPage;
 import pages.ContactListPage;
 
@@ -11,18 +10,16 @@ public class ContactsTest {
 
     private final ContactListPage contactListPage;
     private final ContactDetailsPage contactDetailsPage;
-    private final BasePage basePage;
 
-    public ContactsTest(ContactListPage contactListPage, ContactDetailsPage contactDetailsPage, BasePage basePage) {
+    public ContactsTest(ContactListPage contactListPage, ContactDetailsPage contactDetailsPage) {
         this.contactListPage = contactListPage;
         this.contactDetailsPage = contactDetailsPage;
-        this.basePage = basePage;
     }
 
     @And("contact was created")
     public void contactWasCreated() {
         contactListPage.addNewContactPageWithButton();
-        basePage.assertHeader("Add Contact");
+        contactListPage.assertHeader("Add Contact");
         contactListPage.fillingContactFields();
     }
 

@@ -1,12 +1,12 @@
-package steps.tests;
+package stepDefinition.UI;
 
 import config.PropertyReader;
+import config.WebDriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 import pages.SignUpPage;
-import steps.common.WebDriverFactory;
 
 public class MainPageTest {
 

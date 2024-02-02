@@ -1,9 +1,18 @@
+@API
 Feature: Users from API endpoints
 
-  Scenario: Add user from API
-    When new user is created
-#    Then new user is able to login
-#    And new user profile could be retrieved
+  Background: Creating user
+    Given new user is created
+
+#  Scenario: Add user from API
+#    When new user is able to login
+#    Then new user profile could be retrieved
+
+  Scenario: Update and delete user
+    When new user profile could be retrieved
+    And user is updated
+#    And user is deleted
+#    Then user not existed
 
 
 #  Scenario Outline: Get users

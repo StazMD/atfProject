@@ -1,12 +1,12 @@
 package pages;
 
+import config.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import steps.common.WebDriverFactory;
 import utils.WaitUtils;
 
 public class BasePage {
@@ -37,7 +37,7 @@ public class BasePage {
 
     public static void sendKeysUtils(WebElement locator, String keysToSend) {
         WebElement element = WaitUtils.waitForElement(locator, 10);
-        log.info("Field [" + locator + "]: " + keysToSend);
+        log.info(keysToSend);
         element.sendKeys(keysToSend);
     }
 }
