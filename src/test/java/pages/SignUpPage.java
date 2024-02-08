@@ -1,11 +1,13 @@
 package pages;
 
-import api.UserData;
+import context.ScenarioContext;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.TestDataGeneratorUtils;
 import utils.WaitUtils;
+
+import java.util.Map;
 
 public class SignUpPage extends BasePage {
 
@@ -32,11 +34,13 @@ public class SignUpPage extends BasePage {
         new TestDataGeneratorUtils().generateCredentials();
     }
 
-    public void fillUserData(UserData userData) {
-        sendKeysUtils(firstName, userData.getFirstName());
-        sendKeysUtils(lastName, userData.getLastName());
-        sendKeysUtils(email, userData.getEmail());
-        sendKeysUtils(password, userData.getPassword());
+    Map<String, Object> userDetails = ScenarioContext.getScenarioData();
+
+    public void fillUserData() {
+        WaitUtils.waitForElement(firstName, 10).sendKeys(userDetails.get("firstName").toString());
+        WaitUtils.waitForElement(lastName, 10).sendKeys(userDetails.get("lastName").toString());
+        WaitUtils.waitForElement(email, 10).sendKeys(userDetails.get("email").toString());
+        WaitUtils.waitForElement(password, 10).sendKeys(userDetails.get("password").toString());
 
         clickSubmitButton();
     }
@@ -44,7 +48,7 @@ public class SignUpPage extends BasePage {
     public void errorAlert() {
         WaitUtils.waitForElement(error, 10);
         String actualErrorMessage = error.getText();
-        log.info(actualErrorMessage);
+        logger.info("Verifying that error message {} is presented", actualErrorMessage);
         String expectedPattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|User validation failed: email: Email is invalid|User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";
         Assertions.assertThat(actualErrorMessage).matches(expectedPattern);
     }

@@ -1,6 +1,6 @@
 package pages;
 
-import config.PropertyReader;
+import context.ScenarioContext;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -9,14 +9,11 @@ import utils.TestDataGeneratorUtils;
 import utils.WaitUtils;
 
 import java.util.List;
+import java.util.Map;
 
 public class ContactListPage extends BasePage {
 
-    private String firstNameData;
-    private String lastNameData;
     private String firstNameLastName;
-
-    private final String contactListUrl = PropertyReader.getProperty("contactListPath");
 
     @FindBy(xpath = "//*[@id='add-contact']")
     private WebElement addContactButton;
@@ -60,43 +57,61 @@ public class ContactListPage extends BasePage {
     @FindBy(className = "contactTableBodyRow")
     private List<WebElement> contactTableBodyRowElements;
 
-    public ContactListPage() {
-        super();
-    }
-
     public void addNewContactPageWithButton() {
-        addContactButton.click();
+        WaitUtils.waitForElement(addContactButton, 10).click();
     }
 
     public void fillingContactFields() {
+        Map<String, Object> userDetails = ScenarioContext.getScenarioData();
+
         String firstNameData = TestDataGeneratorUtils.getRandomFirstName();
-        firstNameElement.sendKeys(firstNameData);
+        userDetails.put("contactFirstName", firstNameData);
+        WaitUtils.waitForElement(firstNameElement, 10).sendKeys(firstNameData);
+
         String lastNameData = TestDataGeneratorUtils.getRandomLastName();
-        lastNameElement.sendKeys(lastNameData);
+        userDetails.put("contactLastName", lastNameData);
+        WaitUtils.waitForElement(lastNameElement, 10).sendKeys(lastNameData);
+
         String birthdateData = TestDataGeneratorUtils.getRandomDate();
-        birthdateElement.sendKeys(birthdateData);
+        userDetails.put("contactBirthday", birthdateData);
+        WaitUtils.waitForElement(birthdateElement, 10).sendKeys(birthdateData);
+
         String emailData = TestDataGeneratorUtils.getRandomEmail();
-        emailElement.sendKeys(emailData);
+        userDetails.put("contactEmail", emailData);
+        WaitUtils.waitForElement(emailElement, 10).sendKeys(emailData);
+
         String phoneData = TestDataGeneratorUtils.getRandomPhoneNumber();
-        phoneElement.sendKeys(phoneData);
+        userDetails.put("contactPhone", phoneData);
+        WaitUtils.waitForElement(phoneElement, 10).sendKeys(phoneData);
+
         String street1Data = TestDataGeneratorUtils.getRandomStreetAddress();
-        street1Element.sendKeys(street1Data);
+        userDetails.put("contactStreet1", street1Data);
+        WaitUtils.waitForElement(street1Element, 10).sendKeys(street1Data);
+
         String street2Data = TestDataGeneratorUtils.getRandomStreetAddress();
-        street2Element.sendKeys(street2Data);
+        userDetails.put("contactStreet2", street2Data);
+        WaitUtils.waitForElement(street2Element, 10).sendKeys(street2Data);
+
         String cityData = TestDataGeneratorUtils.getRandomCity();
-        cityElement.sendKeys(cityData);
+        userDetails.put("contactCity", cityData);
+        WaitUtils.waitForElement(cityElement, 10).sendKeys(cityData);
+
         String stateProvinceData = TestDataGeneratorUtils.getState();
-        stateProvinceElement.sendKeys(stateProvinceData);
+        userDetails.put("contactStateProvince", stateProvinceData);
+        WaitUtils.waitForElement(stateProvinceElement, 10).sendKeys(stateProvinceData);
+
         String postalCodeData = TestDataGeneratorUtils.getPostalCode();
-        postalCodeElement.sendKeys(postalCodeData);
+        userDetails.put("contactPostalCode", postalCodeData);
+        WaitUtils.waitForElement(postalCodeElement, 10).sendKeys(postalCodeData);
+
         String countryData = TestDataGeneratorUtils.getCountry();
-        countryElement.sendKeys(countryData);
+        userDetails.put("contactCountry", countryData);
+        WaitUtils.waitForElement(countryElement, 10).sendKeys(countryData);
 
         firstNameLastName = firstNameData + " " + lastNameData;
 
         clickSubmitButton();
     }
-
 
     public WebElement verifyEntryIsPresent() {
         WaitUtils.waitForElement(contactsTable, 10);
@@ -104,7 +119,7 @@ public class ContactListPage extends BasePage {
             List<WebElement> cells = contactsTable.findElements(By.tagName("td"));
             for (WebElement cell : cells) {
                 if (cell.getText().equals(firstNameLastName)) {
-                    log.info("Entry found: " + firstNameLastName);
+                    logger.info("Entry found: " + firstNameLastName);
                     return cell;
                 }
             }
@@ -118,11 +133,11 @@ public class ContactListPage extends BasePage {
             List<WebElement> cells = contactsTable.findElements(By.tagName("td"));
             for (WebElement cell : cells) {
                 if (cell.getText().equals(firstNameLastName)) {
-                    log.info("Entry still present: " + firstNameLastName);
+                    logger.info("Entry still present: " + firstNameLastName);
                 }
             }
         }
-        log.info("Entry absent as expected: " + firstNameLastName);
+        logger.info("Entry absent as expected: " + firstNameLastName);
     }
 
     public void getContactDetails() {
@@ -130,7 +145,7 @@ public class ContactListPage extends BasePage {
         if (contact != null) {
             contact.click();
         } else {
-            log.info("Entry to open was not found.");
+            logger.info("Entry to open was not found.");
         }
     }
 }

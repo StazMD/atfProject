@@ -1,6 +1,6 @@
 package stepDefinition.API;
 
-import api.ApiRequestsTest;
+import api.StepDefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -8,26 +8,37 @@ import utils.TestDataGeneratorUtils;
 
 public class RestTest {
 
-    ApiRequestsTest apiRequestsTest = new ApiRequestsTest();
+    StepDefinitions stepDefinitions = new StepDefinitions();
 
     @When("new user is created")
     public void newUserIsCreated() {
         new TestDataGeneratorUtils().generateCredentials();
-        apiRequestsTest.createUser();
+        stepDefinitions.createUser();
     }
 
     @Then("new user is able to login")
     public void newUserIsAbleToLogin() {
-        apiRequestsTest.ableToLogin();
+        stepDefinitions.loginUser();
     }
 
     @And("new user profile could be retrieved")
     public void newUserProfileCouldBeRetrieved() {
-        apiRequestsTest.getUserProfile();
+        stepDefinitions.getUserProfile();
     }
 
-    @And("user is updated")
+    @When("user is updated")
     public void userIsUpdated() {
-        apiRequestsTest.updateUser();
+        stepDefinitions.updateUser();
     }
+
+    @And("user is deleted")
+    public void userIsDeleted() {
+        stepDefinitions.deleteUser();
+    }
+
+    @Then("user not existed")
+    public void userNotExisted() {
+        stepDefinitions.userNotExisted();
+    }
+
 }

@@ -1,54 +1,57 @@
 package stepDefinition.UI;
 
-import api.ApiRequestsTest;
+import api.StepDefinitions;
+import context.ScenarioContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import pages.SignUpPage;
+import utils.TestDataGeneratorUtils;
+
+import java.util.Map;
 
 public class SignUpTest {
 
     private final SignUpPage signUpPage;
-    private final ApiRequestsTest apiRequestsTest;
+    private final StepDefinitions stepDefinitions;
 
-    public SignUpTest(SignUpPage signUpPage, ApiRequestsTest apiRequestsTest) {
+    public SignUpTest(SignUpPage signUpPage, StepDefinitions stepDefinitions) {
         this.signUpPage = signUpPage;
-        this.apiRequestsTest = apiRequestsTest;
+        this.stepDefinitions = stepDefinitions;
     }
-
 
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
-//        UserData userData = signUpPage.generateValidUserData();
-//        signUpPage.generateValidUserData();
-//        signUpPage.fillUserData(userData);
+        signUpPage.generateValidUserData();
+        signUpPage.fillUserData();
     }
 
     @And("new user was created")
     public void newUserWasAdded() {
-//        UserData userData = signUpPage.generateValidUserData();
         signUpPage.assertHeader("Contact List");
-//        apiTest.getUserProfileFromEndpoint(userData);
+        stepDefinitions.loginUser();
+        stepDefinitions.getUserProfile();
     }
 
     @And("{string} field submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
-//        UserData userData = signUpPage.generateValidUserData();
+        Map<String, Object> userDetails = ScenarioContext.getScenarioData();
+        signUpPage.generateValidUserData();
         switch (fieldName) {
-            case "firstname":
-//                userData.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
+            case "firstName":
+                userDetails.put("firstName", TestDataGeneratorUtils.getNegativeRandomFirstName());
                 break;
-            case "lastname":
-//                userData.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
+            case "lastName":
+                userDetails.put("lastName", TestDataGeneratorUtils.getNegativeRandomLastName());
                 break;
             case "email":
-//                userData.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
+                userDetails.put("email", TestDataGeneratorUtils.getNegativeRandomEmail());
                 break;
             case "password":
-//                userData.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
+                userDetails.put("password", TestDataGeneratorUtils.getNegativeRandomPassword());
                 break;
         }
 
-//        signUpPage.fillUserData(userData);
+        signUpPage.fillUserData();
     }
 
     @Then("error is displaying")
@@ -58,9 +61,8 @@ public class SignUpTest {
 
     @And("new user is not created")
     public void newUserIsNotCreated() {
-//        UserData userData = signUpPage.generateValidUserData();
         signUpPage.assertHeader("Add User");
-//        apiTest.userNotExisted(userData);
+        stepDefinitions.userNotExisted();
     }
 
 }

@@ -1,9 +1,7 @@
 package utils;
 
-import api.UserData;
 import com.github.javafaker.Faker;
-import context.TestContext;
-import org.junit.jupiter.api.Test;
+import context.ScenarioContext;
 
 import java.text.SimpleDateFormat;
 
@@ -78,14 +76,9 @@ public class TestDataGeneratorUtils {
 
     //TODO user entity
     public void generateCredentials() {
-        TestContext.setContext("firstname", getRandomFirstName());
-        TestContext.setContext("lastname", getRandomLastName());
-        TestContext.setContext("email", getRandomEmail());
-        TestContext.setContext("password", getRandomPassword());
-    }
-
-    @Test
-    public void printFN() {
-        System.out.println(new UserData().getFirstName());
+        ScenarioContext.setContext("firstName", getRandomFirstName());
+        ScenarioContext.setContext("lastName", getRandomLastName());
+        ScenarioContext.setContext("email", getRandomEmail());
+        ScenarioContext.setContext("password", getRandomPassword());
     }
 }

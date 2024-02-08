@@ -3,6 +3,7 @@ package pages;
 import config.PropertyReader;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utils.WaitUtils;
 
 public class MainPage extends BasePage {
 
@@ -25,12 +26,12 @@ public class MainPage extends BasePage {
     }
 
     public void loginUser(String userEmail, String userPassword) {
-        email.sendKeys(userEmail);
-        password.sendKeys(userPassword);
+        WaitUtils.waitForElement(email, 10).sendKeys(userEmail);
+        WaitUtils.waitForElement(password, 10).sendKeys(userPassword);
         clickSubmitButton();
     }
 
     public void clickSignUpButton() {
-        signUpButton.click();
+        WaitUtils.waitForElement(signUpButton, 10).click();
     }
 }

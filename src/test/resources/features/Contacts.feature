@@ -3,7 +3,9 @@ Feature: Contacts Feature
 
   Background: Opening main page
     Given main page is opened
-    And user was successfully logged in
+    And valid credentials were entered
+      | email             | password         |
+      | testuser@mail.com | TestUserTestUser |
 
   Scenario: Add new contact
     When contact was created
