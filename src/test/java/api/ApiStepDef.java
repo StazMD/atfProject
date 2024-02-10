@@ -1,63 +1,68 @@
 package api;
 
 import context.ScenarioContext;
+import entity.User;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.TestDataGeneratorUtils;
 
-import java.util.Map;
 
+public class ApiStepDef {
 
-public class StepDefinitions {
+    Logger log = LoggerFactory.getLogger(ApiStepDef.class);
+    private final Assertions assertions = new Assertions();
+    private static final ScenarioContext scenarioContext;
 
-    private final Assertions assertions;
-    private final Map<String, Object> userDetails;
-
-    public StepDefinitions() {
-        this.assertions = new Assertions();
-        this.userDetails = ScenarioContext.getScenarioData();
-        Logger logger = LoggerFactory.getLogger(StepDefinitions.class);
+    //TODO why?
+    static {
+        scenarioContext = ScenarioContext.INSTANCE;
     }
 
-    public void extractUserData() {
-        userDetails.put("firstName", (String) ScenarioContext.getContext("firstName"));
-        userDetails.put("lastName", (String) ScenarioContext.getContext("lastName"));
-        userDetails.put("email", (String) ScenarioContext.getContext("email"));
-        userDetails.put("password", (String) ScenarioContext.getContext("password"));
+    //TODO pico-container
+
+    //TODO try-catch
+    public User extractUserData() {
+        try {
+            return (User) scenarioContext.getContext("user");
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("message", ex);
+        }
     }
 
     public void createUser() {
-        extractUserData();
+        User user = extractUserData();
         String requestBody = String
                 .format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}",
-                        userDetails.get("firstName"),
-                        userDetails.get("lastName"),
-                        userDetails.get("email"),
-                        userDetails.get("password"));
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getPassword());
 
         Response response = Requests.postRequest("/users", requestBody, 201);
-        assertions.assertUserDetails(response);
+        assertions.assertUser(response);
     }
 
     public void getUserProfile() {
         Response response = Requests.getRequest("/users/me", 200);
-        assertions.assertUserDetails(response);
+        assertions.assertGetUserProfile(response);
     }
 
     public void loginUser() {
-        extractUserData();
+        User user = extractUserData();
 
         String requestBody = String
                 .format("{\"email\": \"%s\",\"password\": \"%s\"}",
-                        userDetails.get("email"),
-                        userDetails.get("password"));
+                        user.getEmail(),
+                        user.getPassword());
 
         Response response = Requests.postRequest("/users/login", requestBody, 200);
-        assertions.assertUserDetails(response);
+        assertions.assertUser(response);
     }
 
     public void updateUser() {
+        User user = extractUserData();
+
         String updatedFirstName = TestDataGeneratorUtils.getRandomFirstName();
         String updatedLastName = TestDataGeneratorUtils.getRandomLastName();
 
@@ -66,10 +71,10 @@ public class StepDefinitions {
 
         Response response = Requests.patchRequest("/users/me", requestBody, 200);
 
-        userDetails.put("firstName", updatedFirstName);
-        userDetails.put("lastName", updatedLastName);
+        user.setFirstName(updatedFirstName);
+        user.setLastName(updatedLastName);
 
-        assertions.assertUpdatedData(response);
+        assertions.assertUpdatedUser(response);
     }
 
     public void deleteUser() {

@@ -7,9 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import utils.TestDataGeneratorUtils;
 import utils.WaitUtils;
 
-import java.util.Map;
-
 public class SignUpPage extends BasePage {
+
+    private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
     public SignUpPage() {
         super();
@@ -34,13 +34,11 @@ public class SignUpPage extends BasePage {
         new TestDataGeneratorUtils().generateCredentials();
     }
 
-    Map<String, Object> userDetails = ScenarioContext.getScenarioData();
-
     public void fillUserData() {
-        WaitUtils.waitForElement(firstName, 10).sendKeys(userDetails.get("firstName").toString());
-        WaitUtils.waitForElement(lastName, 10).sendKeys(userDetails.get("lastName").toString());
-        WaitUtils.waitForElement(email, 10).sendKeys(userDetails.get("email").toString());
-        WaitUtils.waitForElement(password, 10).sendKeys(userDetails.get("password").toString());
+        WaitUtils.waitForElement(firstName, 10).sendKeys(scenarioContext.getContext("firstName").toString());
+        WaitUtils.waitForElement(lastName, 10).sendKeys(scenarioContext.getContext("lastName").toString());
+        WaitUtils.waitForElement(email, 10).sendKeys(scenarioContext.getContext("email").toString());
+        WaitUtils.waitForElement(password, 10).sendKeys(scenarioContext.getContext("password").toString());
 
         clickSubmitButton();
     }
@@ -48,7 +46,7 @@ public class SignUpPage extends BasePage {
     public void errorAlert() {
         WaitUtils.waitForElement(error, 10);
         String actualErrorMessage = error.getText();
-        logger.info("Verifying that error message {} is presented", actualErrorMessage);
+        log.info("Verifying that error message {} is presented", actualErrorMessage);
         String expectedPattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|User validation failed: email: Email is invalid|User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";
         Assertions.assertThat(actualErrorMessage).matches(expectedPattern);
     }

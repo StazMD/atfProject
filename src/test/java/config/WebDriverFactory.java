@@ -14,12 +14,12 @@ public class WebDriverFactory {
 
     //TODO volatile wtf?
     private volatile static WebDriver driver;
-    private static final Logger logger = LoggerFactory.getLogger(WebDriverFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(WebDriverFactory.class);
 
     public static WebDriver setupDriver() {
         if (driver == null) {
             //TODO add logger instead of sout
-            logger.info("Opening WebDriver");
+            log.info("Opening WebDriver");
             String browserType = PropertyReader.getProperty("browser");
             String headlessProperty = PropertyReader.getProperty("headless");
             boolean headless = Boolean.parseBoolean(headlessProperty);
@@ -30,7 +30,7 @@ public class WebDriverFactory {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     if (headless) {
                         chromeOptions.addArguments("--headless");
-                        logger.debug("Chrome is set to run in headless mode");
+                        log.debug("Chrome is set to run in headless mode");
                     }
                     driver = new ChromeDriver(chromeOptions);
                     break;

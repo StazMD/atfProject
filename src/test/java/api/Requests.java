@@ -9,6 +9,7 @@ import static io.restassured.RestAssured.given;
 
 public class Requests {
 
+    private final static ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
     private static final String URL = PropertyReader.getProperty("url");
 
     public static Response postRequest(String path, String requestBody, int statusCode) {
@@ -22,14 +23,14 @@ public class Requests {
                 .extract().response();
 
         String token = response.jsonPath().getString("token");
-        ScenarioContext.setContext("token", token);
+        scenarioContext.setContext("token", token);
 
         return response;
     }
 
     public static Response getRequest(String path, int statusCode) {
         return given()
-                .header("Authorization", "Bearer " + ScenarioContext.getContext("token"))
+                .header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .contentType(ContentType.JSON)
                 .when()
                 .get(URL + path)
@@ -40,7 +41,7 @@ public class Requests {
 
     static Response patchRequest(String path, String requestBody, int statusCode) {
         return given()
-                .header("Authorization", "Bearer " + ScenarioContext.getContext("token"))
+                .header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
@@ -52,7 +53,7 @@ public class Requests {
 
     static Response deleteRequest(String path, int statusCode) {
         return given()
-                .header("Authorization", "Bearer " + ScenarioContext.getContext("token"))
+                .header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .when()
                 .delete(URL + path)
                 .then().log().all()

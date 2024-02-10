@@ -11,13 +11,14 @@ import utils.WaitUtils;
 
 public abstract class BasePage {
 
+    Logger log = LoggerFactory.getLogger(BasePage.class);
+
     //TODO read about abstract classes
     //TODO read about PO pattern
 
     //TODO read about encapsulation
     protected WebDriver driver;
     //TODO what is the difference when logger is in every class or only in one class
-    protected static Logger logger;
 
     //TODO wtf Annotations?
     @FindBy(xpath = "//button[@id='submit']")
@@ -31,7 +32,6 @@ public abstract class BasePage {
 
     public BasePage() {
         this.driver = WebDriverFactory.getDriver();
-        logger = LoggerFactory.getLogger(this.getClass());
         PageFactory.initElements(driver, this);
     }
 
@@ -45,7 +45,7 @@ public abstract class BasePage {
 
     public void assertHeader(String headerText) {
         WaitUtils.waitForTextInElement(header, headerText, 10);
-        logger.info(headerText + " header is displaying");
+        log.info(headerText + " header is displaying");
     }
 
 }

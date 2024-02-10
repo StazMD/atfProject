@@ -1,22 +1,20 @@
 package stepDefinition.UI;
 
-import api.StepDefinitions;
+import api.ApiStepDef;
 import context.ScenarioContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import pages.SignUpPage;
 import utils.TestDataGeneratorUtils;
 
-import java.util.Map;
-
 public class SignUpTest {
 
     private final SignUpPage signUpPage;
-    private final StepDefinitions stepDefinitions;
+    private final ApiStepDef apiStepDef;
 
-    public SignUpTest(SignUpPage signUpPage, StepDefinitions stepDefinitions) {
+    public SignUpTest(SignUpPage signUpPage, ApiStepDef apiStepDef) {
         this.signUpPage = signUpPage;
-        this.stepDefinitions = stepDefinitions;
+        this.apiStepDef = apiStepDef;
     }
 
     @And("all fields are submitted with valid data")
@@ -28,26 +26,26 @@ public class SignUpTest {
     @And("new user was created")
     public void newUserWasAdded() {
         signUpPage.assertHeader("Contact List");
-        stepDefinitions.loginUser();
-        stepDefinitions.getUserProfile();
+        apiStepDef.loginUser();
+        apiStepDef.getUserProfile();
     }
 
     @And("{string} field submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
-        Map<String, Object> userDetails = ScenarioContext.getScenarioData();
+        ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
         signUpPage.generateValidUserData();
         switch (fieldName) {
             case "firstName":
-                userDetails.put("firstName", TestDataGeneratorUtils.getNegativeRandomFirstName());
+                scenarioContext.setContext("firstName", TestDataGeneratorUtils.getNegativeRandomFirstName());
                 break;
             case "lastName":
-                userDetails.put("lastName", TestDataGeneratorUtils.getNegativeRandomLastName());
+                scenarioContext.setContext("lastName", TestDataGeneratorUtils.getNegativeRandomLastName());
                 break;
             case "email":
-                userDetails.put("email", TestDataGeneratorUtils.getNegativeRandomEmail());
+                scenarioContext.setContext("email", TestDataGeneratorUtils.getNegativeRandomEmail());
                 break;
             case "password":
-                userDetails.put("password", TestDataGeneratorUtils.getNegativeRandomPassword());
+                scenarioContext.setContext("password", TestDataGeneratorUtils.getNegativeRandomPassword());
                 break;
         }
 
@@ -62,7 +60,7 @@ public class SignUpTest {
     @And("new user is not created")
     public void newUserIsNotCreated() {
         signUpPage.assertHeader("Add User");
-        stepDefinitions.userNotExisted();
+        apiStepDef.userNotExisted();
     }
 
 }

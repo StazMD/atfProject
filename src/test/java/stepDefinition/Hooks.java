@@ -15,7 +15,7 @@ public class Hooks {
     @Before("@API")
     public void setUpApi() {
         System.out.println("Setting Up API");
-        ScenarioContext.getScenarioData();
+//        ScenarioContext.INSTANCE.getContext("user");
     }
 
     @After("@UI")
@@ -27,6 +27,6 @@ public class Hooks {
     @After("@API")
     public void tearDownApi() {
         System.out.println("Tearing down API");
-        ScenarioContext.getScenarioData().clear();
+        ScenarioContext.INSTANCE.clearContext();
     }
 }

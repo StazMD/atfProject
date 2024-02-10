@@ -2,6 +2,7 @@ package utils;
 
 import com.github.javafaker.Faker;
 import context.ScenarioContext;
+import entity.User;
 
 import java.text.SimpleDateFormat;
 
@@ -75,10 +76,10 @@ public class TestDataGeneratorUtils {
     }
 
     //TODO user entity
+
+
     public void generateCredentials() {
-        ScenarioContext.setContext("firstName", getRandomFirstName());
-        ScenarioContext.setContext("lastName", getRandomLastName());
-        ScenarioContext.setContext("email", getRandomEmail());
-        ScenarioContext.setContext("password", getRandomPassword());
+        User user = new User(getRandomFirstName(), getRandomLastName(), getRandomEmail(), getRandomPassword());
+        ScenarioContext.INSTANCE.setContext("user", user);
     }
 }
