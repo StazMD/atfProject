@@ -12,7 +12,7 @@ public class RestTest {
 
     @When("new user is created")
     public void newUserIsCreated() {
-        new TestDataGeneratorUtils().generateCredentials();
+        new TestDataGeneratorUtils().generateUserCredentials();
         apiStepDef.createUser();
     }
 

@@ -2,6 +2,7 @@ package utils;
 
 import com.github.javafaker.Faker;
 import context.ScenarioContext;
+import entity.Contact;
 import entity.User;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +25,7 @@ public class TestDataGeneratorUtils {
     }
 
     public static String getRandomEmail() {
-        String randomPrefix = faker.lorem().characters(5); // Generate 5 random characters
-        return randomPrefix + faker.internet().safeEmailAddress();
+        return faker.internet().safeEmailAddress();
     }
 
     public static String getNegativeRandomFirstName() {
@@ -46,7 +46,7 @@ public class TestDataGeneratorUtils {
         return faker.internet().password(minLength, maxLength);
     }
 
-    public static String getRandomDate() {
+    public static String getRandomBirthdate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(faker.date().birthday());
     }
@@ -63,23 +63,47 @@ public class TestDataGeneratorUtils {
         return faker.address().cityName();
     }
 
-    public static String getState() {
+    public static String getRandomState() {
         return faker.address().state();
     }
 
-    public static String getPostalCode() {
+    public static String getRandomPostalCode() {
         return faker.address().zipCode();
     }
 
-    public static String getCountry() {
+    public static String getRandomCountry() {
         return faker.address().country();
     }
 
     //TODO user entity
 
 
-    public void generateCredentials() {
-        User user = new User(getRandomFirstName(), getRandomLastName(), getRandomEmail(), getRandomPassword());
+    public void generateUserCredentials() {
+        User user = new User(
+                getRandomFirstName(),
+                getRandomLastName(),
+                getRandomEmail(),
+                getRandomPassword()
+        );
         ScenarioContext.INSTANCE.setContext("user", user);
     }
+
+    public void generateContactCredentials() {
+        Contact contact = new Contact(
+                getRandomFirstName(),
+                getRandomLastName(),
+                getRandomBirthdate(),
+                getRandomEmail(),
+                getRandomPhoneNumber(),
+                getRandomStreetAddress(),
+                getRandomStreetAddress(),
+                getRandomCity(),
+                getRandomState(),
+                getRandomPostalCode(),
+                getRandomCountry()
+        );
+        ScenarioContext.INSTANCE.setContext("contact", contact);
+    }
+
+
 }

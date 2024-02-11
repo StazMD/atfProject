@@ -31,7 +31,7 @@ public class SignUpPage extends BasePage {
     private WebElement error;
 
     public void generateValidUserData() {
-        new TestDataGeneratorUtils().generateCredentials();
+        new TestDataGeneratorUtils().generateUserCredentials();
     }
 
     public void fillUserData() {

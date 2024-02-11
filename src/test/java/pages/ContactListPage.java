@@ -1,18 +1,24 @@
 package pages;
 
 import context.ScenarioContext;
+import entity.Contact;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utils.TestDataGeneratorUtils;
 import utils.WaitUtils;
 
 import java.util.List;
 
 public class ContactListPage extends BasePage {
 
+    private static final ScenarioContext scenarioContext;
     private String firstNameLastName;
+
+    //TODO why?
+    static {
+        scenarioContext = ScenarioContext.INSTANCE;
+    }
 
     @FindBy(xpath = "//*[@id='add-contact']")
     private WebElement addContactButton;
@@ -56,49 +62,35 @@ public class ContactListPage extends BasePage {
     @FindBy(className = "contactTableBodyRow")
     private List<WebElement> contactTableBodyRowElements;
 
+    public Contact extractContactData() {
+        try {
+            return (Contact) scenarioContext.getContext("contact");
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("message", ex);
+        }
+    }
+
     public void addNewContactPageWithButton() {
         WaitUtils.waitForElement(addContactButton, 10).click();
     }
 
     public void fillingContactFields() {
-        ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-        //TODO make a method in ScenarioContext to put MAP from here, same setContext method with different attributes(override method)
-        String firstNameData = TestDataGeneratorUtils.getRandomFirstName();
-        String lastNameData = TestDataGeneratorUtils.getRandomLastName();
-        String birthdateDate = TestDataGeneratorUtils.getRandomDate();
-        String emailData = TestDataGeneratorUtils.getRandomEmail();
-        String phoneData = TestDataGeneratorUtils.getRandomPhoneNumber();
-        String street1Data = TestDataGeneratorUtils.getRandomStreetAddress();
-        String street2Data = TestDataGeneratorUtils.getRandomStreetAddress();
-        String cityData = TestDataGeneratorUtils.getRandomCity();
-        String stateProvinceData = TestDataGeneratorUtils.getState();
-        String postalCodeData = TestDataGeneratorUtils.getPostalCode();
-        String countryData = TestDataGeneratorUtils.getCountry();
-        firstNameLastName = firstNameData + " " + lastNameData;
 
-        scenarioContext.setContext("contactFirstName", firstNameData);
-        scenarioContext.setContext("contactLastName", lastNameData);
-        scenarioContext.setContext("contactBirthday", birthdateDate);
-        scenarioContext.setContext("contactEmail", emailData);
-        scenarioContext.setContext("contactPhone", phoneData);
-        scenarioContext.setContext("contactStreet1", street1Data);
-        scenarioContext.setContext("contactStreet2", street2Data);
-        scenarioContext.setContext("contactCity", cityData);
-        scenarioContext.setContext("contactStateProvince", stateProvinceData);
-        scenarioContext.setContext("contactPostalCode", postalCodeData);
-        scenarioContext.setContext("contactCountry", countryData);
+        Contact contact = extractContactData();
+        firstNameLastName = contact.getFirstName() + " " + contact.getLastName();
 
-        WaitUtils.waitForElement(firstNameElement, 10).sendKeys(firstNameData);
-        WaitUtils.waitForElement(lastNameElement, 10).sendKeys(lastNameData);
-        WaitUtils.waitForElement(birthdateElement, 10).sendKeys(birthdateDate);
-        WaitUtils.waitForElement(emailElement, 10).sendKeys(emailData);
-        WaitUtils.waitForElement(phoneElement, 10).sendKeys(phoneData);
-        WaitUtils.waitForElement(street1Element, 10).sendKeys(street1Data);
-        WaitUtils.waitForElement(street2Element, 10).sendKeys(street2Data);
-        WaitUtils.waitForElement(cityElement, 10).sendKeys(cityData);
-        WaitUtils.waitForElement(stateProvinceElement, 10).sendKeys(stateProvinceData);
-        WaitUtils.waitForElement(postalCodeElement, 10).sendKeys(postalCodeData);
-        WaitUtils.waitForElement(countryElement, 10).sendKeys(countryData);
+        WaitUtils.waitForElement(firstNameElement, 10).sendKeys(contact.getFirstName());
+        WaitUtils.waitForElement(lastNameElement, 10).sendKeys(contact.getLastName());
+        WaitUtils.waitForElement(birthdateElement, 10).sendKeys(contact.getBirthdate());
+        WaitUtils.waitForElement(emailElement, 10).sendKeys(contact.getEmail());
+        WaitUtils.waitForElement(phoneElement, 10).sendKeys(contact.getPhone());
+        WaitUtils.waitForElement(street1Element, 10).sendKeys(contact.getStreet1());
+        WaitUtils.waitForElement(street2Element, 10).sendKeys(contact.getStreet2());
+        WaitUtils.waitForElement(cityElement, 10).sendKeys(contact.getCity());
+        WaitUtils.waitForElement(stateProvinceElement, 10).sendKeys(contact.getStateProvince());
+        WaitUtils.waitForElement(postalCodeElement, 10).sendKeys(contact.getPostalCode());
+        WaitUtils.waitForElement(countryElement, 10).sendKeys(contact.getCountry());
+
         clickSubmitButton();
     }
 

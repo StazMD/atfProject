@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.ContactDetailsPage;
 import pages.ContactListPage;
+import utils.TestDataGeneratorUtils;
 
 public class ContactsTest {
 
@@ -20,6 +21,7 @@ public class ContactsTest {
     public void contactWasCreated() {
         contactListPage.addNewContactPageWithButton();
         contactListPage.assertHeader("Add Contact");
+        new TestDataGeneratorUtils().generateContactCredentials();
         contactListPage.fillingContactFields();
     }
 
