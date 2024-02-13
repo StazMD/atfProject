@@ -20,10 +20,6 @@ public enum ScenarioContext {
         return contextData.get(key);
     }
 
-    public boolean isContains(String key) {
-        return contextData.containsKey(key);
-    }
-
     public void clearContext() {
         contextData.clear();
     }

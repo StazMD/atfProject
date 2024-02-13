@@ -5,7 +5,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.ContactDetailsPage;
 import pages.ContactListPage;
-import utils.TestDataGeneratorUtils;
 
 public class ContactsTest {
 
@@ -21,7 +20,6 @@ public class ContactsTest {
     public void contactWasCreated() {
         contactListPage.addNewContactPageWithButton();
         contactListPage.assertHeader("Add Contact");
-        new TestDataGeneratorUtils().generateContactCredentials();
         contactListPage.fillingContactFields();
     }
 
@@ -30,7 +28,7 @@ public class ContactsTest {
         contactListPage.verifyEntryIsPresent();
     }
 
-    @When("contact deleted")
+    @When("contact was deleted")
     public void contactDeleted() throws InterruptedException {
         contactListPage.getContactDetails();
         contactDetailsPage.deleteContactButton();

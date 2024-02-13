@@ -3,14 +3,11 @@ package api;
 import context.ScenarioContext;
 import entity.User;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import utils.TestDataGeneratorUtils;
 
 
 public class ApiStepDef {
 
-    Logger log = LoggerFactory.getLogger(ApiStepDef.class);
     private final Assertions assertions = new Assertions();
     private static final ScenarioContext scenarioContext;
 

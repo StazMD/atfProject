@@ -5,32 +5,32 @@ import config.WebDriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import pages.MainPage;
+import pages.HomePage;
 import pages.SignUpPage;
 
-public class MainPageTest {
+public class HomePageTest {
 
     protected WebDriver driver;
-    private final MainPage mainPage;
+    private final HomePage homePage;
     private final SignUpPage signUpPage;
 
     private final String browserUrl = PropertyReader.getProperty("url");
 
-    public MainPageTest(MainPage mainPage, SignUpPage signUpPage) {
+    public HomePageTest(HomePage homePage, SignUpPage signUpPage) {
         this.driver = WebDriverFactory.getDriver();
-        this.mainPage = mainPage;
+        this.homePage = homePage;
         this.signUpPage = signUpPage;
     }
 
-    @Given("main page is opened")
+    @Given("home page is opened")
     public void mainPageIsOpened() {
         driver.get(browserUrl);
-        mainPage.assertHeader("Contact List App");
+        homePage.assertHeader("Contact List App");
     }
 
     @When("adding user page opening")
     public void openAddUserPage() {
-        mainPage.clickSignUpButton();
+        homePage.clickSignUpButton();
         signUpPage.assertHeader("Add User");
     }
 

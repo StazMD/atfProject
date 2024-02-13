@@ -1,4 +1,4 @@
-@API
+@API @User
 Feature: Users from API endpoints
 
   Scenario: Creating, updating and deleting user

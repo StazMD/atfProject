@@ -4,29 +4,37 @@ import config.WebDriverFactory;
 import context.ScenarioContext;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import utils.TestDataGeneratorUtils;
+
 
 public class Hooks {
+
+    Logger log = LoggerFactory.getLogger(Hooks.class);
+
+    @Before()
+    public void setUpNewUserCredentials() {
+        log.info("Generate credentials");
+        new TestDataGeneratorUtils().generateUserCredentials();
+        new TestDataGeneratorUtils().generateContactCredentials();
+    }
+
     @Before("@UI")
-    public void setUp() {
-        System.out.println("Setting Up UI");
+    public void setUpWebDriver() {
+        log.info("Setup webDriver");
         WebDriverFactory.setupDriver();
     }
 
-    @Before("@API")
-    public void setUpApi() {
-        System.out.println("Setting Up API");
-//        ScenarioContext.INSTANCE.getContext("user");
-    }
-
     @After("@UI")
-    public void tearDown() {
-        System.out.println("Tearing down UI");
+    public void tearDownWebDriver() {
+        log.info("Tearing down webDriver");
         WebDriverFactory.quitDriver();
     }
 
-    @After("@API")
-    public void tearDownApi() {
-        System.out.println("Tearing down API");
+    @After()
+    public void tearDownContext() {
+        log.info("Clearing context");
         ScenarioContext.INSTANCE.clearContext();
     }
 }

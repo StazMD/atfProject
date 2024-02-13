@@ -75,9 +75,6 @@ public class TestDataGeneratorUtils {
         return faker.address().country();
     }
 
-    //TODO user entity
-
-
     public void generateUserCredentials() {
         User user = new User(
                 getRandomFirstName(),
@@ -104,6 +101,4 @@ public class TestDataGeneratorUtils {
         );
         ScenarioContext.INSTANCE.setContext("contact", contact);
     }
-
-
 }

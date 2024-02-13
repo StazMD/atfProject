@@ -1,6 +1,5 @@
 package pages;
 
-import context.ScenarioContext;
 import entity.Contact;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -12,14 +11,9 @@ import java.util.List;
 
 public class ContactListPage extends BasePage {
 
-    private static final ScenarioContext scenarioContext;
     private String firstNameLastName;
 
     //TODO why?
-    static {
-        scenarioContext = ScenarioContext.INSTANCE;
-    }
-
     @FindBy(xpath = "//*[@id='add-contact']")
     private WebElement addContactButton;
 
@@ -62,20 +56,11 @@ public class ContactListPage extends BasePage {
     @FindBy(className = "contactTableBodyRow")
     private List<WebElement> contactTableBodyRowElements;
 
-    public Contact extractContactData() {
-        try {
-            return (Contact) scenarioContext.getContext("contact");
-        } catch (RuntimeException ex) {
-            throw new RuntimeException("message", ex);
-        }
-    }
-
     public void addNewContactPageWithButton() {
         WaitUtils.waitForElement(addContactButton, 10).click();
     }
 
     public void fillingContactFields() {
-
         Contact contact = extractContactData();
         firstNameLastName = contact.getFirstName() + " " + contact.getLastName();
 

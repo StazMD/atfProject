@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyReader {
-    //TODO find a way to overwrite application url path, to pickup different config files
+    //TODO find a way to overwrite application url path, to pickup different config files (profiles)
     private static final String APPLICATION_FILE_PATH = "src/test/resources/application.properties";
     private static Properties properties;
 

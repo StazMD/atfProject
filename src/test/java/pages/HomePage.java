@@ -1,13 +1,12 @@
 package pages;
 
-import config.PropertyReader;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.WaitUtils;
 
-public class MainPage extends BasePage {
+public class HomePage extends BasePage {
 
-    String browserUrl = PropertyReader.getProperty("url");
+//    String browserUrl = PropertyReader.getProperty("url");
 
     @FindBy(xpath = "/html/body/h1")
     private WebElement header;
@@ -21,7 +20,7 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//*[@id='signup']")
     private WebElement signUpButton;
 
-    public MainPage() {
+    public HomePage() {
         super();
     }
 

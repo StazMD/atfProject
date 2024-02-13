@@ -1,20 +1,20 @@
-@UI
+@UI @Contact
 Feature: Contacts Feature
 
   Background: Opening main page
-    Given main page is opened
+    Given home page is opened
     And valid credentials were entered
       | email             | password         |
       | testuser@mail.com | TestUserTestUser |
 
-  Scenario: Add new contact
+  Scenario: Creating contact
     When contact was created
     Then contact displaying in contact list
 
-  Scenario: Delete contact
+  Scenario: Deleting contact
     Given contact was created
     And contact displaying in contact list
-    When contact deleted
+    When contact was deleted
     Then contact is no longer in the list of contacts
 
 

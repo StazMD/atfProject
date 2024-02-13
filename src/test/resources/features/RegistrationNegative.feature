@@ -2,7 +2,7 @@
 Feature: Negative Registration Feature
 
   Scenario Outline: Register user using invalid data
-    Given main page is opened
+    Given home page is opened
     When adding user page opening
     And '<fieldName>' field submitted with invalid data
     Then error is displaying

@@ -2,6 +2,7 @@ package stepDefinition.UI;
 
 import api.ApiStepDef;
 import context.ScenarioContext;
+import entity.User;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import pages.SignUpPage;
@@ -12,14 +13,23 @@ public class SignUpTest {
     private final SignUpPage signUpPage;
     private final ApiStepDef apiStepDef;
 
+    ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
+
     public SignUpTest(SignUpPage signUpPage, ApiStepDef apiStepDef) {
         this.signUpPage = signUpPage;
         this.apiStepDef = apiStepDef;
     }
 
+    public User extractUserData() {
+        try {
+            return (User) scenarioContext.getContext("user");
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("message", ex);
+        }
+    }
+
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
-        signUpPage.generateValidUserData();
         signUpPage.fillUserData();
     }
 
@@ -32,20 +42,19 @@ public class SignUpTest {
 
     @And("{string} field submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
-        ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-        signUpPage.generateValidUserData();
+        User user = extractUserData();
         switch (fieldName) {
             case "firstName":
-                scenarioContext.setContext("firstName", TestDataGeneratorUtils.getNegativeRandomFirstName());
+                user.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
                 break;
             case "lastName":
-                scenarioContext.setContext("lastName", TestDataGeneratorUtils.getNegativeRandomLastName());
+                user.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
                 break;
             case "email":
-                scenarioContext.setContext("email", TestDataGeneratorUtils.getNegativeRandomEmail());
+                user.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
                 break;
             case "password":
-                scenarioContext.setContext("password", TestDataGeneratorUtils.getNegativeRandomPassword());
+                user.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
                 break;
         }
 
