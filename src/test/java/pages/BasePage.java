@@ -2,7 +2,6 @@ package pages;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import entity.Contact;
 import entity.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,14 +38,6 @@ public abstract class BasePage {
     public User extractUserData() {
         try {
             return (User) scenarioContext.getContext("user");
-        } catch (RuntimeException ex) {
-            throw new RuntimeException("message", ex);
-        }
-    }
-
-    public Contact extractContactData() {
-        try {
-            return (Contact) scenarioContext.getContext("contact");
         } catch (RuntimeException ex) {
             throw new RuntimeException("message", ex);
         }

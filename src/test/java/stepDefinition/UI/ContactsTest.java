@@ -1,5 +1,7 @@
 package stepDefinition.UI;
 
+import context.ScenarioContext;
+import entity.Contact;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -10,6 +12,15 @@ public class ContactsTest {
 
     private final ContactListPage contactListPage;
     private final ContactDetailsPage contactDetailsPage;
+    private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
+
+    public Contact extractContactData() {
+        try {
+            return (Contact) scenarioContext.getContext("contact");
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("message", ex);
+        }
+    }
 
     public ContactsTest(ContactListPage contactListPage, ContactDetailsPage contactDetailsPage) {
         this.contactListPage = contactListPage;
@@ -18,9 +29,13 @@ public class ContactsTest {
 
     @And("contact was created")
     public void contactWasCreated() {
-        contactListPage.addNewContactPageWithButton();
+        contactListPage.addNewContactButton();
         contactListPage.assertHeader("Add Contact");
-        contactListPage.fillingContactFields();
+        Contact contact = extractContactData();
+        String firstNameLastName = contact.getFirstName() + " " + contact.getLastName();
+        contactListPage.contactFields(contact);
+//        contactListPage.contactFields(contact.getFirstName(), contact.getLastName(), contact.getBirthdate(), contact.getEmail(), contact.getPhone(), contact.getStreet1(), contact.getStreet2(), contact.getCity(), contact.getStateProvince(), contact.getPostalCode(), contact.getCountry());
+//        contactListPage.contactFields(scenarioContext.getContext("contact"));
     }
 
     @Then("contact displaying in contact list")

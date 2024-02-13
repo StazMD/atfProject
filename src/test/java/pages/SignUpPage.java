@@ -1,48 +1,36 @@
 package pages;
 
-import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.WaitUtils;
 
 public class SignUpPage extends BasePage {
-
-    public SignUpPage() {
-        super();
-    }
-
     @FindBy(id = "firstName")
-    private WebElement firstName;
+    private WebElement firstNameElement;
 
     @FindBy(id = "lastName")
-    private WebElement lastName;
+    private WebElement lastNameElement;
 
     @FindBy(id = "email")
-    private WebElement email;
+    private WebElement emailElement;
 
     @FindBy(id = "password")
-    private WebElement password;
+    private WebElement passwordElement;
 
     @FindBy(id = "error")
-    private WebElement error;
+    private WebElement errorElement;
 
-    public void fillUserData() {
-        WaitUtils.waitForElement(firstName, 10);
-        WaitUtils.waitForElement(lastName, 10);
-        WaitUtils.waitForElement(email, 10);
-        WaitUtils.waitForElement(password, 10);
+    public void userFields(String firstName, String lastName, String email, String password) {
+        WaitUtils.waitForElement(firstNameElement, 10).sendKeys(firstName);
+        WaitUtils.waitForElement(lastNameElement, 10).sendKeys(lastName);
+        WaitUtils.waitForElement(emailElement, 10).sendKeys(email);
+        WaitUtils.waitForElement(passwordElement, 10).sendKeys(password);
 
         clickSubmitButton();
     }
 
-    public void errorAlert() {
-        WaitUtils.waitForElement(error, 10);
-        String actualErrorMessage = error.getText();
-        log.info("Verifying that error message {} is presented", actualErrorMessage);
-        String expectedPattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|" +
-                "User validation failed: email: Email is invalid|" +
-                "User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";
-        Assertions.assertThat(actualErrorMessage).matches(expectedPattern);
+    public String errorText() {
+        return WaitUtils.waitForElement(errorElement, 10).getText();
     }
 
 }

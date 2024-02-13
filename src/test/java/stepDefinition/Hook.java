@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import utils.TestDataGeneratorUtils;
 
 
-public class Hooks {
+public class Hook {
 
-    Logger log = LoggerFactory.getLogger(Hooks.class);
+    Logger log = LoggerFactory.getLogger(Hook.class);
 
     @Before()
-    public void setUpNewUserCredentials() {
+    public void setUpCredentials() {
         log.info("Generate credentials");
         new TestDataGeneratorUtils().generateUserCredentials();
         new TestDataGeneratorUtils().generateContactCredentials();
@@ -24,6 +24,7 @@ public class Hooks {
     public void setUpWebDriver() {
         log.info("Setup webDriver");
         WebDriverFactory.setupDriver();
+//        WebDriverFactory.getDriver().manage().window().maximize();
     }
 
     @After("@UI")

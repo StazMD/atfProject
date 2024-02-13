@@ -6,31 +6,22 @@ import utils.WaitUtils;
 
 public class HomePage extends BasePage {
 
-//    String browserUrl = PropertyReader.getProperty("url");
-
-    @FindBy(xpath = "/html/body/h1")
-    private WebElement header;
-
     @FindBy(xpath = "//*[@id='email']")
-    private WebElement email;
+    private WebElement emailElement;
 
     @FindBy(xpath = "//*[@id='password']")
-    private WebElement password;
+    private WebElement passwordElement;
 
     @FindBy(xpath = "//*[@id='signup']")
-    private WebElement signUpButton;
-
-    public HomePage() {
-        super();
-    }
+    private WebElement signUpButtonElement;
 
     public void loginUser(String userEmail, String userPassword) {
-        WaitUtils.waitForElement(email, 10).sendKeys(userEmail);
-        WaitUtils.waitForElement(password, 10).sendKeys(userPassword);
+        WaitUtils.waitForElement(emailElement, 10).sendKeys(userEmail);
+        WaitUtils.waitForElement(passwordElement, 10).sendKeys(userPassword);
         clickSubmitButton();
     }
 
     public void clickSignUpButton() {
-        WaitUtils.waitForElement(signUpButton, 10).click();
+        WaitUtils.waitForElement(signUpButtonElement, 10).click();
     }
 }

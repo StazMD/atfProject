@@ -45,8 +45,8 @@ public class WebDriverFactory {
         chromeOptions.addArguments("--disable-popup-blocking");
         //TODO chromeoptions for headless
         if (headless) {
-            chromeOptions.addArguments("--headless");
-            log.info("Chrome is set to run in headless mode");
+            chromeOptions.addArguments("--headless=new");
+            log.warn("Chrome is set to run in headless mode");
         }
         return new ChromeDriver(chromeOptions);
     }
@@ -57,7 +57,7 @@ public class WebDriverFactory {
 
         if (headless) {
             firefoxOptions.addArguments("--headless");
-            log.info("Firefox is set to run in headless mode");
+            log.warn("Firefox is set to run in headless mode");
         }
         return new FirefoxDriver(firefoxOptions);
     }

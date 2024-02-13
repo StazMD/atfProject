@@ -56,14 +56,12 @@ public class ContactListPage extends BasePage {
     @FindBy(className = "contactTableBodyRow")
     private List<WebElement> contactTableBodyRowElements;
 
-    public void addNewContactPageWithButton() {
+    public void addNewContactButton() {
         WaitUtils.waitForElement(addContactButton, 10).click();
     }
 
-    public void fillingContactFields() {
-        Contact contact = extractContactData();
-        firstNameLastName = contact.getFirstName() + " " + contact.getLastName();
-
+    //    public void contactFields(String firstName, String lastName, String birthdate, String email, String phone, String street1, String street2, String city, String stateProvince, String postalCode, String country) {
+    public void contactFields(Contact contact) {
         WaitUtils.waitForElement(firstNameElement, 10).sendKeys(contact.getFirstName());
         WaitUtils.waitForElement(lastNameElement, 10).sendKeys(contact.getLastName());
         WaitUtils.waitForElement(birthdateElement, 10).sendKeys(contact.getBirthdate());

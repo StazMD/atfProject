@@ -1,4 +1,4 @@
-@UI @User
+@UI
 Feature: Positive Registration Feature
 
   Scenario: Register user using valid data
