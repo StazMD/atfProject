@@ -14,10 +14,9 @@ public class ContactDetailsPage extends BasePage {
         super();
     }
 
-    public void deleteContactButton() {
-        WaitUtils.waitForElement(deleteContactButton, 10).click();
+    public void clickDeleteContactButton() {
+        WaitUtils.waitForElement(deleteContactButton).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
     }
-
 }

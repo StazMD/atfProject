@@ -21,16 +21,16 @@ public class SignUpPage extends BasePage {
     private WebElement errorElement;
 
     public void userFields(String firstName, String lastName, String email, String password) {
-        WaitUtils.waitForElement(firstNameElement, 10).sendKeys(firstName);
-        WaitUtils.waitForElement(lastNameElement, 10).sendKeys(lastName);
-        WaitUtils.waitForElement(emailElement, 10).sendKeys(email);
-        WaitUtils.waitForElement(passwordElement, 10).sendKeys(password);
+        WaitUtils.waitForElement(firstNameElement).sendKeys(firstName);
+        WaitUtils.waitForElement(lastNameElement).sendKeys(lastName);
+        WaitUtils.waitForElement(emailElement).sendKeys(email);
+        WaitUtils.waitForElement(passwordElement).sendKeys(password);
 
-        clickSubmitButton();
+        submitButton();
     }
 
     public String errorText() {
-        return WaitUtils.waitForElement(errorElement, 10).getText();
+        return WaitUtils.waitForElement(errorElement).getText();
     }
 
 }

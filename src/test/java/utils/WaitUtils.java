@@ -1,5 +1,6 @@
 package utils;
 
+import config.PropertyReader;
 import config.WebDriverFactory;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,15 +14,15 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class WaitUtils {
 
+    private static final long timeout = Long.parseLong(PropertyReader.getProperty("element.wait.timeout.seconds"));
+
     //TODO reverse waiter?
-    public static WebElement waitForElement(WebElement element, long timeoutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(WebDriverFactory.getDriver(), Duration.ofSeconds(timeoutInSeconds));
+    public static WebElement waitForElement(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(WebDriverFactory.getDriver(), Duration.ofSeconds(timeout));
         return wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
     }
 
-    public static void waitForTextInElement(WebElement element, String expectedText, long timeoutInSeconds) {
-        await().atMost(timeoutInSeconds, SECONDS).until(element::getText, equalTo(expectedText));
+    public static void waitForTextInElement(WebElement element, String expectedText) {
+        await().atMost(timeout, SECONDS).until(element::getText, equalTo(expectedText));
     }
-
-
 }

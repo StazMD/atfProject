@@ -16,12 +16,14 @@ public class LogInTest {
     }
 
     @When("valid credentials were entered")
-    public void validCredentialsWereEntered(DataTable credentials) {
-        List<List<String>> data = credentials.asLists(String.class);
-        String email = data.get(1).get(0);
-        String password = data.get(1).get(1);
-        homePage.loginUser(email, password);
-        homePage.clickSubmitButton();
+    public void validCredentialsWereEntered(DataTable dataTable) {
+        List<List<String>> credentials = dataTable.asLists(String.class);
+        for (List<String> credential : credentials) {
+            String email = credential.get(0);
+            String password = credential.get(1);
+            homePage.loginUser(email, password);
+            homePage.submitButton();
+        }
     }
 
     @Then("user was successfully logged in")

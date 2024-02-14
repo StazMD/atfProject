@@ -2,7 +2,6 @@ package pages;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import entity.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,20 +34,12 @@ public abstract class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public User extractUserData() {
-        try {
-            return (User) scenarioContext.getContext("user");
-        } catch (RuntimeException ex) {
-            throw new RuntimeException("message", ex);
-        }
-    }
-
-    public void clickSubmitButton() {
-        WaitUtils.waitForElement(submitButton, 10).click();
+    public void submitButton() {
+        WaitUtils.waitForElement(submitButton).click();
     }
 
     public void assertHeader(String headerText) {
-        WaitUtils.waitForTextInElement(header, headerText, 10);
+        WaitUtils.waitForTextInElement(header, headerText);
         log.info(headerText + " header is displaying");
     }
 

@@ -16,12 +16,12 @@ public class HomePage extends BasePage {
     private WebElement signUpButtonElement;
 
     public void loginUser(String userEmail, String userPassword) {
-        WaitUtils.waitForElement(emailElement, 10).sendKeys(userEmail);
-        WaitUtils.waitForElement(passwordElement, 10).sendKeys(userPassword);
-        clickSubmitButton();
+        WaitUtils.waitForElement(emailElement).sendKeys(userEmail);
+        WaitUtils.waitForElement(passwordElement).sendKeys(userPassword);
+        submitButton();
     }
 
     public void clickSignUpButton() {
-        WaitUtils.waitForElement(signUpButtonElement, 10).click();
+        WaitUtils.waitForElement(signUpButtonElement).click();
     }
 }

@@ -18,8 +18,8 @@ public class WebDriverFactory {
     public static synchronized WebDriver setupDriver() {
         if (driver == null) {
             log.info("Opening WebDriver");
-            String browserType = PropertyReader.getProperty("browser");
-            String headlessProperty = PropertyReader.getProperty("headless");
+            String browserType = PropertyReader.getProperty("browser.type");
+            String headlessProperty = PropertyReader.getProperty("browser.headless");
             boolean headless = Boolean.parseBoolean(headlessProperty);
 
             switch (browserType) {
@@ -33,7 +33,7 @@ public class WebDriverFactory {
                     //TODO define exception
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
-            driver.manage().window().maximize();
+            //            driver.manage().window().maximize();
         }
         return driver;
     }

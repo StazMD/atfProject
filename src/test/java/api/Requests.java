@@ -10,7 +10,7 @@ import static io.restassured.RestAssured.given;
 public class Requests {
 
     private final static ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-    private static final String URL = PropertyReader.getProperty("url");
+    private static final String URL = PropertyReader.getProperty("browser.homepage-url");
 
     public static Response postRequest(String path, String requestBody, int statusCode) {
         Response response = given()

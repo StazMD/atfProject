@@ -2,7 +2,6 @@ package pages;
 
 import entity.Contact;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.WaitUtils;
@@ -10,8 +9,6 @@ import utils.WaitUtils;
 import java.util.List;
 
 public class ContactListPage extends BasePage {
-
-    private String firstNameLastName;
 
     //TODO why?
     @FindBy(xpath = "//*[@id='add-contact']")
@@ -51,65 +48,38 @@ public class ContactListPage extends BasePage {
     private WebElement countryElement;
 
     @FindBy(xpath = "//*[@id='myTable']")
-    private WebElement contactsTable;
+    public WebElement contactsTableElement;
 
     @FindBy(className = "contactTableBodyRow")
     private List<WebElement> contactTableBodyRowElements;
 
     public void addNewContactButton() {
-        WaitUtils.waitForElement(addContactButton, 10).click();
+        WaitUtils.waitForElement(addContactButton).click();
     }
 
-    //    public void contactFields(String firstName, String lastName, String birthdate, String email, String phone, String street1, String street2, String city, String stateProvince, String postalCode, String country) {
     public void contactFields(Contact contact) {
-        WaitUtils.waitForElement(firstNameElement, 10).sendKeys(contact.getFirstName());
-        WaitUtils.waitForElement(lastNameElement, 10).sendKeys(contact.getLastName());
-        WaitUtils.waitForElement(birthdateElement, 10).sendKeys(contact.getBirthdate());
-        WaitUtils.waitForElement(emailElement, 10).sendKeys(contact.getEmail());
-        WaitUtils.waitForElement(phoneElement, 10).sendKeys(contact.getPhone());
-        WaitUtils.waitForElement(street1Element, 10).sendKeys(contact.getStreet1());
-        WaitUtils.waitForElement(street2Element, 10).sendKeys(contact.getStreet2());
-        WaitUtils.waitForElement(cityElement, 10).sendKeys(contact.getCity());
-        WaitUtils.waitForElement(stateProvinceElement, 10).sendKeys(contact.getStateProvince());
-        WaitUtils.waitForElement(postalCodeElement, 10).sendKeys(contact.getPostalCode());
-        WaitUtils.waitForElement(countryElement, 10).sendKeys(contact.getCountry());
+        WaitUtils.waitForElement(firstNameElement).sendKeys(contact.getFirstName());
+        WaitUtils.waitForElement(lastNameElement).sendKeys(contact.getLastName());
+        WaitUtils.waitForElement(birthdateElement).sendKeys(contact.getBirthdate());
+        WaitUtils.waitForElement(emailElement).sendKeys(contact.getEmail());
+        WaitUtils.waitForElement(phoneElement).sendKeys(contact.getPhone());
+        WaitUtils.waitForElement(street1Element).sendKeys(contact.getStreet1());
+        WaitUtils.waitForElement(street2Element).sendKeys(contact.getStreet2());
+        WaitUtils.waitForElement(cityElement).sendKeys(contact.getCity());
+        WaitUtils.waitForElement(stateProvinceElement).sendKeys(contact.getStateProvince());
+        WaitUtils.waitForElement(postalCodeElement).sendKeys(contact.getPostalCode());
+        WaitUtils.waitForElement(countryElement).sendKeys(contact.getCountry());
 
-        clickSubmitButton();
+        submitButton();
     }
 
-    public WebElement verifyEntryIsPresent() {
-        WaitUtils.waitForElement(contactsTable, 10);
-        for (WebElement contactsTable : contactTableBodyRowElements) {
-            List<WebElement> cells = contactsTable.findElements(By.tagName("td"));
-            for (WebElement cell : cells) {
-                if (cell.getText().equals(firstNameLastName)) {
-                    log.info("Entry found: " + firstNameLastName);
-                    return cell;
-                }
-            }
-        }
-        throw new NoSuchElementException("Entry with name " + firstNameLastName + " not found.");
+    public void getContactFromTable(String firstNameLastName) {
+        WebElement singleContact = driver.findElement(By.xpath("//td[contains(text(), '" + firstNameLastName + "')]"));
+        WaitUtils.waitForElement(singleContact).click();
     }
 
-    public void verifyEntryIsAbsent() {
-        WaitUtils.waitForElement(contactsTable, 10);
-        for (WebElement contactsTable : contactTableBodyRowElements) {
-            List<WebElement> cells = contactsTable.findElements(By.tagName("td"));
-            for (WebElement cell : cells) {
-                if (cell.getText().equals(firstNameLastName)) {
-                    log.info("Entry still present: " + firstNameLastName);
-                }
-            }
-        }
-        log.info("Entry absent as expected: " + firstNameLastName);
-    }
-
-    public void getContactDetails() {
-        WebElement contact = verifyEntryIsPresent();
-        if (contact != null) {
-            contact.click();
-        } else {
-            log.info("Entry to open was not found.");
-        }
+    public List<WebElement> getRowsFromTable() {
+        WaitUtils.waitForElement(contactsTableElement);
+        return contactTableBodyRowElements;
     }
 }

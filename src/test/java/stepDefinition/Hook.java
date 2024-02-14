@@ -1,5 +1,6 @@
 package stepDefinition;
 
+import config.PropertyReader;
 import config.WebDriverFactory;
 import context.ScenarioContext;
 import io.cucumber.java.After;
@@ -11,7 +12,8 @@ import utils.TestDataGeneratorUtils;
 
 public class Hook {
 
-    Logger log = LoggerFactory.getLogger(Hook.class);
+    private final String homePageUrl = PropertyReader.getProperty("browser.homepage-url");
+    private final Logger log = LoggerFactory.getLogger(Hook.class);
 
     @Before()
     public void setUpCredentials() {
@@ -23,8 +25,9 @@ public class Hook {
     @Before("@UI")
     public void setUpWebDriver() {
         log.info("Setup webDriver");
-        WebDriverFactory.setupDriver();
-//        WebDriverFactory.getDriver().manage().window().maximize();
+        WebDriverFactory.getDriver();
+        WebDriverFactory.getDriver().manage().window().maximize();
+        WebDriverFactory.getDriver().get(homePageUrl);
     }
 
     @After("@UI")

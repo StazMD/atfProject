@@ -12,6 +12,7 @@ public class Contact {
     private String stateProvince;
     private String postalCode;
     private String country;
+    private String firstNameLastName;
 
     public Contact() {
     }
@@ -72,6 +73,10 @@ public class Contact {
 
     public String getCountry() {
         return country;
+    }
+
+    public String getFirstNameLastName() {
+        return firstName + " " + lastName;
     }
 
     public void setFirstName(String firstName) {
