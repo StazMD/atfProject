@@ -1,19 +1,19 @@
 package config;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class WebDriverFactory {
 
     //TODO volatile wtf?
     private volatile static WebDriver driver = null;
-    private static final Logger log = LoggerFactory.getLogger(WebDriverFactory.class);
+    private static final Logger log = LogManager.getLogger(WebDriverFactory.class);
 
     public static synchronized WebDriver setupDriver() {
         if (driver == null) {
@@ -31,9 +31,12 @@ public class WebDriverFactory {
                     break;
                 default:
                     //TODO define exception
+                    log.error("Unsupported browser type: {}", browserType);
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
-            //            driver.manage().window().maximize();
+            log.info("WebDriver for {} has been successfully set up", browserType);
+        } else {
+            log.info("Reusing existing WebDriver instance");
         }
         return driver;
     }
@@ -43,11 +46,11 @@ public class WebDriverFactory {
         ChromeOptions chromeOptions = new ChromeOptions();
 
         chromeOptions.addArguments("--disable-popup-blocking");
-        //TODO chromeoptions for headless
         if (headless) {
             chromeOptions.addArguments("--headless=new");
-            log.warn("Chrome is set to run in headless mode");
+            log.info("Chrome is set to run in headless mode");
         }
+        log.info("Setting ChromeDriver with options: {}", chromeOptions);
         return new ChromeDriver(chromeOptions);
     }
 
@@ -57,8 +60,9 @@ public class WebDriverFactory {
 
         if (headless) {
             firefoxOptions.addArguments("--headless");
-            log.warn("Firefox is set to run in headless mode");
+            log.info("Firefox is set to run in headless mode");
         }
+        log.info("Setting FirefoxDriver with options: {}", firefoxOptions);
         return new FirefoxDriver(firefoxOptions);
     }
 
@@ -68,9 +72,11 @@ public class WebDriverFactory {
 
     public static void quitDriver() {
         if (driver != null) {
-            log.info("Quitting WebDriver");
+            log.info("Quitting WebDriver and shutting down");
             driver.quit();
             driver = null;
+        } else {
+            log.info("No WebDriver instance to quit");
         }
     }
 }

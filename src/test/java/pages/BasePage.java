@@ -1,21 +1,22 @@
 package pages;
 
+import api.Assertions;
 import config.WebDriverFactory;
 import context.ScenarioContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import utils.WaitUtils;
 
 public abstract class BasePage {
 
-    Logger log = LoggerFactory.getLogger(BasePage.class);
+    private static final Logger log = LogManager.getLogger(Assertions.class);
 
     private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-    protected final WebDriver driver = WebDriverFactory.getDriver();
+    protected WebDriver driver;
     //TODO what is the difference when logger is in every class or only in one class
 
     //TODO wtf Annotations?
@@ -31,6 +32,7 @@ public abstract class BasePage {
     public BasePage() {
         //TODO read about abstract classes
         //TODO read about PO pattern
+        this.driver = WebDriverFactory.getDriver();
         PageFactory.initElements(driver, this);
     }
 

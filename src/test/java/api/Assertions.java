@@ -4,13 +4,13 @@ import context.ScenarioContext;
 import entity.User;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Assertions {
-    private static final Logger log = LoggerFactory.getLogger(Assertions.class);
+    private static final Logger log = LogManager.getLogger(Assertions.class);
 
     public User extractUserData() {
         try {
