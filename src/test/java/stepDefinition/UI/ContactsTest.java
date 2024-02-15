@@ -51,9 +51,7 @@ public class ContactsTest {
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contact.getFirstNameLastName();
-        List<WebElement> filteredRows = contactsTableRows.stream()
-                .filter(row -> row.getText().contains(searchText))
-                .collect(Collectors.toList());
+        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).collect(Collectors.toList());
 
         assertThat(filteredRows).isNotEmpty();
     }
@@ -62,7 +60,7 @@ public class ContactsTest {
     public void contactDeleted() {
         Contact contact = extractContactData();
         contactListPage.getContactFromTable(contact.getFirstNameLastName());
-        contactDetailsPage.clickDeleteContactButton();
+        contactDetailsPage.deleteContactAction();
     }
 
     @Then("contact is no longer in the list of contacts")
@@ -71,9 +69,7 @@ public class ContactsTest {
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contact.getFirstNameLastName();
-        List<WebElement> filteredRows = contactsTableRows.stream()
-                .filter(row -> row.getText().contains(searchText))
-                .collect(Collectors.toList());
+        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).collect(Collectors.toList());
 
         assertThat(filteredRows).isEmpty();
     }

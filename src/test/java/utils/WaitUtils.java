@@ -19,7 +19,7 @@ public class WaitUtils {
     //TODO reverse waiter?
     public static WebElement waitForElement(WebElement element) {
         WebDriverWait wait = new WebDriverWait(WebDriverFactory.getDriver(), Duration.ofSeconds(timeout));
-        return wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public static void waitForTextInElement(WebElement element, String expectedText) {

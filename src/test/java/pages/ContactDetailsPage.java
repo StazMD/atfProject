@@ -14,7 +14,7 @@ public class ContactDetailsPage extends BasePage {
         super();
     }
 
-    public void clickDeleteContactButton() {
+    public void deleteContactAction() {
         WaitUtils.waitForElement(deleteContactButton).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();

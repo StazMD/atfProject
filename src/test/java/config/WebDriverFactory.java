@@ -30,13 +30,14 @@ public class WebDriverFactory {
                     driver = setupFirefoxDriver(headless);
                     break;
                 default:
-                    //TODO define exception
                     log.error("Unsupported browser type: {}", browserType);
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
+            log.debug("Browser window maximized");
+            driver.manage().window().maximize();
             log.info("WebDriver for {} has been successfully set up", browserType);
         } else {
-            log.info("Reusing existing WebDriver instance");
+            log.debug("Reusing existing WebDriver instance");
         }
         return driver;
     }

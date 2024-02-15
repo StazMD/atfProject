@@ -1,6 +1,5 @@
 package stepDefinition;
 
-import config.PropertyReader;
 import config.WebDriverFactory;
 import context.ScenarioContext;
 import io.cucumber.java.After;
@@ -11,35 +10,23 @@ import org.openqa.selenium.WebDriver;
 import utils.TestDataGeneratorUtils;
 
 
-public class Hook {
+public class Hooks {
 
     protected WebDriver driver;
 
-    public Hook() {
+    public Hooks() {
         this.driver = WebDriverFactory.getDriver();
     }
 
-    private final String homePageUrl = PropertyReader.getProperty("browser.homepage-url");
-    private final Logger log = LogManager.getLogger(Hook.class);
+    private final Logger log = LogManager.getLogger(Hooks.class);
 
     @Before()
-    public void setUpCredentials() {
+    public void setUp() {
         log.info("Starting to generate user and contact credentials");
         new TestDataGeneratorUtils().generateUserCredentials();
-        log.debug("User credentials generated successfully");
+        log.info("User credentials generated successfully");
         new TestDataGeneratorUtils().generateContactCredentials();
-        log.debug("Contact credentials generated successfully");
-    }
-
-    @Before("@UI")
-    public void setUpWebDriver() {
-//        log.info("Initializing WebDriver");
-//        WebDriverFactory.getDriver();
-//        log.debug("WebDriver initialized");
-        driver.manage().window().maximize();
-        log.debug("Browser window maximized");
-        driver.get(homePageUrl);
-        log.info("Navigated to the home page URL: {}", homePageUrl);
+        log.info("Contact credentials generated successfully");
     }
 
     @After("@UI")
@@ -52,6 +39,6 @@ public class Hook {
     public void tearDownContext() {
         log.info("Starting to clear test context");
         ScenarioContext.INSTANCE.clearContext();
-        log.debug("Test context cleared successfully");
+        log.info("Test context cleared successfully");
     }
 }
