@@ -36,7 +36,6 @@ public class ContactsTest {
         }
     }
 
-
     @And("contact was created")
     public void contactWasCreated() {
         contactListPage.addNewContactButton();

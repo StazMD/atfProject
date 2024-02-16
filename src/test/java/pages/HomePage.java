@@ -6,13 +6,13 @@ import utils.WaitUtils;
 
 public class HomePage extends BasePage {
 
-    @FindBy(xpath = "//*[@id='email']")
+    @FindBy(xpath = "//input[@id='email']")
     private WebElement emailElement;
 
-    @FindBy(xpath = "//*[@id='password']")
+    @FindBy(xpath = "//input[@id='password']")
     private WebElement passwordElement;
 
-    @FindBy(xpath = "//*[@id='signup']")
+    @FindBy(xpath = "//button[@id='signup']")
     private WebElement signUpButtonElement;
 
     public void loginUser(String userEmail, String userPassword) {
@@ -22,6 +22,6 @@ public class HomePage extends BasePage {
     }
 
     public void clickSignUpButton() {
-        WaitUtils.waitForElement(signUpButtonElement).click();
+        WaitUtils.waitForButton(signUpButtonElement).click();
     }
 }

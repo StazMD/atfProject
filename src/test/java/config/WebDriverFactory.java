@@ -16,6 +16,7 @@ public class WebDriverFactory {
     private static final Logger log = LogManager.getLogger(WebDriverFactory.class);
 
     public static synchronized WebDriver setupDriver() {
+
         if (driver == null) {
             log.info("Opening WebDriver");
             String browserType = PropertyReader.getProperty("browser.type");
@@ -33,38 +34,48 @@ public class WebDriverFactory {
                     log.error("Unsupported browser type: {}", browserType);
                     throw new IllegalArgumentException("Unsupported browser: " + browserType);
             }
-            log.debug("Browser window maximized");
+
             driver.manage().window().maximize();
+            log.debug("Browser window maximized");
             log.info("WebDriver for {} has been successfully set up", browserType);
-        } else {
-            log.debug("Reusing existing WebDriver instance");
         }
+        log.debug("Reusing existing WebDriver instance");
         return driver;
     }
 
     public static WebDriver setupChromeDriver(boolean headless) {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
+        try {
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions chromeOptions = new ChromeOptions();
 
-        chromeOptions.addArguments("--disable-popup-blocking");
-        if (headless) {
-            chromeOptions.addArguments("--headless=new");
-            log.info("Chrome is set to run in headless mode");
+            chromeOptions.addArguments("--disable-popup-blocking");
+            if (headless) {
+                chromeOptions.addArguments("--headless=new");
+                log.info("Chrome is set to run in headless mode");
+            }
+            log.info("Setting ChromeDriver with options: {}", chromeOptions);
+            return new ChromeDriver(chromeOptions);
+        } catch (Exception e) {
+            log.error("Error initializing WebDriver: " + e.getMessage());
+            throw new RuntimeException("Error initializing WebDriver", e);
         }
-        log.info("Setting ChromeDriver with options: {}", chromeOptions);
-        return new ChromeDriver(chromeOptions);
     }
 
     public static WebDriver setupFirefoxDriver(boolean headless) {
-        WebDriverManager.firefoxdriver().setup();
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        try {
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
 
-        if (headless) {
-            firefoxOptions.addArguments("--headless");
-            log.info("Firefox is set to run in headless mode");
+            if (headless) {
+                firefoxOptions.addArguments("--headless");
+                log.info("Firefox is set to run in headless mode");
+            }
+            log.info("Setting FirefoxDriver with options: {}", firefoxOptions);
+            return new FirefoxDriver(firefoxOptions);
+        } catch (Exception e) {
+            log.error("Error initializing WebDriver: " + e.getMessage());
+            throw new RuntimeException("Error initializing WebDriver", e);
         }
-        log.info("Setting FirefoxDriver with options: {}", firefoxOptions);
-        return new FirefoxDriver(firefoxOptions);
     }
 
     public static WebDriver getDriver() {

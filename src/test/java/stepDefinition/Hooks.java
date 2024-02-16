@@ -39,6 +39,5 @@ public class Hooks {
     public void tearDownContext() {
         log.info("Starting to clear test context");
         ScenarioContext.INSTANCE.clearContext();
-        log.info("Test context cleared successfully");
     }
 }

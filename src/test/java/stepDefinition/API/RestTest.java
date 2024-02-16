@@ -38,5 +38,4 @@ public class RestTest {
     public void userNotExisted() {
         apiStepDef.userNotExisted();
     }
-
 }
