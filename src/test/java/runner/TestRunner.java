@@ -5,10 +5,7 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(
-        glue = "stepDefinition",
-        plugin = {"pretty", "html:target/cucumber-reports"}
-)
+@CucumberOptions(features = "src/test/resources/features", glue = "stepDefinition", plugin = {"pretty", "com.epam.reportportal.cucumber.ScenarioReporter"})
 public class TestRunner {
 }
 
