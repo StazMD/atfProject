@@ -1,5 +1,5 @@
 @UI
-Feature: Negative Registration Feature
+Feature: Registration with invalid credentials
 
   Scenario Outline: Register user using invalid data
     Given home page is opened

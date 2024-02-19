@@ -1,5 +1,5 @@
 @UI
-Feature: Positive Registration Feature
+Feature: Registration with valid credentials
 
   Scenario: Register user using valid data
     Given home page is opened

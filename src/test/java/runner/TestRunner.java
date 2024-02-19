@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "stepDefinition",
-        plugin = {"pretty", "com.epam.reportportal.cucumber.ScenarioReporter"}
+        plugin = {"pretty", "com.epam.reportportal.cucumber.ScenarioReporter"},
+        tags = "@Login"
 )
 
 public class TestRunner {

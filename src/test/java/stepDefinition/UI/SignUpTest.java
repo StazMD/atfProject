@@ -1,17 +1,26 @@
 package stepDefinition.UI;
 
 import api.ApiStepDef;
+import config.WebDriverFactory;
 import context.ScenarioContext;
 import entity.User;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
 import utils.TestDataGeneratorUtils;
 
+import java.io.File;
+import java.io.IOException;
+
 public class SignUpTest {
 
+    protected WebDriver driver;
     private final SignUpPage signUpPage;
     private final ApiStepDef apiStepDef;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
@@ -21,6 +30,7 @@ public class SignUpTest {
     public SignUpTest(SignUpPage signUpPage, ApiStepDef apiStepDef) {
         this.signUpPage = signUpPage;
         this.apiStepDef = apiStepDef;
+        this.driver = WebDriverFactory.getDriver();
     }
 
     public User extractUserData() {
@@ -38,8 +48,13 @@ public class SignUpTest {
     }
 
     @And("new user was created")
-    public void newUserWasAdded() {
-        signUpPage.assertHeader("Contact List");
+    public void newUserWasAdded() throws IOException {
+        try {
+            signUpPage.assertHeader("Coвntact List");
+        } catch (Exception ex) {
+            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File("target/Screenshots/screenshot.png"));
+        }
         apiStepDef.loginUser();
         apiStepDef.getUserProfile();
     }

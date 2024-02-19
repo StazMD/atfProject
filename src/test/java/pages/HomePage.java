@@ -6,7 +6,7 @@ import utils.WaitUtils;
 
 public class HomePage extends BasePage {
 
-    @FindBy(xpath = "//input[@id='email']")
+    @FindBy(xpath = "//input[@id='emaail']")
     private WebElement emailElement;
 
     @FindBy(xpath = "//input[@id='password']")

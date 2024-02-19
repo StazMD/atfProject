@@ -1,5 +1,5 @@
 @API @User
-Feature: Users from API endpoints
+Feature: Manage user via API endpoints
 
   Scenario: Creating, updating and deleting user
     Given new user is created

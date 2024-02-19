@@ -1,7 +1,7 @@
 @UI @Login
-Feature: Positive Login Feature
+Feature: Login with valid credentials
 
-  Scenario Outline: Log In user
+  Scenario Outline: Login with valid credentials
     Given home page is opened
     When valid login credentials were entered
       | <email> | <password> |

@@ -6,6 +6,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
@@ -15,6 +16,7 @@ public class Hooks {
 
     @Before()
     public void setUp() {
+        ReportPortalUtils.updateLaunchName();
         new TestDataGeneratorUtils().generateUserCredentials();
         new TestDataGeneratorUtils().generateContactCredentials();
     }

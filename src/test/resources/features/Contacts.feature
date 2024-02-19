@@ -1,5 +1,5 @@
 @UI @Contact
-Feature: Contacts Feature
+Feature: Manage Users Contacts
 
   Background: Opening main page
     Given home page is opened
