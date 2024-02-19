@@ -1,9 +1,9 @@
-@UI
+@UI @Login
 Feature: Positive Login Feature
 
   Scenario Outline: Log In user
     Given home page is opened
-    When valid credentials were entered
+    When valid login credentials were entered
       | <email> | <password> |
     Then user was successfully logged in the application
     Examples:

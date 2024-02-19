@@ -3,8 +3,7 @@ Feature: Contacts Feature
 
   Background: Opening main page
     Given home page is opened
-    And valid credentials were entered
-      | email             | password         |
+    And valid login credentials were entered
       | testuser@mail.com | TestUserTestUser |
 
   Scenario: Creating contact

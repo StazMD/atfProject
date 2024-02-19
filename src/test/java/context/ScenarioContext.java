@@ -19,7 +19,6 @@ public enum ScenarioContext {
 
     public void setContext(String key, Object value) {
         contextData.put(key, value);
-        log.info("Set context for key '{}': {}", key, value);
     }
 
     public Object getContext(String key) {
@@ -27,9 +26,7 @@ public enum ScenarioContext {
             log.error("Context for key '{}' not found", key);
             throw new IllegalArgumentException("Context for key '" + key + "' not found");
         }
-        Object value = contextData.get(key);
-        log.info("Retrieved context for key '{}': {}", key, value);
-        return value;
+        return contextData.get(key);
     }
 
     public void clearContext() {

@@ -61,27 +61,22 @@ public class Assertions {
     }
 
     public void assertNoAuthentication(Response response) {
-        JsonPath jsonPath = response.jsonPath();
-        String responseMessage = jsonPath.getString("error");
+        int jsonPath = response.getStatusCode();
 
         log.info("Verifying that user not authenticated");
-        assertThat(responseMessage).isEqualTo("Please authenticate.");
+        assertThat(jsonPath).isEqualTo(401);
     }
 
     public void assertUpdatedUser(Response response) {
         User user = extractUserData();
         JsonPath jsonPath = response.jsonPath();
 
-        String actualFirstName = user.getFirstName();
-        String actualLastName = user.getLastName();
+        String actualFirstName = jsonPath.getString("firstName");
+        String actualLastName = jsonPath.getString("lastName");
 
         log.info("Firstname was updated to '{}' and matches with response", actualFirstName);
         assertThat(actualFirstName).isEqualTo(user.getFirstName());
         log.info("Lastname was updated to '{}' and matches with response", actualLastName);
         assertThat(actualLastName).isEqualTo(user.getLastName());
-    }
-
-    public void assertUserNotExisted() {
-
     }
 }

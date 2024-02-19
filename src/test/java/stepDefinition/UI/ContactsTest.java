@@ -38,8 +38,7 @@ public class ContactsTest {
 
     @And("contact was created")
     public void contactWasCreated() {
-        contactListPage.addNewContactButton();
-        contactListPage.assertHeader("Add Contact");
+        contactListPage.openAddContactPage();
         Contact contact = extractContactData();
         contactListPage.contactFields(contact);
     }

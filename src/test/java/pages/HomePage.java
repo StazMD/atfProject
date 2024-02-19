@@ -21,7 +21,7 @@ public class HomePage extends BasePage {
         submitButton();
     }
 
-    public void clickSignUpButton() {
+    public void openSignUpPage() {
         WaitUtils.waitForButton(signUpButtonElement).click();
     }
 }

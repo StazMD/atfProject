@@ -8,13 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.hamcrest.core.IsEqual.equalTo;
-
 public class WaitUtils {
 
-    private static final long timeout = Long.parseLong(PropertyReader.getProperty("element.wait.timeout.seconds"));
+    private static final long timeout = Long.parseLong(PropertyReader.getProperty("element.wait.timeout"));
 
     //TODO reverse waiter?
     public static WebElement waitForElement(WebElement element) {
@@ -23,13 +19,14 @@ public class WaitUtils {
     }
 
     public static void waitForTextInElement(WebElement element, String expectedText) {
-        await().atMost(timeout, SECONDS).until(element::getText, equalTo(expectedText));
+        WebDriverWait wait = new WebDriverWait(WebDriverFactory.getDriver(), Duration.ofSeconds(timeout));
+        wait.until(ExpectedConditions.textToBePresentInElement(element, expectedText));
     }
 
     public static WebElement waitForButton(WebElement element) {
-        await().atMost(timeout, SECONDS).until(element::isEnabled);
+        WebDriverWait wait = new WebDriverWait(WebDriverFactory.getDriver(), Duration.ofSeconds(timeout));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
         return element;
     }
-
-    //TODO add button clickWait
 }

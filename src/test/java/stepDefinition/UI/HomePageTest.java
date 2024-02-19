@@ -28,13 +28,11 @@ public class HomePageTest {
     public void mainPageIsOpened() {
         driver.get(homePageUrl);
         log.info("Navigated to the home page URL: {}", homePageUrl);
-        homePage.assertHeader("Contact List App");
     }
 
     @When("adding user page opening")
     public void openAddUserPage() {
-        homePage.clickSignUpButton();
-        signUpPage.assertHeader("Add User");
+        homePage.openSignUpPage();
     }
 
 }

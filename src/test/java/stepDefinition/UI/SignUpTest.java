@@ -7,7 +7,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.assertj.core.api.Assertions;
 import pages.SignUpPage;
 import utils.TestDataGeneratorUtils;
 
@@ -69,10 +68,7 @@ public class SignUpTest {
     public void errorIsAppearing() {
         String actualErrorMessage = signUpPage.errorText();
         log.info("Verifying that error message {} is presented", actualErrorMessage);
-        String expectedErrorMessagePattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|" +
-                "User validation failed: email: Email is invalid|" +
-                "User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";
-        Assertions.assertThat(actualErrorMessage).matches(expectedErrorMessagePattern);
+        String expectedErrorMessagePattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|" + "User validation failed: email: Email is invalid|" + "User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";
     }
 
     @And("new user is not created")

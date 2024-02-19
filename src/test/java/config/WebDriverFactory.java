@@ -84,7 +84,7 @@ public class WebDriverFactory {
 
     public static void quitDriver() {
         if (driver != null) {
-            log.info("Quitting WebDriver and shutting down");
+            log.info("Shutting down WebDriver");
             driver.quit();
             driver = null;
         } else {

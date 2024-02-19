@@ -11,7 +11,7 @@ import java.util.List;
 public class ContactListPage extends BasePage {
 
     //TODO why?
-    @FindBy(xpath = "//*[@id='add-contact']")
+    @FindBy(xpath = "//button[@id='add-contact']")
     private WebElement addContactButton;
 
     @FindBy(xpath = "//*[@id='firstName']")
@@ -53,7 +53,7 @@ public class ContactListPage extends BasePage {
     @FindBy(className = "contactTableBodyRow")
     private List<WebElement> contactTableBodyRowElements;
 
-    public void addNewContactButton() {
+    public void openAddContactPage() {
         WaitUtils.waitForElement(addContactButton).click();
     }
 

@@ -11,7 +11,7 @@ public class ApiStepDef {
     private final Assertions assertions = new Assertions();
     private static final ScenarioContext scenarioContext;
 
-    //TODO why?
+    //TODO why static in {}?
     static {
         scenarioContext = ScenarioContext.INSTANCE;
     }
@@ -29,14 +29,11 @@ public class ApiStepDef {
 
     public void createUser() {
         User user = extractUserData();
-        String requestBody = String
-                .format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}",
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getPassword());
+        String requestBody = String.format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}", user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
 
         Response response = Requests.postRequest("/users", requestBody, 201);
+        String token = response.jsonPath().getString("token");
+        scenarioContext.setContext("token", token);
         assertions.assertUser(response);
     }
 
@@ -48,12 +45,11 @@ public class ApiStepDef {
     public void loginUser() {
         User user = extractUserData();
 
-        String requestBody = String
-                .format("{\"email\": \"%s\",\"password\": \"%s\"}",
-                        user.getEmail(),
-                        user.getPassword());
+        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", user.getEmail(), user.getPassword());
 
         Response response = Requests.postRequest("/users/login", requestBody, 200);
+        String token = response.jsonPath().getString("token");
+        scenarioContext.setContext("token", token);
         assertions.assertUser(response);
     }
 
@@ -63,8 +59,7 @@ public class ApiStepDef {
         String updatedFirstName = TestDataGeneratorUtils.getRandomFirstName();
         String updatedLastName = TestDataGeneratorUtils.getRandomLastName();
 
-        String requestBody = String
-                .format("{\"firstName\": \"%s\",\"lastName\": \"%s\"}", updatedFirstName, updatedLastName);
+        String requestBody = String.format("{\"firstName\": \"%s\",\"lastName\": \"%s\"}", updatedFirstName, updatedLastName);
 
         Response response = Requests.patchRequest("/users/me", requestBody, 200);
 
@@ -79,7 +74,11 @@ public class ApiStepDef {
     }
 
     public void userNotExisted() {
-        Response response = Requests.getRequest("/users/me", 401);
+        User user = extractUserData();
+
+        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", user.getEmail(), user.getPassword());
+
+        Response response = Requests.postRequest("/users/login", requestBody, 401);
         assertions.assertNoAuthentication(response);
     }
 
