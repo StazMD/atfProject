@@ -1,10 +1,10 @@
 @UI
-Feature: Registration with invalid credentials
+Feature: Registration With Invalid Credentials
 
-  Scenario Outline: Register user using invalid data
+  Scenario Outline: Register User Using Invalid Data
     Given home page is opened
     When adding user page opening
-    And '<fieldName>' field submitted with invalid data
+    And '<fieldName>' submitted with invalid data
     Then error is displaying
     And new user is not created
     Examples:

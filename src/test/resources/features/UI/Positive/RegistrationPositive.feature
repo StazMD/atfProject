@@ -1,7 +1,7 @@
 @UI
-Feature: Registration with valid credentials
+Feature: Registration With Valid Credentials
 
-  Scenario: Register user using valid data
+  Scenario: Register User Using Valid Data
     Given home page is opened
     When adding user page opening
     And all fields are submitted with valid data

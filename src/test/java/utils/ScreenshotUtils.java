@@ -2,6 +2,7 @@ package utils;
 
 import config.PropertyReader;
 import config.WebDriverFactory;
+import context.ScenarioContext;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,16 +17,17 @@ public class ScreenshotUtils {
     private static final String screenshotsFilePath = PropertyReader.getProperty("reports.screenshot.folder");
     private static final Logger log = LogManager.getLogger(ScreenshotUtils.class);
 
-    public static File takeScreenshot() {
+    public static void takeScenarioScreenshot() {
+        String scenarioName = ScenarioContext.getScenario().getName().replaceAll("[^a-zA-Z0-9-_]", "");
+        String screenshotFormat = scenarioName + "_" + System.currentTimeMillis();
         File scrFile = ((TakesScreenshot) WebDriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
-        File destFile = new File(screenshotsFilePath + "screenshot.png");
+        File destFile = new File(screenshotsFilePath + screenshotFormat + ".png");
+        log.info("Screenshot {} saved", destFile);
         try {
             FileUtils.copyFile(scrFile, destFile);
-            return destFile;
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.warn("Failed to get screenshot");
-            return null;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            log.warn("Failed to take screenshot");
         }
     }
 }

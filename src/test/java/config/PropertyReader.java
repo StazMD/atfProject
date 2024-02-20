@@ -40,7 +40,7 @@ public class PropertyReader {
             log.error("Property '{}' not found", key);
             throw new IllegalArgumentException("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);
         }
-        log.info("Retrieved property '{}': '{}'", key, value);
+        log.debug("Retrieved property '{}': '{}'", key, value);
         return value;
     }
 }

@@ -1,7 +1,7 @@
 @API @User
-Feature: Manage user via API endpoints
+Feature: Manage User Via API Endpoints
 
-  Scenario: Creating, updating and deleting user
+  Scenario: Creating, Updating And Deleting user
     Given new user is created
     And new user profile could be retrieved
     And new user is able to login

@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
-import utils.ReportPortalUtils;
 
 public class HomePageTest {
 
@@ -26,10 +25,10 @@ public class HomePageTest {
     public void mainPageIsOpened() {
         driver.get(homePageUrl);
         try {
-            homePage.assertHeader("Contdact List App");
+            homePage.assertHeader("Contact List App");
         } catch (Exception ex) {
             String exceptionMessage = "Missing expected header text";
-            ReportPortalUtils.sendScreenshotToReportPortal(exceptionMessage);
+//            ReportPortalUtils.sendScreenshotToReportPortal(exceptionMessage);
             throw new RuntimeException(exceptionMessage, ex);
         }
         log.info("Navigated to the home page URL: {}", homePageUrl);

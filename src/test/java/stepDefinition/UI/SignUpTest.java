@@ -56,7 +56,7 @@ public class SignUpTest {
         apiStepDef.getUserProfile();
     }
 
-    @And("{string} field submitted with invalid data")
+    @And("{string} submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
         User user = extractUserData();
         switch (fieldName) {

@@ -1,6 +1,5 @@
 package utils;
 
-import com.epam.reportportal.service.ReportPortal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +12,7 @@ import java.util.Properties;
 public class ReportPortalUtils {
     private static final Logger log = LogManager.getLogger(ReportPortalUtils.class);
 
-    public static void updateLaunchName() {
+    public static void updatePropertiesTestLaunchName() {
         String path = "src/test/resources/reportportal.properties";
         Properties properties = new Properties();
 
@@ -37,7 +36,7 @@ public class ReportPortalUtils {
     public static void sendScreenshotToReportPortal(String message) {
         try {
             log.info("Creating screenshot for ReportPortal with message: {}", message);
-            ReportPortal.emitLog(message, "INFO", new Date(), ScreenshotUtils.takeScreenshot());
+//            ReportPortal.emitLog(message, "INFO", new Date(), ScreenshotUtils.takeScenarioScreenshot());
         } catch (Exception ex) {
             log.error("Failed to send screenshot to ReportPortal: {}", ex.getMessage());
         }
