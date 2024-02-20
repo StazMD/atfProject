@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
-import pages.SignUpPage;
+import utils.ReportPortalUtils;
 
 public class HomePageTest {
 
@@ -16,17 +16,22 @@ public class HomePageTest {
     private final String homePageUrl = PropertyReader.getProperty("browser.homepage-url");
     private final Logger log = LogManager.getLogger(HomePageTest.class);
     private final HomePage homePage;
-    private final SignUpPage signUpPage;
 
-    public HomePageTest(HomePage homePage, SignUpPage signUpPage) {
+    public HomePageTest(HomePage homePage) {
         this.driver = WebDriverFactory.getDriver();
         this.homePage = homePage;
-        this.signUpPage = signUpPage;
     }
 
     @Given("home page is opened")
     public void mainPageIsOpened() {
         driver.get(homePageUrl);
+        try {
+            homePage.assertHeader("Contdact List App");
+        } catch (Exception ex) {
+            String exceptionMessage = "Missing expected header text";
+            ReportPortalUtils.sendScreenshotToReportPortal(exceptionMessage);
+            throw new RuntimeException(exceptionMessage, ex);
+        }
         log.info("Navigated to the home page URL: {}", homePageUrl);
     }
 

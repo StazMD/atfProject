@@ -6,16 +6,13 @@ import context.ScenarioContext;
 import entity.User;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
+import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
-import java.io.File;
 import java.io.IOException;
 
 public class SignUpTest {
@@ -50,10 +47,10 @@ public class SignUpTest {
     @And("new user was created")
     public void newUserWasAdded() throws IOException {
         try {
-            signUpPage.assertHeader("Coвntact List");
+            signUpPage.assertHeader("Contact List");
         } catch (Exception ex) {
-            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File("target/Screenshots/screenshot.png"));
+            ReportPortalUtils.sendScreenshotToReportPortal("Header not found");
+            throw new RuntimeException("Header not found", ex);
         }
         apiStepDef.loginUser();
         apiStepDef.getUserProfile();

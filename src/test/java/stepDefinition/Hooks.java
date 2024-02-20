@@ -4,19 +4,20 @@ import config.WebDriverFactory;
 import context.ScenarioContext;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.cucumber.java.BeforeAll;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
 
-    private final Logger log = LogManager.getLogger(Hooks.class);
+    @BeforeAll
+    public static void setUpBeforeAll() {
+        ReportPortalUtils.updateLaunchName();
+    }
 
     @Before()
     public void setUp() {
-        ReportPortalUtils.updateLaunchName();
         new TestDataGeneratorUtils().generateUserCredentials();
         new TestDataGeneratorUtils().generateContactCredentials();
     }
