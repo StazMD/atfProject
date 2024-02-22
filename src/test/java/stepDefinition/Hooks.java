@@ -5,16 +5,14 @@ import context.ScenarioContext;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
-import io.cucumber.java.Scenario;
 import utils.ReportPortalUtils;
-import utils.ScreenshotUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
 
     @BeforeAll
-    public static void setUpBeforeAll() {
+    public void setUpBeforeAll() {
         ReportPortalUtils.updatePropertiesTestLaunchName();
     }
 
@@ -24,11 +22,6 @@ public class Hooks {
         new TestDataGeneratorUtils().generateContactCredentials();
     }
 
-    @Before("@UI")
-    public void beforeScenario(Scenario scenario) {
-        ScenarioContext.setScenario(scenario);
-    }
-
     @After
     public void tearDownContext() {
         ScenarioContext.INSTANCE.clearContext();
@@ -36,8 +29,7 @@ public class Hooks {
 
     @After("@UI")
     public void afterEachScenario() {
-        ScreenshotUtils.takeScenarioScreenshot();
+        ReportPortalUtils.sendScreenshotToReportPortal();
         WebDriverFactory.quitDriver();
     }
-
 }

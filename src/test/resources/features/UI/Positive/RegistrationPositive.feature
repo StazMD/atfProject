@@ -1,4 +1,4 @@
-@UI
+@UI @Login
 Feature: Registration With Valid Credentials
 
   Scenario: Register User Using Valid Data

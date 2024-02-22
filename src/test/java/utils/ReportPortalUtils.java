@@ -1,5 +1,6 @@
 package utils;
 
+import com.epam.reportportal.service.ReportPortal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,10 +34,10 @@ public class ReportPortalUtils {
         }
     }
 
-    public static void sendScreenshotToReportPortal(String message) {
+    public static void sendScreenshotToReportPortal() {
         try {
-            log.info("Creating screenshot for ReportPortal with message: {}", message);
-//            ReportPortal.emitLog(message, "INFO", new Date(), ScreenshotUtils.takeScenarioScreenshot());
+            log.info("Sending screenshot to ReportPortal");
+            ReportPortal.emitLog("Screenshot Name", "INFO", new Date(), ScreenshotUtils.takeScenarioScreenshot());
         } catch (Exception ex) {
             log.error("Failed to send screenshot to ReportPortal: {}", ex.getMessage());
         }

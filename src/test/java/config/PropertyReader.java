@@ -2,6 +2,7 @@ package config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.ExceptionUtils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -25,7 +26,7 @@ public class PropertyReader {
                 log.info("Properties file loaded successfully from {}", APPLICATION_FILE_PATH);
             } catch (Exception ex) {
                 log.error("Failed to load properties file from {}. Error: {}", APPLICATION_FILE_PATH, ex.getMessage());
-                throw new RuntimeException("Could not load properties file", ex);
+                throw new ExceptionUtils("Could not load properties file");
             }
             log.debug("Properties file already loaded, reusing existing properties.");
         }
@@ -38,7 +39,7 @@ public class PropertyReader {
         String value = properties.getProperty(key);
         if (value == null) {
             log.error("Property '{}' not found", key);
-            throw new IllegalArgumentException("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);
+            throw new ExceptionUtils("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);
         }
         log.debug("Retrieved property '{}': '{}'", key, value);
         return value;

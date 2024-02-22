@@ -1,10 +1,18 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.WaitUtils;
 
 public class SignUpPage extends BasePage {
+
+    private static final Logger log = LogManager.getLogger(ContactDetailsPage.class);
+
+    @FindBy(xpath = "//h1[text()='Add User']")
+    private WebElement signUpPageHeader;
+
     @FindBy(id = "firstName")
     private WebElement firstNameElement;
 
@@ -31,6 +39,11 @@ public class SignUpPage extends BasePage {
 
     public String errorText() {
         return WaitUtils.waitForElement(errorElement).getText();
+    }
+
+    @Override
+    public WebElement getHeaderElement() {
+        return signUpPageHeader;
     }
 
 }

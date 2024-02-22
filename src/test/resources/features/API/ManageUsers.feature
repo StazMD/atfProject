@@ -8,3 +8,9 @@ Feature: Manage User Via API Endpoints
     When user is updated
     And user is deleted
     Then user not existed
+
+  Scenario: Successfully creating a new user
+    Given I send a request to create a new user
+    Then the user should be successfully created
+    And I should receive a confirmation response with the user's details
+

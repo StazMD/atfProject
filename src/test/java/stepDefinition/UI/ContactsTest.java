@@ -10,11 +10,12 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import pages.ContactDetailsPage;
 import pages.ContactListPage;
+import utils.ExceptionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContactsTest {
 
@@ -32,7 +33,7 @@ public class ContactsTest {
         try {
             return (Contact) scenarioContext.getContext("contact");
         } catch (RuntimeException ex) {
-            throw new RuntimeException("message", ex);
+            throw new ExceptionUtils("Contact Data could not be extracted");
         }
     }
 
@@ -40,7 +41,7 @@ public class ContactsTest {
     public void contactWasCreated() {
         contactListPage.openAddContactPage();
         Contact contact = extractContactData();
-        contactListPage.contactFields(contact);
+        contactListPage.fillContactFields(contact);
     }
 
     @Then("contact displaying in contact list")
@@ -49,9 +50,9 @@ public class ContactsTest {
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contact.getFirstNameLastName();
-        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).collect(Collectors.toList());
+        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
-        assertThat(filteredRows).isNotEmpty();
+        assertFalse(filteredRows.isEmpty());
     }
 
     @When("contact was deleted")
@@ -67,8 +68,8 @@ public class ContactsTest {
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contact.getFirstNameLastName();
-        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).collect(Collectors.toList());
+        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
-        assertThat(filteredRows).isEmpty();
+        assertTrue(filteredRows.isEmpty());
     }
 }

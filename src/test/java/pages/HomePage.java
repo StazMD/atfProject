@@ -1,10 +1,14 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.WaitUtils;
 
 public class HomePage extends BasePage {
+
+    private static final Logger log = LogManager.getLogger(HomePage.class);
 
     @FindBy(xpath = "//input[@id='email']")
     private WebElement emailElement;
@@ -24,4 +28,5 @@ public class HomePage extends BasePage {
     public void openSignUpPage() {
         WaitUtils.waitForButton(signUpButtonElement).click();
     }
+
 }

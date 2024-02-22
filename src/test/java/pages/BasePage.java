@@ -1,6 +1,5 @@
 package pages;
 
-import api.Assertions;
 import config.WebDriverFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,10 +9,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.WaitUtils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 //TODO read about abstract classes
 public abstract class BasePage {
 
-    private static final Logger log = LogManager.getLogger(Assertions.class);
+    private static final Logger log = LogManager.getLogger(BasePage.class);
 
     protected WebDriver driver;
     //TODO what is the difference when logger is in every class or only in one class
@@ -21,9 +22,6 @@ public abstract class BasePage {
     //TODO wtf Annotations?
     @FindBy(xpath = "//button[@id='submit']")
     private WebElement submitButton;
-
-    @FindBy(xpath = "//h1")
-    private WebElement header;
 
     public BasePage() {
         this.driver = WebDriverFactory.getDriver();
@@ -34,9 +32,14 @@ public abstract class BasePage {
         WaitUtils.waitForButton(submitButton).click();
     }
 
-    public void assertHeader(String headerText) {
-        WaitUtils.waitForTextInElement(header, headerText);
-        log.info(headerText + " header is displaying");
+    public WebElement getHeaderElement() {
+        throw new UnsupportedOperationException("getHeaderElement must be overwrite");
     }
 
+    public void assertHeader(String headerText) {
+        WebElement headerElement = getHeaderElement();
+        String headerElementText = WaitUtils.waitForElement(headerElement).getText();
+        assertEquals(headerText, headerElementText);
+        log.info("'" + headerText + "' header is displaying");
+    }
 }

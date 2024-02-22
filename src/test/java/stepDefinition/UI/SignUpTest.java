@@ -10,10 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
-import utils.ReportPortalUtils;
+import utils.ExceptionUtils;
 import utils.TestDataGeneratorUtils;
-
-import java.io.IOException;
 
 public class SignUpTest {
 
@@ -34,7 +32,7 @@ public class SignUpTest {
         try {
             return (User) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
-            throw new RuntimeException("message", ex);
+            throw new ExceptionUtils("message");
         }
     }
 
@@ -45,13 +43,8 @@ public class SignUpTest {
     }
 
     @And("new user was created")
-    public void newUserWasAdded() throws IOException {
-        try {
-            signUpPage.assertHeader("Contact List");
-        } catch (Exception ex) {
-            ReportPortalUtils.sendScreenshotToReportPortal("Header not found");
-            throw new RuntimeException("Header not found", ex);
-        }
+    public void newUserWasAdded() {
+        signUpPage.assertHeader("Contact List");
         apiStepDef.loginUser();
         apiStepDef.getUserProfile();
     }
@@ -78,9 +71,8 @@ public class SignUpTest {
 
     @Then("error is displaying")
     public void errorIsAppearing() {
-        String actualErrorMessage = signUpPage.errorText();
-        log.info("Verifying that error message {} is presented", actualErrorMessage);
-        String expectedErrorMessagePattern = "User validation failed: (firstName|lastName): Path `(firstName|lastName)` \\(`.*`\\) is longer than the maximum allowed length \\(20\\).|" + "User validation failed: email: Email is invalid|" + "User validation failed: password: Path `password` \\(`.*`\\) is shorter than the minimum allowed length \\(7\\).";
+        String errorMessage = signUpPage.errorText();
+        log.info("Verifying that error message {} is presented", errorMessage);
     }
 
     @And("new user is not created")
@@ -88,5 +80,4 @@ public class SignUpTest {
         signUpPage.assertHeader("Add User");
         apiStepDef.userNotExisted();
     }
-
 }

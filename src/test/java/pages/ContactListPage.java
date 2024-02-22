@@ -1,6 +1,8 @@
 package pages;
 
 import entity.Contact;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +12,11 @@ import java.util.List;
 
 public class ContactListPage extends BasePage {
 
-    //TODO why?
+    private static final Logger log = LogManager.getLogger(ContactListPage.class);
+
+    @FindBy(xpath = "//h1[text()='Contact List']")
+    private WebElement contactListPageHeader;
+
     @FindBy(xpath = "//button[@id='add-contact']")
     private WebElement addContactButton;
 
@@ -54,10 +60,10 @@ public class ContactListPage extends BasePage {
     private List<WebElement> contactTableBodyRowElements;
 
     public void openAddContactPage() {
-        WaitUtils.waitForElement(addContactButton).click();
+        WaitUtils.waitForButton(addContactButton).click();
     }
 
-    public void contactFields(Contact contact) {
+    public void fillContactFields(Contact contact) {
         WaitUtils.waitForElement(firstNameElement).sendKeys(contact.getFirstName());
         WaitUtils.waitForElement(lastNameElement).sendKeys(contact.getLastName());
         WaitUtils.waitForElement(birthdateElement).sendKeys(contact.getBirthdate());
@@ -81,5 +87,10 @@ public class ContactListPage extends BasePage {
     public List<WebElement> getRowsFromTable() {
         WaitUtils.waitForElement(contactsTableElement);
         return contactTableBodyRowElements;
+    }
+
+    @Override
+    public WebElement getHeaderElement() {
+        return contactListPageHeader;
     }
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import utils.ExceptionUtils;
 
 public class WebDriverFactory {
 
@@ -32,9 +33,8 @@ public class WebDriverFactory {
                     break;
                 default:
                     log.error("Unsupported browser type: {}", browserType);
-                    throw new IllegalArgumentException("Unsupported browser: " + browserType);
+                    throw new ExceptionUtils("Unsupported browser: " + browserType);
             }
-
             driver.manage().window().maximize();
             log.debug("Browser window maximized");
             log.info("WebDriver for {} has been successfully set up", browserType);
@@ -57,7 +57,7 @@ public class WebDriverFactory {
             return new ChromeDriver(chromeOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new RuntimeException("Error initializing WebDriver", e);
+            throw new ExceptionUtils("Error initializing WebDriver");
         }
     }
 
@@ -74,7 +74,7 @@ public class WebDriverFactory {
             return new FirefoxDriver(firefoxOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new RuntimeException("Error initializing WebDriver", e);
+            throw new ExceptionUtils("Error initializing WebDriver");
         }
     }
 

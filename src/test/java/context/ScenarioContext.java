@@ -4,6 +4,7 @@ import config.PropertyReader;
 import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.ExceptionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,18 +27,9 @@ public enum ScenarioContext {
     public Object getContext(String key) {
         if (!contextData.containsKey(key)) {
             log.error("Context for key '{}' not found", key);
-            throw new IllegalArgumentException("Context for key '" + key + "' not found");
+            throw new ExceptionUtils("Context for key '" + key + "' not found");
         }
         return contextData.get(key);
-    }
-
-    public static void setScenario(Scenario scenario) {
-        ScenarioContext.scenario = scenario;
-        log.info("Scenario name set");
-    }
-
-    public static Scenario getScenario() {
-        return scenario;
     }
 
     public void clearContext() {

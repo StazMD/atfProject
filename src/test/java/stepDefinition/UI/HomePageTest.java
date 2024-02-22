@@ -23,15 +23,8 @@ public class HomePageTest {
 
     @Given("home page is opened")
     public void mainPageIsOpened() {
+        log.info("Navigating to the home page URL: {}", homePageUrl);
         driver.get(homePageUrl);
-        try {
-            homePage.assertHeader("Contact List App");
-        } catch (Exception ex) {
-            String exceptionMessage = "Missing expected header text";
-//            ReportPortalUtils.sendScreenshotToReportPortal(exceptionMessage);
-            throw new RuntimeException(exceptionMessage, ex);
-        }
-        log.info("Navigated to the home page URL: {}", homePageUrl);
     }
 
     @When("adding user page opening")

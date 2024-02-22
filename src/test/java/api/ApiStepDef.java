@@ -3,6 +3,7 @@ package api;
 import context.ScenarioContext;
 import entity.User;
 import io.restassured.response.Response;
+import utils.ExceptionUtils;
 import utils.TestDataGeneratorUtils;
 
 
@@ -23,7 +24,7 @@ public class ApiStepDef {
         try {
             return (User) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
-            throw new RuntimeException("message", ex);
+            throw new ExceptionUtils("message");
         }
     }
 
