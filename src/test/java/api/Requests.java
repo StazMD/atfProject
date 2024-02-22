@@ -36,7 +36,7 @@ public class Requests {
                 .extract().response();
     }
 
-    static Response patchRequest(String path, String requestBody, int statusCode) {
+    public static Response patchRequest(String path, String requestBody, int statusCode) {
         return given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -48,7 +48,7 @@ public class Requests {
                 .extract().response();
     }
 
-    static Response deleteRequest(String path, int statusCode) {
+    public static Response deleteRequest(String path, int statusCode) {
         return given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .when()
                 .delete(URL + path)

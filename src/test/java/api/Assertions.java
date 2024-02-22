@@ -26,16 +26,16 @@ public class Assertions {
         JsonPath jsonPath = response.jsonPath();
 
         String responseFirstName = jsonPath.getString("user.firstName");
+        assertEquals(user.getFirstName(), responseFirstName);
         log.info("Response firstname '{}' matches with test data", responseFirstName);
-        assertEquals(responseFirstName, user.getFirstName());
 
         String responseLastName = jsonPath.getString("user.lastName");
+        assertEquals(user.getLastName(), responseLastName);
         log.info("Response lastname '{}' matches with test data", responseLastName);
-        assertEquals(responseLastName, user.getLastName());
 
         String responseEmail = jsonPath.getString("user.email");
+        assertEquals(user.getEmail(), responseEmail);
         log.info("Response email '{}' matches with test data", responseEmail);
-        assertEquals(responseEmail, user.getEmail());
     }
 
     public void assertGetUserProfile(Response response) {
@@ -43,16 +43,16 @@ public class Assertions {
         JsonPath jsonPath = response.jsonPath();
 
         String responseFirstName = jsonPath.getString("firstName");
-        log.info("Response firstname '{}' matches with test data", responseFirstName);
-        assertEquals(responseFirstName, user.getFirstName());
+        assertEquals(user.getFirstName(), responseFirstName);
+        log.info("Response firstname '{}' matches with test data '{}'", responseFirstName, user.getFirstName());
 
         String responseLastName = jsonPath.getString("lastName");
-        log.info("Response lastname '{}' matches with test data", responseLastName);
-        assertEquals(responseLastName, user.getLastName());
+        assertEquals(user.getLastName(), responseLastName);
+        log.info("Response lastname '{}' matches with test data '{}'", responseLastName, user.getLastName());
 
         String responseEmail = jsonPath.getString("email");
-        log.info("Response email '{}' matches with test data", responseEmail);
-        assertEquals(responseEmail, user.getEmail());
+        assertEquals(user.getEmail().toLowerCase(), responseEmail);
+        log.info("Response email '{}' matches with test data '{}'", responseEmail, user.getEmail().toLowerCase());
     }
 
     public void assertNoAuthentication(Response response) {
@@ -70,8 +70,8 @@ public class Assertions {
         String actualLastName = jsonPath.getString("lastName");
 
         log.info("Firstname was updated to '{}' and matches with response", actualFirstName);
-        assertEquals(actualFirstName, user.getFirstName());
+        assertEquals(user.getFirstName(), actualFirstName);
         log.info("Lastname was updated to '{}' and matches with response", actualLastName);
-        assertEquals(actualLastName, user.getLastName());
+        assertEquals(user.getLastName(), actualLastName);
     }
 }

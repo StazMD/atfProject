@@ -67,11 +67,12 @@ public class ApiStepDef {
         user.setFirstName(updatedFirstName);
         user.setLastName(updatedLastName);
 
+
         assertions.assertUpdatedUser(response);
     }
 
     public void deleteUser() {
-        Response response = Requests.deleteRequest("/users/me", 200);
+        Requests.deleteRequest("/users/me", 200);
     }
 
     public void userNotExisted() {
