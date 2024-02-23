@@ -37,36 +37,6 @@ public class RestTest {
         }
     }
 
-//    @When("new user is created")
-//    public void newUserIsCreated() {
-//        apiStepDef.createUser();
-//    }
-//
-//    @Then("new user is able to login")
-//    public void newUserIsAbleToLogin() {
-//        apiStepDef.loginUser();
-//    }
-//
-//    @And("new user profile could be retrieved")
-//    public void newUserProfileCouldBeRetrieved() {
-//        apiStepDef.getUserProfile();
-//    }
-
-//    @When("user is updated")
-//    public void userIsUpdated() {
-//        apiStepDef.updateUser();
-//    }
-//
-//    @And("user is deleted")
-//    public void userIsDeleted() {
-//        apiStepDef.deleteUser();
-//    }
-//
-//    @Then("user not existed")
-//    public void userNotExisted() {
-//        apiStepDef.userNotExisted();
-//    }
-
     @Given("valid user data")
     public void validUserData(DataTable userData) {
         log.info("Starting processing user data from DataTable.");
@@ -101,7 +71,6 @@ public class RestTest {
 
         log.info("Finished processing user data.");
     }
-
 
     @When("a request to create new user was sent")
     public void aRequestToCreateNewUserWasSent() {
@@ -173,6 +142,22 @@ public class RestTest {
 
         String token = response.jsonPath().getString("token");
         scenarioContext.setContext("token", token);
+    }
+
+    @When("a request to delete the user was sent")
+    public void aRequestToDeleteTheUserWasSent() {
+        Requests.deleteRequest("/users/me", 200);
+    }
+
+    @Then("the user was successfully deleted")
+    public void theUserWasSuccessfullyDeleted() {
+        User user = extractUserData();
+
+        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", user.getEmail(), user.getPassword());
+
+        Response response = Requests.postRequest("/users/login", requestBody, 401);
+        assertions.assertNoAuthentication(response);
+
     }
 }
 

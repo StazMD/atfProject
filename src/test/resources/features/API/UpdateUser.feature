@@ -10,6 +10,7 @@ Feature: Update User Via API
       | firstName   | lastName   | email   | password   |
       | <firstName> | <lastName> | <email> | <password> |
     Then the user's details was successfully updated
+
     Examples:
       | firstName | lastName | email                 | password     |
       | Vasile    | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |
