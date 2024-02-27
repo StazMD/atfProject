@@ -17,7 +17,6 @@ public class WebDriverFactory {
     private static final Logger log = LogManager.getLogger(WebDriverFactory.class);
 
     public static synchronized WebDriver setupDriver() {
-
         if (driver == null) {
             log.info("Opening WebDriver");
             String browserType = PropertyReader.getProperty("browser.type");
@@ -26,10 +25,10 @@ public class WebDriverFactory {
 
             switch (browserType) {
                 case "chrome":
-                    driver = setupChromeDriver(headless);
+                    driver = getChromeDriver(headless);
                     break;
                 case "firefox":
-                    driver = setupFirefoxDriver(headless);
+                    driver = getFirefoxDriver(headless);
                     break;
                 default:
                     log.error("Unsupported browser type: {}", browserType);
@@ -43,7 +42,7 @@ public class WebDriverFactory {
         return driver;
     }
 
-    public static WebDriver setupChromeDriver(boolean headless) {
+    public static WebDriver getChromeDriver(boolean headless) {
         try {
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
@@ -61,7 +60,7 @@ public class WebDriverFactory {
         }
     }
 
-    public static WebDriver setupFirefoxDriver(boolean headless) {
+    public static WebDriver getFirefoxDriver(boolean headless) {
         try {
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions firefoxOptions = new FirefoxOptions();

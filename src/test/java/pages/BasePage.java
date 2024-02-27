@@ -30,6 +30,7 @@ public abstract class BasePage {
 
     public void submitButton() {
         WaitUtils.waitForButton(submitButton).click();
+        log.info("[{}] button was clicked", submitButton.getText());
     }
 
     public WebElement getHeaderElement() {
@@ -37,9 +38,8 @@ public abstract class BasePage {
     }
 
     public void assertHeader(String headerText) {
-        WebElement headerElement = getHeaderElement();
-        String headerElementText = WaitUtils.waitForElement(headerElement).getText();
-        assertEquals(headerText, headerElementText);
+        WaitUtils.waitForTextInElement(getHeaderElement(), headerText);
+        assertEquals(headerText, getHeaderElement().getText());
         log.info("'" + headerText + "' header is displaying");
     }
 }

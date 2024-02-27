@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class RestTest {
 
-    private final Assertions assertions = new Assertions();
     private static final ScenarioContext scenarioContext;
     private static final Logger log = LogManager.getLogger(RestTest.class);
 
@@ -51,19 +50,19 @@ public class RestTest {
 
             String firstName = userCredential.get("firstName");
             user.setFirstName(firstName.equals("[randomFirstName]") ? TestDataGeneratorUtils.getRandomFirstName() : firstName);
-            log.debug("Set firstName: " + user.getFirstName());
+            log.info("Set firstName: " + user.getFirstName());
 
             String lastName = userCredential.get("lastName");
             user.setLastName(lastName.equals("[randomLastName]") ? TestDataGeneratorUtils.getRandomLastName() : lastName);
-            log.debug("Set lastName: " + user.getLastName());
+            log.info("Set lastName: " + user.getLastName());
 
             String email = userCredential.get("email");
             user.setEmail(email.equals("[randomEmail]") ? TestDataGeneratorUtils.getRandomEmail() : email);
-            log.debug("Set email: " + user.getEmail());
+            log.info("Set email: " + user.getEmail());
 
             String password = userCredential.get("password");
             user.setPassword(password.equals("[randomPassword]") ? TestDataGeneratorUtils.getRandomPassword() : password);
-            log.debug("Set password: " + user.getPassword());
+            log.info("Set password: " + user.getPassword());
 
             ScenarioContext.INSTANCE.setContext("user", user);
             log.debug("Set user data to scenario context");
@@ -85,10 +84,10 @@ public class RestTest {
     @Then("user was successfully created")
     public void userWasSuccessfullyCreated() {
         Response response = Requests.getRequest("/users/me", 200);
-        assertions.assertGetUserProfile(response);
+        Assertions.assertGetUserProfile(response);
     }
 
-    @When("a request to update the user's details was sent")
+    @When("a request to update the user's details with next values was sent")
     public void aRequestToUpdateTheUserSDetailsWasSent(DataTable userData) {
 
         List<Map<String, String>> userCredentials = userData.asMaps(String.class, String.class);
@@ -127,9 +126,9 @@ public class RestTest {
     }
 
     @Then("the user's details was successfully updated")
-    public void theUserSDetailsWasSuccessfullyUpdated() {
+    public void getUserDetails() {
         Response response = Requests.getRequest("/users/me", 200);
-        assertions.assertGetUserProfile(response);
+        Assertions.assertGetUserProfile(response);
     }
 
     @And("a request to login with user's details was sent")
@@ -144,20 +143,18 @@ public class RestTest {
         scenarioContext.setContext("token", token);
     }
 
-    @When("a request to delete the user was sent")
+    @When("a request to delete user was sent")
     public void aRequestToDeleteTheUserWasSent() {
         Requests.deleteRequest("/users/me", 200);
     }
 
     @Then("the user was successfully deleted")
-    public void theUserWasSuccessfullyDeleted() {
+    public void userNotAbleToLogin() {
         User user = extractUserData();
 
         String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", user.getEmail(), user.getPassword());
 
         Response response = Requests.postRequest("/users/login", requestBody, 401);
-        assertions.assertNoAuthentication(response);
-
+        Assertions.assertNoAuthentication(response);
     }
 }
-

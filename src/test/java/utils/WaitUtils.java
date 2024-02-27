@@ -20,7 +20,7 @@ public class WaitUtils {
 
     //TODO reverse waiter?
     public static WebElement waitForElement(WebElement element) {
-        log.info("Waiting for visibility of element: " + element.toString());
+        log.debug("Waiting for visibility of element: " + element.toString());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
         try {
             WebElement visibleElement = wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
@@ -32,15 +32,14 @@ public class WaitUtils {
         }
     }
 
-//    public static void waitForTextInElement(WebElement element, String expectedText) {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-//        assertEquals(element.getText(), expectedText);
-//        try {
-//            wait.until(driver -> element.getText().equals(expectedText));
-//        } catch (Exception ex) {
-//            throw new ExceptionUtils(String.format("Actual text '%s' does not match the expected text: '%s'", element.getText(), expectedText));
-//        }
-//    }
+    public static void waitForTextInElement(WebElement element, String expectedText) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+            wait.until(driver -> element.getText().equals(expectedText));
+        } catch (Exception ex) {
+            throw new ExceptionUtils(String.format("Actual text '%s' does not match the expected text: '%s'", element.getText(), expectedText));
+        }
+    }
 
     //TODO: return?
     public static WebElement waitForButton(WebElement button) {

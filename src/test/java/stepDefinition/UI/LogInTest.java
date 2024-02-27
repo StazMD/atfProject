@@ -20,7 +20,6 @@ public class LogInTest {
         this.driver = WebDriverFactory.getDriver();
         this.homePage = new HomePage();
         this.contactListPage = contactListPage;
-
     }
 
     @When("valid login credentials were entered")

@@ -1,6 +1,5 @@
 package stepDefinition.UI;
 
-import api.ApiStepDef;
 import config.WebDriverFactory;
 import context.ScenarioContext;
 import entity.User;
@@ -10,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
+import stepDefinition.API.RestTest;
 import utils.ExceptionUtils;
 import utils.TestDataGeneratorUtils;
 
@@ -17,14 +17,14 @@ public class SignUpTest {
 
     protected WebDriver driver;
     private final SignUpPage signUpPage;
-    private final ApiStepDef apiStepDef;
+    private final RestTest restTest;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, ApiStepDef apiStepDef) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest) {
         this.signUpPage = signUpPage;
-        this.apiStepDef = apiStepDef;
+        this.restTest = restTest;
         this.driver = WebDriverFactory.getDriver();
     }
 
@@ -45,8 +45,8 @@ public class SignUpTest {
     @And("new user was created")
     public void newUserWasAdded() {
         signUpPage.assertHeader("Contact List");
-        apiStepDef.loginUser();
-        apiStepDef.getUserProfile();
+        restTest.aRequestToLoginWithUserSDetailsWasSent();
+        restTest.getUserDetails();
     }
 
     @And("{string} submitted with invalid data")
@@ -72,12 +72,12 @@ public class SignUpTest {
     @Then("error is displaying")
     public void errorIsAppearing() {
         String errorMessage = signUpPage.errorText();
-        log.info("Verifying that error message {} is presented", errorMessage);
+        log.info("Error message '{}' is presented", errorMessage);
     }
 
     @And("new user is not created")
     public void newUserIsNotCreated() {
         signUpPage.assertHeader("Add User");
-        apiStepDef.userNotExisted();
+        restTest.userNotAbleToLogin();
     }
 }

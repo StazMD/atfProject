@@ -14,7 +14,7 @@ public class ContactListPage extends BasePage {
 
     private static final Logger log = LogManager.getLogger(ContactListPage.class);
 
-    @FindBy(xpath = "//h1[text()='Contact List']")
+    @FindBy(xpath = "//h1")
     private WebElement contactListPageHeader;
 
     @FindBy(xpath = "//button[@id='add-contact']")

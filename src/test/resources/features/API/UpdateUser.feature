@@ -6,7 +6,7 @@ Feature: Update User Via API
       | firstName | lastName | email                 | password     |
       | Ion       | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |
     And a request to login with user's details was sent
-    When a request to update the user's details was sent
+    When a request to update the user's details with next values was sent
       | firstName   | lastName   | email   | password   |
       | <firstName> | <lastName> | <email> | <password> |
     Then the user's details was successfully updated

@@ -29,6 +29,10 @@
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <reportPortal.version>5.2.1</reportPortal.version>
+        <agent-java-cucumber6.version>5.3.0</agent-java-cucumber6.version>
+        <hibernate-core.version>6.4.4.Final</hibernate-core.version>
+        <postgresql.version>42.7.2</postgresql.version>
+        <jakarta.persistence-api.version>3.2.0-M1</jakarta.persistence-api.version>
     </properties>
 
     <dependencies>
@@ -75,13 +79,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.junit.platform</groupId>-->
-        <!--            <artifactId>junit-platform-suite-api</artifactId>-->
-        <!--            <version>${junit-platform.version}</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.awaitility</groupId>
@@ -138,8 +135,27 @@
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>agent-java-cucumber6</artifactId>
-            <version>5.3.0</version>
+            <version>${agent-java-cucumber6.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jakarta.persistence-api.version}</version>
+        </dependency>
+
 
     </dependencies>
     <build>
