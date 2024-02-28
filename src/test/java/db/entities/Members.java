@@ -1,23 +1,43 @@
-package entity;
+package db.entities;
+
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-public class User {
+@Entity
+public class Members {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "firstname", length = 70)
     private String firstName;
+
+    @Column(name = "lastname", length = 70)
     private String lastName;
+
+    @Column(name = "email", length = 70)
     private String email;
+
+    @Column(name = "password", length = 70)
     private String password;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public User() {
+    public Members() {
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public Members(String firstName, String lastName, String email, String password, LocalDateTime createdAt) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.createdAt = createdAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -36,6 +56,10 @@ public class User {
         return password;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -50,5 +74,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

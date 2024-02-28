@@ -2,24 +2,21 @@ package stepDefinition;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
+import db.util.JPAUtil;
 import io.cucumber.java.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
 
-    private static EntityManagerFactory emf;
-    private static EntityManager em;
+    private static final Logger log = LogManager.getLogger(Hooks.class);
 
     @BeforeAll
     public static void setUpBeforeAll() {
         ReportPortalUtils.updatePropertiesTestLaunchName();
-        emf = Persistence.createEntityManagerFactory("testPU");
-        em = emf.createEntityManager();
     }
 
     @Before("@UI")
@@ -27,6 +24,17 @@ public class Hooks {
         ScenarioContext.INSTANCE.setScenario(scenario);
         new TestDataGeneratorUtils().generateUserCredentials();
         new TestDataGeneratorUtils().generateContactCredentials();
+    }
+
+    @Before("@DB")
+    public void setUpDatabase() {
+        try {
+            JPAUtil.getEntityManagerFactory().createEntityManager();
+            log.info("EntityManager was successfully initialized.");
+        } catch (Exception e) {
+            log.error("Error initializing EntityManager: " + e.getMessage());
+            throw e;
+        }
     }
 
     @After
@@ -42,11 +50,6 @@ public class Hooks {
 
     @AfterAll
     public static void afterAll() {
-        if (em != null) {
-            em.close();
-        }
-        if (emf != null) {
-            emf.close();
-        }
+        JPAUtil.shutdownJpa();
     }
 }
