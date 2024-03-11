@@ -1,4 +1,4 @@
-package db.util;
+package utils;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -12,6 +12,10 @@ public class JPAUtil {
             factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         }
         return factory;
+    }
+
+    public static void getEntityManager() {
+        getEntityManagerFactory();
     }
 
     public static void shutdownJpa() {

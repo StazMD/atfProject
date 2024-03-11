@@ -18,6 +18,7 @@ public class ReportPortalUtils {
     public static void updatePropertiesTestLaunchName() {
         String path = "src/test/resources/reportportal.properties";
         Properties properties = new Properties();
+        log.info("Loading reportportal.properties");
 
         try (FileInputStream in = new FileInputStream(path)) {
             properties.load(in);

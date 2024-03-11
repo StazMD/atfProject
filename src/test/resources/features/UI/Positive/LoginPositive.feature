@@ -1,4 +1,4 @@
-@UI @LoginTest
+@UI @Login
 Feature: Login With Valid Credentials
 
   Scenario Outline: Login With Valid Credentials

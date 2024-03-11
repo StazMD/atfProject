@@ -10,6 +10,6 @@ Feature: Delete User Via API
     Then the user was successfully deleted
 
     Examples:
-      | firstName         | lastName         | email         | password         |
-      | [randomFirstName] | [randomLastName] | [randomEmail] | [randomPassword] |
-#      | Ion               | IAonascu         | Ion.IAonascu@email.com | ion.gutuion.gutu
+      | firstName         | lastName         | email                     | password         |
+      | [randomFirstName] | [randomLastName] | [randomEmail]             | [randomPassword] |
+      | Ion               | IAonascu         | Ion.Idooon1ascu@email.com | ion.gutuion.gutu |

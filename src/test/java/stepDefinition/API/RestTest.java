@@ -3,7 +3,7 @@ package stepDefinition.API;
 import api.Assertions;
 import api.Requests;
 import context.ScenarioContext;
-import entity.User;
+import entity.UserEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import utils.ExceptionUtils;
 import utils.TestDataGeneratorUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,9 +29,9 @@ public class RestTest {
         scenarioContext = ScenarioContext.INSTANCE;
     }
 
-    public User extractUserData() {
+    public UserEntity extractUserData() {
         try {
-            return (User) scenarioContext.getContext("user");
+            return (UserEntity) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
             throw new ExceptionUtils("User context failed to extract");
         }
@@ -41,40 +42,48 @@ public class RestTest {
         log.info("Starting processing user data from DataTable.");
 
         List<Map<String, String>> userCredentials = userData.asMaps(String.class, String.class);
-        for (Map<String, String> userCredential : userCredentials) {
-            User user = new User();
+        List<String> requiredFields = Arrays.asList("firstName", "lastName", "email", "password");
 
-            if (userCredential.get("firstName") == null || userCredential.get("lastName") == null || userCredential.get("email") == null || userCredential.get("password") == null) {
-                throw new ExceptionUtils("Credentials should not be empty");
+        for (Map<String, String> userCredential : userCredentials) {
+            UserEntity userEntity = new UserEntity();
+
+            for (String requiredField : requiredFields) {
+                String value = userCredential.get(requiredField);
+                if (value == null) {
+                    throw new ExceptionUtils("Updated credentials should not be empty");
+                }
+
+                String finalValue = value.startsWith("[random") ? TestDataGeneratorUtils.getRandomCredentials(requiredField) : value;
+                switch (requiredField) {
+                    case "firstName":
+                        userEntity.setFirstName(finalValue);
+                        break;
+                    case "lastName":
+                        userEntity.setLastName(finalValue);
+                        break;
+                    case "email":
+                        userEntity.setEmail(finalValue);
+                        break;
+                    case "password":
+                        userEntity.setPassword(finalValue);
+                        break;
+                }
+                log.info("Set " + requiredField + ": " + finalValue);
             }
 
-            String firstName = userCredential.get("firstName");
-            user.setFirstName(firstName.equals("[randomFirstName]") ? TestDataGeneratorUtils.getRandomFirstName() : firstName);
-            log.info("Set firstName: " + user.getFirstName());
-
-            String lastName = userCredential.get("lastName");
-            user.setLastName(lastName.equals("[randomLastName]") ? TestDataGeneratorUtils.getRandomLastName() : lastName);
-            log.info("Set lastName: " + user.getLastName());
-
-            String email = userCredential.get("email");
-            user.setEmail(email.equals("[randomEmail]") ? TestDataGeneratorUtils.getRandomEmail() : email);
-            log.info("Set email: " + user.getEmail());
-
-            String password = userCredential.get("password");
-            user.setPassword(password.equals("[randomPassword]") ? TestDataGeneratorUtils.getRandomPassword() : password);
-            log.info("Set password: " + user.getPassword());
-
-            ScenarioContext.INSTANCE.setContext("user", user);
+            ScenarioContext.INSTANCE.setContext("user", userEntity);
             log.debug("Set user data to scenario context");
-        }
 
-        log.info("Finished processing user data.");
+            log.info("Finished processing user data.");
+
+        }
     }
+
 
     @When("a request to create new user was sent")
     public void aRequestToCreateNewUserWasSent() {
-        User user = extractUserData();
-        String requestBody = String.format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}", user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        UserEntity userEntity = extractUserData();
+        String requestBody = String.format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}", userEntity.getFirstName(), userEntity.getLastName(), userEntity.getEmail(), userEntity.getPassword());
 
         Response response = Requests.postRequest("/users", requestBody, 201);
         String token = response.jsonPath().getString("token");
@@ -92,37 +101,44 @@ public class RestTest {
 
         List<Map<String, String>> userCredentials = userData.asMaps(String.class, String.class);
         for (Map<String, String> userCredential : userCredentials) {
-            User user = new User();
+            UserEntity userEntity = new UserEntity();
 
             if (userCredential.get("firstName") == null || userCredential.get("lastName") == null || userCredential.get("email") == null || userCredential.get("password") == null) {
                 throw new ExceptionUtils("Credentials should not be empty");
             }
 
             String firstName = userCredential.get("firstName");
-            user.setFirstName(firstName);
-            log.debug("Set firstName: " + user.getFirstName());
+            userEntity.setFirstName(firstName);
+            log.debug("Set firstName: " + userEntity.getFirstName());
 
             String lastName = userCredential.get("lastName");
-            user.setLastName(lastName);
-            log.debug("Set lastName: " + user.getLastName());
+            userEntity.setLastName(lastName);
+            log.debug("Set lastName: " + userEntity.getLastName());
 
             String email = userCredential.get("email");
-            user.setEmail(email);
-            log.debug("Set email: " + user.getEmail());
+            userEntity.setEmail(email);
+            log.debug("Set email: " + userEntity.getEmail());
 
             String password = userCredential.get("password");
-            user.setPassword(password);
-            log.debug("Set password: " + user.getPassword());
+            userEntity.setPassword(password);
+            log.debug("Set password: " + userEntity.getPassword());
 
-            ScenarioContext.INSTANCE.setContext("user", user);
+            ScenarioContext.INSTANCE.setContext("user", userEntity);
             log.debug("Set user data to scenario context");
         }
-        User user = extractUserData();
+        UserEntity userEntity = extractUserData();
 
-        String requestBody = String.format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}", user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        String requestBody = String.format("{" +
+                        "\"firstName\": \"%s\"," +
+                        "\"lastName\": \"%s\"," +
+                        "\"email\": \"%s\"," +
+                        "\"password\": \"%s\"}",
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                userEntity.getPassword());
 
-        Response response = Requests.patchRequest("/users/me", requestBody, 200);
-
+        Requests.patchRequest("/users/me", requestBody, 200);
     }
 
     @Then("the user's details was successfully updated")
@@ -133,9 +149,14 @@ public class RestTest {
 
     @And("a request to login with user's details was sent")
     public void aRequestToLoginWithUserSDetailsWasSent() {
-        User user = extractUserData();
+        UserEntity userEntity = extractUserData();
 
-        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", user.getEmail(), user.getPassword());
+        String requestBody = String.format("{" +
+                        "\"email\": \"%s\"," +
+                        "\"password\": \"%s\"" +
+                        "}",
+                userEntity.getEmail(),
+                userEntity.getPassword());
 
         Response response = Requests.postRequest("/users/login", requestBody, 200);
 
@@ -150,9 +171,12 @@ public class RestTest {
 
     @Then("the user was successfully deleted")
     public void userNotAbleToLogin() {
-        User user = extractUserData();
+        UserEntity userEntity = extractUserData();
 
-        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}", user.getEmail(), user.getPassword());
+        String requestBody = String.format("{\"email\": \"%s\",\"password\": \"%s\"}",
+                userEntity.getEmail(),
+                userEntity.getPassword()
+        );
 
         Response response = Requests.postRequest("/users/login", requestBody, 401);
         Assertions.assertNoAuthentication(response);

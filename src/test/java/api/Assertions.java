@@ -1,7 +1,7 @@
 package api;
 
 import context.ScenarioContext;
-import entity.User;
+import entity.UserEntity;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -13,29 +13,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Assertions {
     private static final Logger log = LogManager.getLogger(Assertions.class);
 
-    public static User extractUserData() {
+    public static UserEntity extractUserData() {
         try {
-            return (User) ScenarioContext.INSTANCE.getContext("user");
+            return (UserEntity) ScenarioContext.INSTANCE.getContext("user");
         } catch (RuntimeException ex) {
             throw new ExceptionUtils("User context not found");
         }
     }
 
     public static void assertGetUserProfile(Response response) {
-        User user = extractUserData();
+        UserEntity userEntity = extractUserData();
         JsonPath jsonPath = response.jsonPath();
 
         String responseFirstName = jsonPath.getString("firstName");
-        assertEquals(user.getFirstName(), responseFirstName);
-        log.info("Response firstname '{}' matches with test data '{}'", responseFirstName, user.getFirstName());
+        assertEquals(userEntity.getFirstName(), responseFirstName);
+        log.info("Response firstname '{}' matches with test data '{}'", responseFirstName, userEntity.getFirstName());
 
         String responseLastName = jsonPath.getString("lastName");
-        assertEquals(user.getLastName(), responseLastName);
-        log.info("Response lastname '{}' matches with test data '{}'", responseLastName, user.getLastName());
+        assertEquals(userEntity.getLastName(), responseLastName);
+        log.info("Response lastname '{}' matches with test data '{}'", responseLastName, userEntity.getLastName());
 
         String responseEmail = jsonPath.getString("email");
-        assertEquals(user.getEmail().toLowerCase(), responseEmail);
-        log.info("Response email '{}' matches with test data '{}'", responseEmail, user.getEmail().toLowerCase());
+        assertEquals(userEntity.getEmail().toLowerCase(), responseEmail);
+        log.info("Response email '{}' matches with test data '{}'", responseEmail, userEntity.getEmail().toLowerCase());
     }
 
     public static void assertNoAuthentication(Response response) {

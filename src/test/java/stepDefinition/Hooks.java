@@ -2,39 +2,35 @@ package stepDefinition;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import db.util.JPAUtil;
+import db.TestData;
 import io.cucumber.java.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import utils.JPAUtil;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
 
-    private static final Logger log = LogManager.getLogger(Hooks.class);
+    static TestData dbTestData = new TestData();
+    static TestDataGeneratorUtils generateUserDate = new TestDataGeneratorUtils();
 
     @BeforeAll
     public static void setUpBeforeAll() {
+        dbTestData.queryUpdateDatabase("DELETE FROM UserEntity");
         ReportPortalUtils.updatePropertiesTestLaunchName();
     }
 
-    @Before("@UI")
-    public void setUp(Scenario scenario) {
+    @Before()
+    public void beforeEachScenario(Scenario scenario) {
         ScenarioContext.INSTANCE.setScenario(scenario);
-        new TestDataGeneratorUtils().generateUserCredentials();
-        new TestDataGeneratorUtils().generateContactCredentials();
+        generateUserDate.generateUserCredentials();
+        generateUserDate.generateContactCredentials();
     }
 
     @Before("@DB")
-    public void setUpDatabase() {
-        try {
-            JPAUtil.getEntityManagerFactory().createEntityManager();
-            log.info("EntityManager was successfully initialized.");
-        } catch (Exception e) {
-            log.error("Error initializing EntityManager: " + e.getMessage());
-            throw e;
-        }
+    public void beforeEachDatabaseScenario() {
+        JPAUtil.getEntityManager();
+        dbTestData.valuesAddedToTheDb();
     }
 
     @After
@@ -43,13 +39,14 @@ public class Hooks {
     }
 
     @After("@UI")
-    public void afterEachScenario() {
+    public void afterEachUIScenario() {
         ReportPortalUtils.sendScreenshotToReportPortal();
-        WebDriverFactory.quitDriver();
     }
 
     @AfterAll
-    public static void afterAll() {
+    public static void tearDownAfterAll() {
+        WebDriverFactory.quitDriver();
+        ScenarioContext.INSTANCE.clearContext();
         JPAUtil.shutdownJpa();
     }
 }

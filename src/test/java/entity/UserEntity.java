@@ -1,11 +1,11 @@
-package db.entities;
+package entity;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class Members {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,10 +25,17 @@ public class Members {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Members() {
+    public UserEntity() {
     }
 
-    public Members(String firstName, String lastName, String email, String password, LocalDateTime createdAt) {
+    public UserEntity(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public UserEntity(String firstName, String lastName, String email, String password, LocalDateTime createdAt) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -38,6 +45,10 @@ public class Members {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public String getFirstName() {
@@ -54,10 +65,6 @@ public class Members {
 
     public String getPassword() {
         return password;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     public void setFirstName(String firstName) {

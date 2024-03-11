@@ -1,7 +1,7 @@
 package stepDefinition.UI;
 
 import context.ScenarioContext;
-import entity.Contact;
+import entity.ContactEntity;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,9 +29,9 @@ public class ContactsTest {
         this.contactDetailsPage = contactDetailsPage;
     }
 
-    public Contact extractContactData() {
+    public ContactEntity extractContactData() {
         try {
-            return (Contact) scenarioContext.getContext("contact");
+            return (ContactEntity) scenarioContext.getContext("contact");
         } catch (RuntimeException ex) {
             throw new ExceptionUtils("Contact Data could not be extracted");
         }
@@ -40,16 +40,16 @@ public class ContactsTest {
     @And("contact was created")
     public void contactWasCreated() {
         contactListPage.openAddContactPage();
-        Contact contact = extractContactData();
-        contactListPage.fillContactFields(contact);
+        ContactEntity contactEntity = extractContactData();
+        contactListPage.fillContactFields(contactEntity);
     }
 
     @Then("contact displaying in contact list")
     public void contactDisplayingInContactList() {
-        Contact contact = extractContactData();
+        ContactEntity contactEntity = extractContactData();
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
-        String searchText = contact.getFirstNameLastName();
+        String searchText = contactEntity.getFirstNameLastName();
         List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
         assertFalse(filteredRows.isEmpty());
@@ -57,17 +57,17 @@ public class ContactsTest {
 
     @When("contact was deleted")
     public void contactDeleted() {
-        Contact contact = extractContactData();
-        contactListPage.getContactFromTable(contact.getFirstNameLastName());
+        ContactEntity contactEntity = extractContactData();
+        contactListPage.getContactFromTable(contactEntity.getFirstNameLastName());
         contactDetailsPage.deleteContactAction();
     }
 
     @Then("contact is no longer in the list of contacts")
     public void contactIsNoLongerInTheListOfContacts() {
-        Contact contact = extractContactData();
+        ContactEntity contactEntity = extractContactData();
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
-        String searchText = contact.getFirstNameLastName();
+        String searchText = contactEntity.getFirstNameLastName();
         List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
         assertTrue(filteredRows.isEmpty());

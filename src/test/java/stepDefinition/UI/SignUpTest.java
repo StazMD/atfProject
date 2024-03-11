@@ -2,7 +2,8 @@ package stepDefinition.UI;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import entity.User;
+import db.TestData;
+import entity.UserEntity;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.apache.logging.log4j.LogManager;
@@ -18,19 +19,21 @@ public class SignUpTest {
     protected WebDriver driver;
     private final SignUpPage signUpPage;
     private final RestTest restTest;
+    private final TestData testData;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, RestTest restTest) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest, TestData testData) {
         this.signUpPage = signUpPage;
         this.restTest = restTest;
         this.driver = WebDriverFactory.getDriver();
+        this.testData = testData;
     }
 
-    public User extractUserData() {
+    public UserEntity extractUserData() {
         try {
-            return (User) scenarioContext.getContext("user");
+            return (UserEntity) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
             throw new ExceptionUtils("message");
         }
@@ -38,8 +41,8 @@ public class SignUpTest {
 
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
-        User user = extractUserData();
-        signUpPage.userFields(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        UserEntity userEntity = extractUserData();
+        signUpPage.userFields(userEntity.getFirstName(), userEntity.getLastName(), userEntity.getEmail(), userEntity.getPassword());
     }
 
     @And("new user was created")
@@ -47,26 +50,32 @@ public class SignUpTest {
         signUpPage.assertHeader("Contact List");
         restTest.aRequestToLoginWithUserSDetailsWasSent();
         restTest.getUserDetails();
+        testData.getUserEntityFromDatabase();
     }
 
     @And("{string} submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
-        User user = extractUserData();
+        UserEntity userEntity = extractUserData();
         switch (fieldName) {
             case "firstName":
-                user.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
+                userEntity.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
                 break;
             case "lastName":
-                user.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
+                userEntity.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
                 break;
             case "email":
-                user.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
+                userEntity.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
                 break;
             case "password":
-                user.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
+                userEntity.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
                 break;
         }
-        signUpPage.userFields(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        signUpPage.userFields(
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                userEntity.getPassword()
+        );
     }
 
     @Then("error is displaying")
@@ -75,9 +84,10 @@ public class SignUpTest {
         log.info("Error message '{}' is presented", errorMessage);
     }
 
-    @And("new user is not created")
-    public void newUserIsNotCreated() {
+    @And("new user with {string} is not created")
+    public void newUserIsNotCreated(String fieldName) {
         signUpPage.assertHeader("Add User");
         restTest.userNotAbleToLogin();
+        testData.assertThatUserWasNotCreated(fieldName);
     }
 }
