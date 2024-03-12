@@ -13,17 +13,15 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafaker.version>1.0.2</javafaker.version>
-        <selenium.version>4.17.0</selenium.version>
-        <webdrivermanager.version>5.6.3</webdrivermanager.version>
+        <selenium.version>4.18.1</selenium.version>
+        <webdrivermanager.version>5.7.0</webdrivermanager.version>
         <cucumber.version>7.15.0</cucumber.version>
         <cucumber-junit.version>7.15.0</cucumber-junit.version>
         <cucumber-picocontainer.version>7.15.0</cucumber-picocontainer.version>
         <slf4j.version>2.0.12</slf4j.version>
-        <log4j-core.version>2.22.1</log4j-core.version>
-        <log4j-api.version>2.22.1</log4j-api.version>
+        <log4j-core.version>2.23.1</log4j-core.version>
+        <log4j-api.version>2.23.1</log4j-api.version>
         <assertj.version>3.25.3</assertj.version>
-        <junit.version>5.10.2</junit.version>
-        <junit-platform.version>1.10.2</junit-platform.version>
         <awaitility.version>4.2.0</awaitility.version>
         <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
@@ -74,24 +72,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
             <version>${awaitility.version}</version>
             <!--<scope>test</scope>-->
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -126,6 +110,14 @@
         </dependency>
 
         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
@@ -156,8 +148,8 @@
             <version>${jakarta.persistence-api.version}</version>
         </dependency>
 
-
     </dependencies>
+
     <build>
         <plugins>
             <plugin>

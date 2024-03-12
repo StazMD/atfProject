@@ -1,8 +1,7 @@
-package stepDefinition.UI;
+package stepDefinition.ui;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import db.TestData;
 import entity.UserEntity;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -10,7 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
-import stepDefinition.API.RestTest;
+import stepDefinition.api.RestTest;
+import stepDefinition.db.dbTest;
 import utils.ExceptionUtils;
 import utils.TestDataGeneratorUtils;
 
@@ -19,16 +19,16 @@ public class SignUpTest {
     protected WebDriver driver;
     private final SignUpPage signUpPage;
     private final RestTest restTest;
-    private final TestData testData;
+    private final dbTest dbTest;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, RestTest restTest, TestData testData) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest, dbTest dbTest) {
         this.signUpPage = signUpPage;
         this.restTest = restTest;
         this.driver = WebDriverFactory.getDriver();
-        this.testData = testData;
+        this.dbTest = dbTest;
     }
 
     public UserEntity extractUserData() {
@@ -50,7 +50,7 @@ public class SignUpTest {
         signUpPage.assertHeader("Contact List");
         restTest.aRequestToLoginWithUserSDetailsWasSent();
         restTest.getUserDetails();
-        testData.getUserEntityFromDatabase();
+        dbTest.getUserEntityFromDatabase();
     }
 
     @And("{string} submitted with invalid data")
@@ -88,6 +88,6 @@ public class SignUpTest {
     public void newUserIsNotCreated(String fieldName) {
         signUpPage.assertHeader("Add User");
         restTest.userNotAbleToLogin();
-        testData.assertThatUserWasNotCreated(fieldName);
+        dbTest.assertThatUserWasNotCreated(fieldName);
     }
 }

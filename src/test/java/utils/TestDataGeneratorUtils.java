@@ -80,22 +80,13 @@ public class TestDataGeneratorUtils {
     }
 
     public static String getRandomCredentials(String field) {
-        switch (field) {
-            case "firstName":
-                getRandomFirstName();
-                break;
-            case "lastName":
-                getRandomLastName();
-                break;
-            case "email":
-                getRandomEmail();
-                break;
-            case "password":
-                getRandomPassword();
-                break;
-
-        }
-        return field;
+        return switch (field) {
+            case "firstName" -> getRandomFirstName();
+            case "lastName" -> getRandomLastName();
+            case "email" -> getRandomEmail();
+            case "password" -> getRandomPassword();
+            default -> field;
+        };
     }
 
     public void generateUserCredentials() {

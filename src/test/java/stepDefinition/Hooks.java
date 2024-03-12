@@ -2,25 +2,25 @@ package stepDefinition;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import db.TestData;
 import io.cucumber.java.*;
-import utils.JPAUtil;
+import stepDefinition.db.dbTest;
+import utils.EntityManagerUtil;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
 
-    static TestData dbTestData = new TestData();
+    static dbTest dbDbTest = new dbTest();
     static TestDataGeneratorUtils generateUserDate = new TestDataGeneratorUtils();
 
     @BeforeAll
     public static void setUpBeforeAll() {
-        dbTestData.queryUpdateDatabase("DELETE FROM UserEntity");
+        dbDbTest.queryUpdateDatabase("DELETE FROM UserEntity");
         ReportPortalUtils.updatePropertiesTestLaunchName();
     }
 
-    @Before()
+    @Before(order = 1)
     public void beforeEachScenario(Scenario scenario) {
         ScenarioContext.INSTANCE.setScenario(scenario);
         generateUserDate.generateUserCredentials();
@@ -29,8 +29,8 @@ public class Hooks {
 
     @Before("@DB")
     public void beforeEachDatabaseScenario() {
-        JPAUtil.getEntityManager();
-        dbTestData.valuesAddedToTheDb();
+        EntityManagerUtil.getEntityManager();
+        dbDbTest.valuesAddedToTheDb();
     }
 
     @After
@@ -47,6 +47,6 @@ public class Hooks {
     public static void tearDownAfterAll() {
         WebDriverFactory.quitDriver();
         ScenarioContext.INSTANCE.clearContext();
-        JPAUtil.shutdownJpa();
+        EntityManagerUtil.shutdownJpa();
     }
 }

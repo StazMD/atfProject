@@ -1,4 +1,4 @@
-package stepDefinition.API;
+package stepDefinition.api;
 
 import api.Assertions;
 import api.Requests;
@@ -55,18 +55,10 @@ public class RestTest {
 
                 String finalValue = value.startsWith("[random") ? TestDataGeneratorUtils.getRandomCredentials(requiredField) : value;
                 switch (requiredField) {
-                    case "firstName":
-                        userEntity.setFirstName(finalValue);
-                        break;
-                    case "lastName":
-                        userEntity.setLastName(finalValue);
-                        break;
-                    case "email":
-                        userEntity.setEmail(finalValue);
-                        break;
-                    case "password":
-                        userEntity.setPassword(finalValue);
-                        break;
+                    case "firstName" -> userEntity.setFirstName(finalValue);
+                    case "lastName" -> userEntity.setLastName(finalValue);
+                    case "email" -> userEntity.setEmail(finalValue);
+                    case "password" -> userEntity.setPassword(finalValue);
                 }
                 log.info("Set " + requiredField + ": " + finalValue);
             }
@@ -75,15 +67,21 @@ public class RestTest {
             log.debug("Set user data to scenario context");
 
             log.info("Finished processing user data.");
-
         }
     }
-
 
     @When("a request to create new user was sent")
     public void aRequestToCreateNewUserWasSent() {
         UserEntity userEntity = extractUserData();
-        String requestBody = String.format("{\"firstName\": \"%s\",\"lastName\": \"%s\",\"email\": \"%s\",\"password\": \"%s\"}", userEntity.getFirstName(), userEntity.getLastName(), userEntity.getEmail(), userEntity.getPassword());
+        String requestBody = String.format("{" +
+                        "\"firstName\": \"%s\"," +
+                        "\"lastName\": \"%s\"," +
+                        "\"email\": \"%s\"," +
+                        "\"password\": \"%s\"}",
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                userEntity.getPassword());
 
         Response response = Requests.postRequest("/users", requestBody, 201);
         String token = response.jsonPath().getString("token");

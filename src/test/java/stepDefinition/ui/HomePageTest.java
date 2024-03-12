@@ -1,4 +1,4 @@
-package stepDefinition.UI;
+package stepDefinition.ui;
 
 import config.PropertyReader;
 import config.WebDriverFactory;

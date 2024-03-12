@@ -17,8 +17,7 @@ public class PropertyReader {
     private PropertyReader() {
     }
 
-    //TODO find out what synchronized stands for
-    private static synchronized void loadProperties() {
+    private static void loadProperties() {
         if (properties == null) {
             properties = new Properties();
             try (InputStream input = new FileInputStream(APPLICATION_FILE_PATH)) {

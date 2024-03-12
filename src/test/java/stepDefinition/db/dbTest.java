@@ -1,4 +1,4 @@
-package db;
+package stepDefinition.db;
 
 import context.ScenarioContext;
 import entity.UserEntity;
@@ -8,21 +8,21 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.EntityManagerUtil;
 import utils.ExceptionUtils;
-import utils.JPAUtil;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestData {
+public class dbTest {
 
-    private static final Logger log = LogManager.getLogger(TestData.class);
-    private static EntityManager em;
-    private static final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
+    private final Logger log = LogManager.getLogger(dbTest.class);
+    private final EntityManager em;
+    private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public TestData() {
-        em = JPAUtil.getEntityManagerFactory().createEntityManager();
+    public dbTest() {
+        em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
     }
 
     private UserEntity extractUserData() {
@@ -56,14 +56,15 @@ public class TestData {
         if (retrievedEntity == null) {
             throw new EntityNotFoundException("User Entity with ID " + userEntity.getId() + " not found");
         }
-        assertEquals(userEntity.getFirstName(), retrievedEntity.getFirstName());
-        assertEquals(userEntity.getLastName(), retrievedEntity.getLastName());
-        assertEquals(userEntity.getEmail(), retrievedEntity.getEmail());
+        assertThat(userEntity.getFirstName()).isEqualTo(retrievedEntity.getFirstName());
+        assertThat(userEntity.getLastName()).isEqualTo(retrievedEntity.getLastName());
+        assertThat(userEntity.getEmail()).isEqualTo(retrievedEntity.getEmail());
         log.info("Entity verified");
     }
 
     public void assertThatUserWasNotCreated(String fieldName) {
         UserEntity userEntity = extractUserData();
+
         em.getTransaction().begin();
         String queryStr = String.format("SELECT COUNT(u) FROM UserEntity u WHERE u.%s = :%s", fieldName, fieldName);
         Query query = em.createQuery(queryStr);

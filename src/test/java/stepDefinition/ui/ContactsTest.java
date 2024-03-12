@@ -1,4 +1,4 @@
-package stepDefinition.UI;
+package stepDefinition.ui;
 
 import context.ScenarioContext;
 import entity.ContactEntity;
@@ -14,8 +14,7 @@ import utils.ExceptionUtils;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ContactsTest {
 
@@ -52,7 +51,7 @@ public class ContactsTest {
         String searchText = contactEntity.getFirstNameLastName();
         List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
-        assertFalse(filteredRows.isEmpty());
+        assertThat(filteredRows).isNotEmpty();
     }
 
     @When("contact was deleted")
@@ -70,6 +69,6 @@ public class ContactsTest {
         String searchText = contactEntity.getFirstNameLastName();
         List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
-        assertTrue(filteredRows.isEmpty());
+        assertThat(filteredRows).isEmpty();
     }
 }

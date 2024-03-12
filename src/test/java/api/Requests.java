@@ -33,8 +33,8 @@ public class Requests {
                 .extract().response();
     }
 
-    public static Response patchRequest(String path, String requestBody, int statusCode) {
-        return given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
+    public static void patchRequest(String path, String requestBody, int statusCode) {
+        given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()

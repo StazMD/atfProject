@@ -3,13 +3,14 @@ package pages;
 import config.WebDriverFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.WaitUtils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO read about abstract classes
 public abstract class BasePage {
@@ -29,8 +30,12 @@ public abstract class BasePage {
     }
 
     public void submitButton() {
-        WaitUtils.waitForButton(submitButton).click();
-        log.info("[{}] button was clicked", submitButton.getText());
+        log.info("Clicking [{}] button...", submitButton.getText());
+        try {
+            WaitUtils.waitForButton(submitButton).click();
+        } catch (RuntimeException ex) {
+            throw new NoSuchElementException(ex.getMessage());
+        }
     }
 
     public WebElement getHeaderElement() {
@@ -39,7 +44,7 @@ public abstract class BasePage {
 
     public void assertHeader(String headerText) {
         WaitUtils.waitForTextInElement(getHeaderElement(), headerText);
-        assertEquals(headerText, getHeaderElement().getText());
+        assertThat(headerText).isEqualTo(getHeaderElement().getText());
         log.info("'" + headerText + "' header is displaying");
     }
 }

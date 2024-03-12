@@ -1,6 +1,5 @@
 package context;
 
-import config.PropertyReader;
 import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,8 +12,8 @@ public enum ScenarioContext {
     INSTANCE;
 
     private final Map<String, Object> contextData;
-    private static Scenario scenario;
-    private static final Logger log = LogManager.getLogger(PropertyReader.class);
+    private Scenario scenario;
+    private final Logger log = LogManager.getLogger(ScenarioContext.class);
 
     ScenarioContext() {
         contextData = new HashMap<>();
