@@ -1,6 +1,6 @@
 package entity;
 
-public class Contact {
+public class ContactEntity {
     private String firstName;
     private String lastName;
     private String birthdate;
@@ -12,12 +12,11 @@ public class Contact {
     private String stateProvince;
     private String postalCode;
     private String country;
-    private String firstNameLastName;
 
-    public Contact() {
+    public ContactEntity() {
     }
 
-    public Contact(String firstName, String lastName, String birthdate, String email, String phone, String street1, String street2, String city, String stateProvince, String postalCode, String country) {
+    public ContactEntity(String firstName, String lastName, String birthdate, String email, String phone, String street1, String street2, String city, String stateProvince, String postalCode, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdate = birthdate;

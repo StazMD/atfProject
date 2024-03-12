@@ -2,25 +2,35 @@ package stepDefinition;
 
 import config.WebDriverFactory;
 import context.ScenarioContext;
-import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.*;
+import stepDefinition.db.dbTest;
+import utils.EntityManagerUtil;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
 
+    static dbTest dbDbTest = new dbTest();
+    static TestDataGeneratorUtils generateUserDate = new TestDataGeneratorUtils();
+
     @BeforeAll
     public static void setUpBeforeAll() {
+        dbDbTest.queryUpdateDatabase("DELETE FROM UserEntity");
         ReportPortalUtils.updatePropertiesTestLaunchName();
     }
 
-    @Before("@UI")
-    public void setUp() {
-        new TestDataGeneratorUtils().generateUserCredentials();
-        new TestDataGeneratorUtils().generateContactCredentials();
+    @Before(order = 1)
+    public void beforeEachScenario(Scenario scenario) {
+        ScenarioContext.INSTANCE.setScenario(scenario);
+        generateUserDate.generateUserCredentials();
+        generateUserDate.generateContactCredentials();
+    }
+
+    @Before("@DB")
+    public void beforeEachDatabaseScenario() {
+        EntityManagerUtil.getEntityManager();
+        dbDbTest.valuesAddedToTheDb();
     }
 
     @After
@@ -29,13 +39,14 @@ public class Hooks {
     }
 
     @After("@UI")
-    public void afterEachScenario() {
+    public void afterEachUIScenario() {
         ReportPortalUtils.sendScreenshotToReportPortal();
-        WebDriverFactory.quitDriver();
     }
 
     @AfterAll
-    public static void afterAll() {
-
+    public static void tearDownAfterAll() {
+        WebDriverFactory.quitDriver();
+        ScenarioContext.INSTANCE.clearContext();
+        EntityManagerUtil.shutdownJpa();
     }
 }

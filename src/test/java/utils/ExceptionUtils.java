@@ -10,4 +10,5 @@ public class ExceptionUtils extends RuntimeException {
     private void takeScreenshot() {
         ReportPortalUtils.sendScreenshotToReportPortal();
     }
+    
 }

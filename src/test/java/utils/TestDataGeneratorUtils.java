@@ -2,8 +2,8 @@ package utils;
 
 import com.github.javafaker.Faker;
 import context.ScenarioContext;
-import entity.Contact;
-import entity.User;
+import entity.ContactEntity;
+import entity.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,19 +79,29 @@ public class TestDataGeneratorUtils {
         return faker.address().country();
     }
 
+    public static String getRandomCredentials(String field) {
+        return switch (field) {
+            case "firstName" -> getRandomFirstName();
+            case "lastName" -> getRandomLastName();
+            case "email" -> getRandomEmail();
+            case "password" -> getRandomPassword();
+            default -> field;
+        };
+    }
+
     public void generateUserCredentials() {
-        User user = new User(
+        UserEntity userEntity = new UserEntity(
                 getRandomFirstName(),
                 getRandomLastName(),
                 getRandomEmail(),
                 getRandomPassword()
         );
-        ScenarioContext.INSTANCE.setContext("user", user);
+        ScenarioContext.INSTANCE.setContext("user", userEntity);
         log.info("User credentials generated successfully");
     }
 
     public void generateContactCredentials() {
-        Contact contact = new Contact(
+        ContactEntity contactEntity = new ContactEntity(
                 getRandomFirstName(),
                 getRandomLastName(),
                 getRandomBirthdate(),
@@ -104,7 +114,7 @@ public class TestDataGeneratorUtils {
                 getRandomPostalCode(),
                 getRandomCountry()
         );
-        ScenarioContext.INSTANCE.setContext("contact", contact);
+        ScenarioContext.INSTANCE.setContext("contact", contactEntity);
         log.info("Contact credentials generated successfully");
     }
 }

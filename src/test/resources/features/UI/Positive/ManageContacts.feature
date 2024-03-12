@@ -1,4 +1,4 @@
-@UI @Contact
+@UI
 Feature: Manage Users Contacts
 
   Background: Opening Main Page

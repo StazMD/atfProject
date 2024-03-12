@@ -9,6 +9,6 @@ Feature: Create User Via API
     Then user was successfully created
 
     Examples:
-      | firstName         | lastName         | email                  | password         |
-      | [randomFirstName] | [randomLastName] | [randomEmail]          | [randomPassword] |
-      | Ion               | IAonascu         | Ion.IAonascu@email.com | ion.gutuion.gutu |
+      | firstName         | lastName         | email         | password         |
+      | [randomFirstName] | [randomLastName] | [randomEmail] | [randomPassword] |
+#      | Ion               | IAonascu         | Ion.Iooon1ascu@email.com | ion.gutuion.gutu |

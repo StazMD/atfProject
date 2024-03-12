@@ -10,7 +10,7 @@ public class SignUpPage extends BasePage {
 
     private static final Logger log = LogManager.getLogger(ContactDetailsPage.class);
 
-    @FindBy(xpath = "//h1[text()='Add User']")
+    @FindBy(xpath = "//h1")
     private WebElement signUpPageHeader;
 
     @FindBy(id = "firstName")

@@ -1,6 +1,6 @@
 package pages;
 
-import entity.Contact;
+import entity.ContactEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -14,7 +14,7 @@ public class ContactListPage extends BasePage {
 
     private static final Logger log = LogManager.getLogger(ContactListPage.class);
 
-    @FindBy(xpath = "//h1[text()='Contact List']")
+    @FindBy(xpath = "//h1")
     private WebElement contactListPageHeader;
 
     @FindBy(xpath = "//button[@id='add-contact']")
@@ -63,18 +63,18 @@ public class ContactListPage extends BasePage {
         WaitUtils.waitForButton(addContactButton).click();
     }
 
-    public void fillContactFields(Contact contact) {
-        WaitUtils.waitForElement(firstNameElement).sendKeys(contact.getFirstName());
-        WaitUtils.waitForElement(lastNameElement).sendKeys(contact.getLastName());
-        WaitUtils.waitForElement(birthdateElement).sendKeys(contact.getBirthdate());
-        WaitUtils.waitForElement(emailElement).sendKeys(contact.getEmail());
-        WaitUtils.waitForElement(phoneElement).sendKeys(contact.getPhone());
-        WaitUtils.waitForElement(street1Element).sendKeys(contact.getStreet1());
-        WaitUtils.waitForElement(street2Element).sendKeys(contact.getStreet2());
-        WaitUtils.waitForElement(cityElement).sendKeys(contact.getCity());
-        WaitUtils.waitForElement(stateProvinceElement).sendKeys(contact.getStateProvince());
-        WaitUtils.waitForElement(postalCodeElement).sendKeys(contact.getPostalCode());
-        WaitUtils.waitForElement(countryElement).sendKeys(contact.getCountry());
+    public void fillContactFields(ContactEntity contactEntity) {
+        WaitUtils.waitForElement(firstNameElement).sendKeys(contactEntity.getFirstName());
+        WaitUtils.waitForElement(lastNameElement).sendKeys(contactEntity.getLastName());
+        WaitUtils.waitForElement(birthdateElement).sendKeys(contactEntity.getBirthdate());
+        WaitUtils.waitForElement(emailElement).sendKeys(contactEntity.getEmail());
+        WaitUtils.waitForElement(phoneElement).sendKeys(contactEntity.getPhone());
+        WaitUtils.waitForElement(street1Element).sendKeys(contactEntity.getStreet1());
+        WaitUtils.waitForElement(street2Element).sendKeys(contactEntity.getStreet2());
+        WaitUtils.waitForElement(cityElement).sendKeys(contactEntity.getCity());
+        WaitUtils.waitForElement(stateProvinceElement).sendKeys(contactEntity.getStateProvince());
+        WaitUtils.waitForElement(postalCodeElement).sendKeys(contactEntity.getPostalCode());
+        WaitUtils.waitForElement(countryElement).sendKeys(contactEntity.getCountry());
 
         submitButton();
     }

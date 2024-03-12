@@ -1,6 +1,7 @@
 package utils;
 
 import com.epam.reportportal.service.ReportPortal;
+import context.ScenarioContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +13,12 @@ import java.util.Properties;
 
 public class ReportPortalUtils {
     private static final Logger log = LogManager.getLogger(ReportPortalUtils.class);
+    private final static ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
     public static void updatePropertiesTestLaunchName() {
         String path = "src/test/resources/reportportal.properties";
         Properties properties = new Properties();
+        log.info("Loading reportportal.properties");
 
         try (FileInputStream in = new FileInputStream(path)) {
             properties.load(in);
@@ -35,9 +38,10 @@ public class ReportPortalUtils {
     }
 
     public static void sendScreenshotToReportPortal() {
+        log.info("Sending screenshot to ReportPortal");
         try {
-            log.info("Sending screenshot to ReportPortal");
-            ReportPortal.emitLog("Screenshot Name", "INFO", new Date(), ScreenshotUtils.takeScenarioScreenshot());
+            ReportPortal.emitLog(scenarioContext.getScenario().getName(), "INFO", new Date(), ScreenshotUtils.takeScenarioScreenshot());
+            log.info("Screenshot was sent");
         } catch (Exception ex) {
             log.error("Failed to send screenshot to ReportPortal: {}", ex.getMessage());
         }
