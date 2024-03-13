@@ -30,33 +30,40 @@ public class ContactsTest {
 
     public ContactEntity extractContactData() {
         try {
+            log.debug("Attempting to extract contact data from scenario context");
             return (ContactEntity) scenarioContext.getContext("contact");
         } catch (RuntimeException ex) {
+            log.error("Failed to extract contact data from scenario context", ex);
             throw new ExceptionUtils("Contact Data could not be extracted");
         }
     }
 
     @And("contact was created")
     public void contactWasCreated() {
+        log.info("Opening Add Contact Page");
         contactListPage.openAddContactPage();
         ContactEntity contactEntity = extractContactData();
+        log.info("Filling contact fields for '{}'", contactEntity.getFirstNameLastName());
         contactListPage.fillContactFields(contactEntity);
     }
 
     @Then("contact displaying in contact list")
     public void contactDisplayingInContactList() {
         ContactEntity contactEntity = extractContactData();
+        log.info("Checking if contact '{}' is displaying in contact list", contactEntity.getFirstNameLastName());
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contactEntity.getFirstNameLastName();
         List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
         assertThat(filteredRows).isNotEmpty();
+        log.info("Contact '{}' successfully found in contact list", searchText);
     }
 
     @When("contact was deleted")
     public void contactDeleted() {
         ContactEntity contactEntity = extractContactData();
+        log.info("Deleting contact '{}'", contactEntity.getFirstNameLastName());
         contactListPage.getContactFromTable(contactEntity.getFirstNameLastName());
         contactDetailsPage.deleteContactAction();
     }
@@ -64,11 +71,13 @@ public class ContactsTest {
     @Then("contact is no longer in the list of contacts")
     public void contactIsNoLongerInTheListOfContacts() {
         ContactEntity contactEntity = extractContactData();
+        log.info("Verifying that contact '{}' is no longer in the list of contacts", contactEntity.getFirstNameLastName());
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contactEntity.getFirstNameLastName();
         List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
 
         assertThat(filteredRows).isEmpty();
+        log.info("Contact '{}' is successfully removed from contact list", searchText);
     }
 }

@@ -7,8 +7,13 @@ public class ExceptionUtils extends RuntimeException {
         takeScreenshot();
     }
 
+    public ExceptionUtils(String message, Throwable cause) {
+        super(message, cause);
+        takeScreenshot();
+    }
+
     private void takeScreenshot() {
         ReportPortalUtils.sendScreenshotToReportPortal();
     }
-    
+
 }

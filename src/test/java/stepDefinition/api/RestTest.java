@@ -24,7 +24,6 @@ public class RestTest {
     private static final ScenarioContext scenarioContext;
     private static final Logger log = LogManager.getLogger(RestTest.class);
 
-    //TODO why static in {}?
     static {
         scenarioContext = ScenarioContext.INSTANCE;
     }
@@ -82,7 +81,7 @@ public class RestTest {
                 userEntity.getLastName(),
                 userEntity.getEmail(),
                 userEntity.getPassword());
-
+        //POJO?
         Response response = Requests.postRequest("/users", requestBody, 201);
         String token = response.jsonPath().getString("token");
         scenarioContext.setContext("token", token);

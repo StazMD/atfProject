@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class dbTest {
+public class DbTest {
 
-    private final Logger log = LogManager.getLogger(dbTest.class);
+    private final Logger log = LogManager.getLogger(DbTest.class);
     private final EntityManager em;
     private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public dbTest() {
+    public DbTest() {
         em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
     }
 

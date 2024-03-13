@@ -18,7 +18,6 @@ public class WaitUtils {
     private static final Logger log = LogManager.getLogger(WaitUtils.class);
     private static final WebDriver driver = WebDriverFactory.getDriver();
 
-    //TODO reverse waiter?
     public static WebElement waitForElement(WebElement element) {
         log.debug("Waiting for visibility of element: " + element.toString());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
@@ -41,7 +40,6 @@ public class WaitUtils {
         }
     }
 
-    //TODO: return?
     public static WebElement waitForButton(WebElement button) {
         WebElement visibleButton = waitForElement(button);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));

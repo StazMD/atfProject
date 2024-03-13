@@ -13,9 +13,6 @@ public class ContactEntity {
     private String postalCode;
     private String country;
 
-    public ContactEntity() {
-    }
-
     public ContactEntity(String firstName, String lastName, String birthdate, String email, String phone, String street1, String street2, String city, String stateProvince, String postalCode, String country) {
         this.firstName = firstName;
         this.lastName = lastName;

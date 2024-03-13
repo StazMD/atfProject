@@ -31,7 +31,7 @@ public class ScreenshotUtils {
             return destFile;
         } catch (IOException ex) {
             ex.printStackTrace();
-            log.warn("Failed to take screenshot");
+            log.error("Failed to take screenshot");
             return null;
         }
     }

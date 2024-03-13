@@ -3,7 +3,9 @@ package stepDefinition;
 import config.WebDriverFactory;
 import context.ScenarioContext;
 import io.cucumber.java.*;
-import stepDefinition.db.dbTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import stepDefinition.db.DbTest;
 import utils.EntityManagerUtil;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
@@ -11,8 +13,9 @@ import utils.TestDataGeneratorUtils;
 
 public class Hooks {
 
-    static dbTest dbDbTest = new dbTest();
+    static DbTest dbDbTest = new DbTest();
     static TestDataGeneratorUtils generateUserDate = new TestDataGeneratorUtils();
+    private static final Logger log = LogManager.getLogger(Hooks.class);
 
     @BeforeAll
     public static void setUpBeforeAll() {
@@ -23,6 +26,7 @@ public class Hooks {
     @Before(order = 1)
     public void beforeEachScenario(Scenario scenario) {
         ScenarioContext.INSTANCE.setScenario(scenario);
+        log.info("Scenario '{}' started.", scenario.getName());
         generateUserDate.generateUserCredentials();
         generateUserDate.generateContactCredentials();
     }

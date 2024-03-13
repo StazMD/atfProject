@@ -12,15 +12,12 @@ import utils.WaitUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//TODO read about abstract classes
 public abstract class BasePage {
 
     private static final Logger log = LogManager.getLogger(BasePage.class);
 
     protected WebDriver driver;
-    //TODO what is the difference when logger is in every class or only in one class
 
-    //TODO wtf Annotations?
     @FindBy(xpath = "//button[@id='submit']")
     private WebElement submitButton;
 
@@ -29,12 +26,12 @@ public abstract class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public void submitButton() {
+    public void clickSubmitButton() {
         log.info("Clicking [{}] button...", submitButton.getText());
         try {
             WaitUtils.waitForButton(submitButton).click();
         } catch (RuntimeException ex) {
-            throw new NoSuchElementException(ex.getMessage());
+            throw new NoSuchElementException(ex.getMessage()); //TODO use custom exception
         }
     }
 

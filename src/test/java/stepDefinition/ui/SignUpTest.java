@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
 import stepDefinition.api.RestTest;
-import stepDefinition.db.dbTest;
+import stepDefinition.db.DbTest;
 import utils.ExceptionUtils;
 import utils.TestDataGeneratorUtils;
 
@@ -19,12 +19,12 @@ public class SignUpTest {
     protected WebDriver driver;
     private final SignUpPage signUpPage;
     private final RestTest restTest;
-    private final dbTest dbTest;
+    private final DbTest dbTest;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, RestTest restTest, dbTest dbTest) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest, DbTest dbTest) {
         this.signUpPage = signUpPage;
         this.restTest = restTest;
         this.driver = WebDriverFactory.getDriver();
@@ -53,7 +53,7 @@ public class SignUpTest {
         dbTest.getUserEntityFromDatabase();
     }
 
-    @And("{string} submitted with invalid data")
+    @And("{string} submitted with invalid data") //TODO handle unexisting switch case
     public void fieldSubmittedWithInvalidData(String fieldName) {
         UserEntity userEntity = extractUserData();
         switch (fieldName) {
@@ -81,7 +81,7 @@ public class SignUpTest {
     @Then("error is displaying")
     public void errorIsAppearing() {
         String errorMessage = signUpPage.errorText();
-        log.info("Error message '{}' is presented", errorMessage);
+        log.info("Error message '{}' is presented", errorMessage); //TODO assert element contains expected test
     }
 
     @And("new user with {string} is not created")

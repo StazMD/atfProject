@@ -1,8 +1,6 @@
 package pages;
 
 import entity.ContactEntity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,8 +9,6 @@ import utils.WaitUtils;
 import java.util.List;
 
 public class ContactListPage extends BasePage {
-
-    private static final Logger log = LogManager.getLogger(ContactListPage.class);
 
     @FindBy(xpath = "//h1")
     private WebElement contactListPageHeader;
@@ -76,7 +72,7 @@ public class ContactListPage extends BasePage {
         WaitUtils.waitForElement(postalCodeElement).sendKeys(contactEntity.getPostalCode());
         WaitUtils.waitForElement(countryElement).sendKeys(contactEntity.getCountry());
 
-        submitButton();
+        clickSubmitButton();
     }
 
     public void getContactFromTable(String firstNameLastName) {
