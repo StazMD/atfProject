@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
 import stepDefinition.api.RestTest;
 import stepDefinition.db.DbTest;
-import utils.ExceptionUtils;
+import utils.CustomException;
 import utils.TestDataGeneratorUtils;
 
 public class SignUpTest {
@@ -35,7 +35,7 @@ public class SignUpTest {
         try {
             return (UserEntity) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
-            throw new ExceptionUtils("message");
+            throw new CustomException(ex.getMessage());
         }
     }
 
@@ -55,10 +55,12 @@ public class SignUpTest {
 
     @And("{string} submitted with invalid data") //TODO handle unexisting switch case
     public void fieldSubmittedWithInvalidData(String fieldName) {
-        UserEntity userEntity = extractUserData();
+        UserEntity userEntity = new UserEntity(extractUserData());
+        log.info("User entity:" + extractUserData());
         switch (fieldName) {
             case "firstName":
                 userEntity.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
+                //TODO to not write in SC invalid data
                 break;
             case "lastName":
                 userEntity.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
@@ -70,12 +72,15 @@ public class SignUpTest {
                 userEntity.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
                 break;
         }
+
         signUpPage.userFields(
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
                 userEntity.getEmail(),
                 userEntity.getPassword()
         );
+        log.info("User entity:" + extractUserData());
+
     }
 
     @Then("error is displaying")

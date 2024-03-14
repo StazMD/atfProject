@@ -28,6 +28,14 @@ public class UserEntity {
     public UserEntity() {
     }
 
+    public UserEntity(UserEntity user) {
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.email = user.email;
+        this.password = user.password;
+
+    }
+
     public UserEntity(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,6 +50,7 @@ public class UserEntity {
         this.password = password;
         this.createdAt = createdAt;
     }
+
 
     public Long getId() {
         return id;
@@ -85,5 +94,16 @@ public class UserEntity {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import pages.ContactDetailsPage;
 import pages.ContactListPage;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ContactsTest {
             return (ContactEntity) scenarioContext.getContext("contact");
         } catch (RuntimeException ex) {
             log.error("Failed to extract contact data from scenario context", ex);
-            throw new ExceptionUtils("Contact Data could not be extracted");
+            throw new CustomException("Contact Data could not be extracted", true);
         }
     }
 

@@ -3,7 +3,7 @@ package context;
 import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public enum ScenarioContext {
     public Object getContext(String key) {
         if (!contextData.containsKey(key)) {
             log.error("Context for key '{}' not found", key);
-            throw new ExceptionUtils("Context for key '" + key + "' not found");
+            throw new CustomException("Context for key '" + key + "' not found");
         }
         return contextData.get(key);
     }

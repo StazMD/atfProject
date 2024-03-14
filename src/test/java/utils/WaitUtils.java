@@ -21,22 +21,16 @@ public class WaitUtils {
     public static WebElement waitForElement(WebElement element) {
         log.debug("Waiting for visibility of element: " + element.toString());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-        try {
-            WebElement visibleElement = wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
-            log.info("Element is visible: " + element);
-            return visibleElement;
-        } catch (TimeoutException ex) {
-            log.error("Element is not visible after " + timeout + " seconds: " + element);
-            throw ex;
-        }
+        log.info("Element is visible: " + element);
+        return wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
     }
 
     public static void waitForTextInElement(WebElement element, String expectedText) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
             wait.until(driver -> element.getText().equals(expectedText));
-        } catch (Exception ex) {
-            throw new ExceptionUtils(String.format("Actual text '%s' does not match the expected text: '%s'", element.getText(), expectedText));
+        } catch (TimeoutException ex) {
+            throw new CustomException(String.format("Actual text '%s' does not match the expected text: '%s'", element.getText(), expectedText), true);
         }
     }
 

@@ -19,7 +19,6 @@ public class Hooks {
 
     @BeforeAll
     public static void setUpBeforeAll() {
-        dbDbTest.queryUpdateDatabase("DELETE FROM UserEntity");
         ReportPortalUtils.updatePropertiesTestLaunchName();
     }
 
@@ -33,6 +32,7 @@ public class Hooks {
 
     @Before("@DB")
     public void beforeEachDatabaseScenario() {
+        dbDbTest.queryUpdateDatabase("DELETE FROM UserEntity");
         EntityManagerUtil.getEntityManager();
         dbDbTest.valuesAddedToTheDb();
     }

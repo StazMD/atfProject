@@ -8,8 +8,8 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.CustomException;
 import utils.EntityManagerUtil;
-import utils.ExceptionUtils;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +29,7 @@ public class DbTest {
         try {
             return (UserEntity) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
-            throw new ExceptionUtils("User context failed to extract");
+            throw new CustomException("User context failed to extract");
         }
     }
 

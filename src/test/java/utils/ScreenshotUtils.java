@@ -30,9 +30,8 @@ public class ScreenshotUtils {
             FileUtils.copyFile(scrFile, destFile);
             return destFile;
         } catch (IOException ex) {
-            ex.printStackTrace();
             log.error("Failed to take screenshot");
-            return null;
+            throw new CustomException(ex.getMessage());
         }
     }
 }

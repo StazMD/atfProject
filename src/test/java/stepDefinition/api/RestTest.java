@@ -12,7 +12,7 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ExceptionUtils;
+import utils.CustomException;
 import utils.TestDataGeneratorUtils;
 
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class RestTest {
         try {
             return (UserEntity) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
-            throw new ExceptionUtils("User context failed to extract");
+            throw new CustomException("User context failed to extract");
         }
     }
 
@@ -49,7 +49,7 @@ public class RestTest {
             for (String requiredField : requiredFields) {
                 String value = userCredential.get(requiredField);
                 if (value == null) {
-                    throw new ExceptionUtils("Updated credentials should not be empty");
+                    throw new CustomException("Updated credentials should not be empty");
                 }
 
                 String finalValue = value.startsWith("[random") ? TestDataGeneratorUtils.getRandomCredentials(requiredField) : value;
@@ -81,7 +81,7 @@ public class RestTest {
                 userEntity.getLastName(),
                 userEntity.getEmail(),
                 userEntity.getPassword());
-        //POJO?
+        //JSONObject -> .toString
         Response response = Requests.postRequest("/users", requestBody, 201);
         String token = response.jsonPath().getString("token");
         scenarioContext.setContext("token", token);
@@ -101,7 +101,7 @@ public class RestTest {
             UserEntity userEntity = new UserEntity();
 
             if (userCredential.get("firstName") == null || userCredential.get("lastName") == null || userCredential.get("email") == null || userCredential.get("password") == null) {
-                throw new ExceptionUtils("Credentials should not be empty");
+                throw new CustomException("Credentials should not be empty");
             }
 
             String firstName = userCredential.get("firstName");

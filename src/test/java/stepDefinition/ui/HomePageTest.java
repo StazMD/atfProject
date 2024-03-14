@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 public class HomePageTest {
 
@@ -36,7 +36,7 @@ public class HomePageTest {
             log.debug("Add User page opened successfully");
         } catch (Exception ex) {
             log.error("Failed to open Add User page", ex);
-            throw new ExceptionUtils("Failed to open Add User page: " + ex.getMessage(), ex);
+            throw new CustomException("Failed to open Add User page: " + ex.getMessage(), true);
         }
     }
 

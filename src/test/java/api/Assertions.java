@@ -6,7 +6,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +17,7 @@ public class Assertions {
         try {
             return (UserEntity) ScenarioContext.INSTANCE.getContext("user");
         } catch (RuntimeException ex) {
-            throw new ExceptionUtils("User context not found");
+            throw new CustomException("User context not found");
         }
     }
 

@@ -10,7 +10,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 public class WebDriverFactory {
 
@@ -26,8 +26,8 @@ public class WebDriverFactory {
                 case "chrome" -> getChromeDriver();
                 case "firefox" -> getFirefoxDriver();
                 case "edge" -> getEdgeDriver();
-                default -> throw new ExceptionUtils("Unsupported browser: " + browserType);
-            } //TODO properly handle default driver
+                default -> throw new CustomException("Unsupported browser: " + browserType);
+            }
 
             driver.manage().window().maximize();
             log.debug("Browser window maximized");
@@ -50,7 +50,7 @@ public class WebDriverFactory {
             driver = new ChromeDriver(chromeOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new ExceptionUtils("Error initializing WebDriver");
+            throw new CustomException("Error initializing WebDriver");
         }
     }
 
@@ -67,7 +67,7 @@ public class WebDriverFactory {
             driver = new FirefoxDriver(firefoxOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new ExceptionUtils("Error initializing WebDriver");
+            throw new CustomException("Error initializing WebDriver");
         }
     }
 
@@ -84,7 +84,7 @@ public class WebDriverFactory {
             driver = new EdgeDriver(edgeOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new ExceptionUtils("Error initializing WebDriver");
+            throw new CustomException("Error initializing WebDriver");
         }
     }
 
