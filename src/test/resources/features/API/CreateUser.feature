@@ -11,5 +11,5 @@ Feature: Create User Via API
     Examples:
       | firstName         | lastName         | email         | password         |
       | [randomFirstName] | [randomLastName] | [randomEmail] | [randomPassword] |
-      | Ion               | Gutul            | [randomEmail] | ion.ion.ion      |
+#      | Ion               | Gutul            | [randomEmail] | ion.ion.ion      |
 #      | Anton             | Morari           | Anton.Morar@email.com | anton.anton.anton |

@@ -19,10 +19,7 @@ public class ScreenshotUtils {
     private static final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
     public static File takeScenarioScreenshot() {
-        String screenshotName = scenarioContext
-                .getScenario()
-                .getName()
-                .replaceAll("\\s+", "") + System.currentTimeMillis() + ".png";
+        String screenshotName = scenarioContext.getScenario().getName().replaceAll("\\s+", "") + System.currentTimeMillis() + ".png";
         try {
             File scrFile = ((TakesScreenshot) WebDriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
             File destFile = new File(screenshotsFilePath + screenshotName);

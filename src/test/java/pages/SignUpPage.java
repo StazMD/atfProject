@@ -29,7 +29,6 @@ public class SignUpPage extends BasePage {
         WaitUtils.waitForElement(lastNameElement).sendKeys(lastName);
         WaitUtils.waitForElement(emailElement).sendKeys(email);
         WaitUtils.waitForElement(passwordElement).sendKeys(password);
-
         clickSubmitButton();
     }
 

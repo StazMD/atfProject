@@ -47,7 +47,6 @@ public class Assertions {
 
     public static void assertNoAuthentication(Response response) {
         int jsonPath = response.getStatusCode();
-
         log.info("Verifying that user not authenticated");
         assertThat(jsonPath).isEqualTo(401);
     }

@@ -45,7 +45,7 @@ public class DbTest {
         } catch (PersistenceException ex) {
             em.getTransaction().rollback();
             log.error("Reverted transaction due to persistence error", ex);
-            throw ex;
+            throw new CustomException(ex.getMessage());
         }
     }
 

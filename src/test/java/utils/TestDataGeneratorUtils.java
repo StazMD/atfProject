@@ -6,7 +6,6 @@ import entity.ContactEntity;
 import entity.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 
@@ -80,7 +79,7 @@ public class TestDataGeneratorUtils {
         return faker.address().country();
     }
 
-    public static String getRandomCredentials(@NotNull String field) {
+    public static String getRandomCredentials(String field) {
         return switch (field) {
             case "firstName" -> getRandomFirstName();
             case "lastName" -> getRandomLastName();

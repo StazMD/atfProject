@@ -10,7 +10,7 @@ import java.util.Map;
 
 public enum ScenarioContext {
     INSTANCE;
-    //TODO context values by ENUM
+
     private final Map<String, Object> contextData;
     private Scenario scenario;
     private final Logger log = LogManager.getLogger(ScenarioContext.class);

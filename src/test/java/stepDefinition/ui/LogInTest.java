@@ -1,12 +1,13 @@
 package stepDefinition.ui;
 
-import config.WebDriverFactory;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pages.ContactListPage;
 import pages.HomePage;
+import utils.CustomException;
 
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,9 @@ import java.util.Map;
 public class LogInTest {
     private final HomePage homePage;
     private final ContactListPage contactListPage;
-    protected WebDriver driver;
+    private static final Logger log = LogManager.getLogger(LogInTest.class);
 
     public LogInTest(ContactListPage contactListPage) {
-        this.driver = WebDriverFactory.getDriver();
         this.homePage = new HomePage();
         this.contactListPage = contactListPage;
     }
@@ -28,7 +28,14 @@ public class LogInTest {
         for (Map<String, String> credential : credentials) {
             String email = credential.get("email");
             String password = credential.get("password");
-            homePage.loginUser(email, password);
+            try {
+                log.info("Attempting to log in with email: {}", email);
+                homePage.loginUser(email, password);
+                log.info("Login successful for email: {}", email);
+            } catch (Exception ex) {
+                log.error("Login failed for email: {}, error: {}", email, ex.getMessage());
+                throw new CustomException("Login failed for provided credentials");
+            }
         }
     }
 

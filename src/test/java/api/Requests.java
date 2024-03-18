@@ -44,8 +44,8 @@ public class Requests {
                 .extract().response();
     }
 
-    public static void deleteRequest(String path, int statusCode) {
-        given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
+    public static Response deleteRequest(String path, int statusCode) {
+        return given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
                 .when()
                 .delete(URL + path)
                 .then()

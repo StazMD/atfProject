@@ -71,7 +71,6 @@ public class ContactListPage extends BasePage {
         WaitUtils.waitForElement(stateProvinceElement).sendKeys(contactEntity.getStateProvince());
         WaitUtils.waitForElement(postalCodeElement).sendKeys(contactEntity.getPostalCode());
         WaitUtils.waitForElement(countryElement).sendKeys(contactEntity.getCountry());
-
         clickSubmitButton();
     }
 

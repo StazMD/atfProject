@@ -54,7 +54,9 @@ public class ContactsTest {
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contactEntity.getFirstNameLastName();
-        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
+        List<WebElement> filteredRows = contactsTableRows.stream()
+                .filter(row -> row.getText().contains(searchText))
+                .toList();
 
         assertThat(filteredRows).isNotEmpty();
         log.info("Contact '{}' successfully found in contact list", searchText);
@@ -65,7 +67,7 @@ public class ContactsTest {
         ContactEntity contactEntity = extractContactData();
         log.info("Deleting contact '{}'", contactEntity.getFirstNameLastName());
         contactListPage.getContactFromTable(contactEntity.getFirstNameLastName());
-        contactDetailsPage.deleteContactAction();
+        contactDetailsPage.deleteContact();
     }
 
     @Then("contact is no longer in the list of contacts")
@@ -75,7 +77,9 @@ public class ContactsTest {
         List<WebElement> contactsTableRows = contactListPage.getRowsFromTable();
 
         String searchText = contactEntity.getFirstNameLastName();
-        List<WebElement> filteredRows = contactsTableRows.stream().filter(row -> row.getText().contains(searchText)).toList();
+        List<WebElement> filteredRows = contactsTableRows.stream()
+                .filter(row -> row.getText().contains(searchText))
+                .toList();
 
         assertThat(filteredRows).isEmpty();
         log.info("Contact '{}' is successfully removed from contact list", searchText);

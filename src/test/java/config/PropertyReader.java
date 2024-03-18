@@ -21,11 +21,9 @@ public class PropertyReader {
             properties = new Properties();
             try (InputStream input = new FileInputStream(APPLICATION_FILE_PATH)) {
                 properties.load(input);
-                log.info("Properties file loaded successfully from {}",
-                        APPLICATION_FILE_PATH);
+                log.info("Properties file loaded successfully from {}", APPLICATION_FILE_PATH);
             } catch (Exception ex) {
-                log.error("Failed to load properties file from {}. Error: {}",
-                        APPLICATION_FILE_PATH, ex.getMessage());
+                log.error("Failed to load properties file from {}. Error: {}", APPLICATION_FILE_PATH, ex.getMessage());
                 throw new CustomException(ex.getMessage());
             }
             log.debug("Properties file already loaded, reusing existing properties.");

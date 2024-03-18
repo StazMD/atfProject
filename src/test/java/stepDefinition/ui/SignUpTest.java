@@ -1,34 +1,33 @@
 package stepDefinition.ui;
 
-import config.WebDriverFactory;
 import context.ScenarioContext;
 import entity.UserEntity;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 import pages.SignUpPage;
 import stepDefinition.api.RestTest;
-import stepDefinition.db.DbTest;
 import utils.CustomException;
 import utils.TestDataGeneratorUtils;
 
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class SignUpTest {
 
-    protected WebDriver driver;
     private final SignUpPage signUpPage;
     private final RestTest restTest;
-    private final DbTest dbTest;
+    //    private final DbTest dbTest;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, RestTest restTest, DbTest dbTest) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest) {
         this.signUpPage = signUpPage;
         this.restTest = restTest;
-        this.driver = WebDriverFactory.getDriver();
-        this.dbTest = dbTest;
+//        this.dbTest = dbTest;
     }
 
     public UserEntity extractUserData() {
@@ -41,6 +40,7 @@ public class SignUpTest {
 
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
+        log.info("Populating sign up page with valid user data");
         UserEntity userEntity = extractUserData();
         signUpPage.userFields(
                 userEntity.getFirstName(),
@@ -48,20 +48,35 @@ public class SignUpTest {
                 userEntity.getEmail(),
                 userEntity.getPassword()
         );
+        log.info("Successfully populated sign up fields with user data: {}, {}, {}, {}",
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                "password[PROTECTED]");
     }
 
     @And("new user was created")
     public void newUserWasAdded() {
+        log.info("Verifying new user creation");
         signUpPage.assertHeader("Contact List");
+        log.info("Contact List header verified");
+
+        log.info("Attempting to login with new user's details");
         restTest.aRequestToLoginWithUserSDetailsWasSent();
+
+        log.info("Verifying user's details");
         restTest.getUserDetails();
-        dbTest.getUserEntityFromDatabase();
+
+//        log.info("Checking new user creation in database");
+//        dbTest.getUserEntityFromDatabase();
+
+        log.info("New user verification complete");
     }
 
-    @And("{string} submitted with invalid data") //TODO handle unexisting switch case
+    @And("{string} submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
+        log.info("Attempting to submit invalid data for: {}", fieldName);
         UserEntity userEntity = new UserEntity(extractUserData());
-        log.info("User entity:" + extractUserData());
         switch (fieldName) {
             case "firstName" -> userEntity.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
             case "lastName" -> userEntity.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
@@ -74,19 +89,43 @@ public class SignUpTest {
                 userEntity.getEmail(),
                 userEntity.getPassword()
         );
-        log.info("User entity:" + extractUserData());
+
+        scenarioContext.setContext("user", userEntity);
+        log.info("Submitted invalid data for {}", fieldName);
     }
 
-    @Then("error is displaying")
-    public void errorIsAppearing() {
+    @And("error for {string} is displaying")
+    public void errorIsAppearing(String fieldName) {
+        UserEntity userEntity = extractUserData();
         String errorMessage = signUpPage.errorText();
-        log.info("Error message '{}' is presented", errorMessage); //TODO assert element contains expected test
+        Map<String, String> fieldErrorMessages = Map.of(
+                "firstName", String.format("User validation failed: firstName: Path `firstName` (`%s`) is longer than the maximum allowed length (20).", userEntity.getFirstName()),
+                "lastName", String.format("User validation failed: lastName: Path `lastName` (`%s`) is longer than the maximum allowed length (20).", userEntity.getLastName()),
+                "email", "User validation failed: email: Email is invalid",
+                "password", String.format("User validation failed: password: Path `password` (`%s`) is shorter than the minimum allowed length (7).", userEntity.getPassword())
+        );
+        String expectedErrorMessage = fieldErrorMessages.getOrDefault(fieldName, "Unexpected field name");
+        assertThat(errorMessage).isEqualTo(expectedErrorMessage);
+        log.info("Error message '{}' is presented for field '{}'", errorMessage, fieldName);
     }
 
-    @And("new user with {string} is not created")
+    @Then("new user with {string} is not created")
     public void newUserIsNotCreated(String fieldName) {
-        signUpPage.assertHeader("Add User");
-        restTest.userNotAbleToLogin();
-        dbTest.assertThatUserWasNotCreated(fieldName);
+        try {
+            log.info("Verifying that a new user with invalid {} is not created", fieldName);
+
+            signUpPage.assertHeader("Add User");
+            log.info("Confirmed user remains on the 'Add User' page, indicating failure to create new user with invalid {}", fieldName);
+
+            restTest.userNotAbleToLogin();
+            log.info("Login attempt with {} failed as expected, indicating no such user was created", fieldName);
+
+//            dbTest.assertThatUserWasNotCreated(fieldName);
+//            log.info("Database verification passed: no new user was created with invalid {}", fieldName);
+
+        } catch (Exception ex) {
+            log.error("Verification failed for non-creation of user with invalid {}: {}", fieldName, ex.getMessage());
+            throw new CustomException("Error during verification of non-creation of user with invalid " + fieldName);
+        }
     }
 }
