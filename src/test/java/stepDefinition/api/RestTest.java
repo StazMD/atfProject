@@ -2,6 +2,7 @@ package stepDefinition.api;
 
 import api.Assertions;
 import api.Requests;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import context.ScenarioContext;
 import entity.UserEntity;
 import io.cucumber.datatable.DataTable;
@@ -15,9 +16,9 @@ import org.apache.logging.log4j.Logger;
 import utils.CustomException;
 import utils.TestDataGeneratorUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RestTest {
 
@@ -41,46 +42,41 @@ public class RestTest {
         log.info("Starting processing user data from DataTable.");
 
         List<Map<String, String>> userCredentials = userData.asMaps(String.class, String.class);
-        List<String> requiredFields = Arrays.asList("firstName", "lastName", "email", "password");
-
-        for (Map<String, String> userCredential : userCredentials) {
-            UserEntity userEntity = new UserEntity();
-
-            for (String requiredField : requiredFields) {
-                String value = userCredential.get(requiredField);
-                if (value == null) {
-                    throw new CustomException("Updated credentials should not be empty");
-                }
-
-                String finalValue = value.startsWith("[random") ? TestDataGeneratorUtils.getRandomCredentials(requiredField) : value;
-                switch (requiredField) {
+        UserEntity userEntity = new UserEntity();
+        for (Map<String, String> credential : userCredentials) {
+            Set<String> keys = credential.keySet();
+            for (String key : keys) {
+                String value = credential.get(key);
+                String finalValue = value.startsWith("[random") ? TestDataGeneratorUtils.getRandomCredentials(key) : value;
+                switch (key) {
                     case "firstName" -> userEntity.setFirstName(finalValue);
                     case "lastName" -> userEntity.setLastName(finalValue);
                     case "email" -> userEntity.setEmail(finalValue);
                     case "password" -> userEntity.setPassword(finalValue);
                 }
-                log.info("Set " + requiredField + ": " + finalValue);
+                log.info("Set {}: {}", key, finalValue);
             }
-
-            ScenarioContext.INSTANCE.setContext("user", userEntity);
-            log.debug("Set user data to scenario context");
-
-            log.info("Finished processing user data.");
         }
+        ScenarioContext.INSTANCE.setContext("user", userEntity);
+        log.debug("Set user data to scenario context");
+
+        log.info("Finished processing user data.");
     }
 
     @When("a request to create new user was sent")
     public void aRequestToCreateNewUserWasSent() {
         UserEntity userEntity = extractUserData();
-        String requestBody = String.format("{" +
-                        "\"firstName\": \"%s\"," +
-                        "\"lastName\": \"%s\"," +
-                        "\"email\": \"%s\"," +
-                        "\"password\": \"%s\"}",
-                userEntity.getFirstName(),
-                userEntity.getLastName(),
-                userEntity.getEmail(),
-                userEntity.getPassword());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writeValueAsString(userEntity);
+//        String requestBody = String.format("{" +
+//                        "\"firstName\": \"%s\"," +
+//                        "\"lastName\": \"%s\"," +
+//                        "\"email\": \"%s\"," +
+//                        "\"password\": \"%s\"}",
+//                userEntity.getFirstName(),
+//                userEntity.getLastName(),
+//                userEntity.getEmail(),
+//                userEntity.getPassword());
         //JSONObject -> .toString
         Response response = Requests.postRequest("/users", requestBody, 201);
         String token = response.jsonPath().getString("token");

@@ -27,16 +27,22 @@ public class Assertions {
 
         String responseFirstName = jsonPath.getString("firstName");
         assertThat(userEntity.getFirstName()).isEqualTo(responseFirstName);
-        log.info("Response firstname '{}' matches with test data '{}'", responseFirstName, userEntity.getFirstName());
+        log.info("Response firstname '{}' matches with test data '{}'",
+                responseFirstName,
+                userEntity.getFirstName());
 
         String responseLastName = jsonPath.getString("lastName");
         assertThat(userEntity.getLastName()).isEqualTo(responseLastName);
-        log.info("Response lastname '{}' matches with test data '{}'", responseLastName, userEntity.getLastName());
+        log.info("Response lastname '{}' matches with test data '{}'",
+                responseLastName,
+                userEntity.getLastName());
 
         String responseEmail = jsonPath.getString("email");
         assertThat(userEntity.getEmail().toLowerCase()).isEqualTo(responseEmail);
 
-        log.info("Response email '{}' matches with test data '{}'", responseEmail, userEntity.getEmail().toLowerCase());
+        log.info("Response email '{}' matches with test data '{}'",
+                responseEmail,
+                userEntity.getEmail().toLowerCase());
     }
 
     public static void assertNoAuthentication(Response response) {

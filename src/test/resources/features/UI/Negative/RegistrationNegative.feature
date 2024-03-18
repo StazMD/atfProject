@@ -10,6 +10,6 @@ Feature: Registration With Invalid Credentials
     Examples:
       | fieldName |
       | firstName |
-#      | lastName  |
-#      | email     |
-#      | password  |
+      | lastName  |
+      | email     |
+      | password  |

@@ -33,7 +33,6 @@ public class UserEntity {
         this.lastName = user.lastName;
         this.email = user.email;
         this.password = user.password;
-
     }
 
     public UserEntity(String firstName, String lastName, String email, String password) {

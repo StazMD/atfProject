@@ -13,7 +13,6 @@ public class Requests {
     private static final String URL = PropertyReader.getProperty("browser.homepage-url");
 
     public static Response postRequest(String path, String requestBody, int statusCode) {
-
         return given().contentType(ContentType.JSON).body(requestBody)
                 .when()
                 .post(URL + path)

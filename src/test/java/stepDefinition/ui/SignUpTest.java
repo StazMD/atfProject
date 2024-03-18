@@ -42,7 +42,12 @@ public class SignUpTest {
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
         UserEntity userEntity = extractUserData();
-        signUpPage.userFields(userEntity.getFirstName(), userEntity.getLastName(), userEntity.getEmail(), userEntity.getPassword());
+        signUpPage.userFields(
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                userEntity.getPassword()
+        );
     }
 
     @And("new user was created")
@@ -58,21 +63,11 @@ public class SignUpTest {
         UserEntity userEntity = new UserEntity(extractUserData());
         log.info("User entity:" + extractUserData());
         switch (fieldName) {
-            case "firstName":
-                userEntity.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
-                //TODO to not write in SC invalid data
-                break;
-            case "lastName":
-                userEntity.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
-                break;
-            case "email":
-                userEntity.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
-                break;
-            case "password":
-                userEntity.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
-                break;
+            case "firstName" -> userEntity.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
+            case "lastName" -> userEntity.setLastName(TestDataGeneratorUtils.getNegativeRandomLastName());
+            case "email" -> userEntity.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
+            case "password" -> userEntity.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
         }
-
         signUpPage.userFields(
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
@@ -80,7 +75,6 @@ public class SignUpTest {
                 userEntity.getPassword()
         );
         log.info("User entity:" + extractUserData());
-
     }
 
     @Then("error is displaying")
