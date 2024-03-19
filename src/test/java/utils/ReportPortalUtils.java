@@ -34,7 +34,7 @@ public class ReportPortalUtils {
             }
         } catch (Exception ex) {
             log.error("Error updating reportportal.properties: {}", ex.getMessage(), ex);
-            throw new CustomException(ex.getMessage());
+            throw new CustomException(ex.getMessage(), ex);
         }
     }
 
@@ -43,9 +43,9 @@ public class ReportPortalUtils {
         try {
             ReportPortal.emitLog(scenarioContext.getScenario().getName(), "INFO", new Date(), ScreenshotUtils.takeScenarioScreenshot());
             log.info("Screenshot was sent");
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
             log.error("Failed to send screenshot to ReportPortal: {}", ex.getMessage());
-            throw new CustomException(ex.getMessage());
+            throw new CustomException(ex.getMessage(), ex);
         }
     }
 }

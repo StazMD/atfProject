@@ -1,4 +1,4 @@
-@UI @Negative
+@UI @DB @Negative
 Feature: Registration With Invalid Credentials
 
   Scenario Outline: Register User Using Invalid Data

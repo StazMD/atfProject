@@ -48,9 +48,9 @@ public class WebDriverFactory {
             }
             log.info("Setting ChromeDriver with options: {}", chromeOptions);
             driver = new ChromeDriver(chromeOptions);
-        } catch (Exception e) {
-            log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new CustomException("Error initializing WebDriver");
+        } catch (Exception ex) {
+            log.error("Error initializing WebDriver: " + ex.getMessage());
+            throw new CustomException("Error initializing WebDriver", ex);
         }
     }
 
@@ -65,9 +65,9 @@ public class WebDriverFactory {
             }
             log.info("Setting FirefoxDriver with options: {}", firefoxOptions);
             driver = new FirefoxDriver(firefoxOptions);
-        } catch (Exception e) {
-            log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new CustomException("Error initializing WebDriver");
+        } catch (Exception ex) {
+            log.error("Error initializing WebDriver: " + ex.getMessage());
+            throw new CustomException("Error initializing WebDriver", ex);
         }
     }
 
@@ -82,9 +82,9 @@ public class WebDriverFactory {
             }
             log.info("Setting EdgeDriver with options: {}", edgeOptions);
             driver = new EdgeDriver(edgeOptions);
-        } catch (Exception e) {
-            log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new CustomException("Error initializing WebDriver");
+        } catch (Exception ex) {
+            log.error("Error initializing WebDriver: " + ex.getMessage());
+            throw new CustomException("Error initializing WebDriver", ex);
         }
     }
 

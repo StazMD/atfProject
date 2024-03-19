@@ -18,12 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DbTest {
 
     private final Logger log = LogManager.getLogger(DbTest.class);
-    private final EntityManager em;
+    private final EntityManager em = EntityManagerUtil.getEntityManager();
     private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-
-    public DbTest() {
-        em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
-    }
 
     private UserEntity extractUserData() {
         try {
@@ -45,7 +41,7 @@ public class DbTest {
         } catch (PersistenceException ex) {
             em.getTransaction().rollback();
             log.error("Reverted transaction due to persistence error", ex);
-            throw new CustomException(ex.getMessage());
+            throw new CustomException(ex.getMessage(), ex);
         }
     }
 
@@ -64,7 +60,6 @@ public class DbTest {
 
     public void assertThatUserWasNotCreated(String fieldName) {
         UserEntity userEntity = extractUserData();
-
         em.getTransaction().begin();
         String queryStr = String.format("SELECT COUNT(u) FROM UserEntity u WHERE u.%s = :%s", fieldName, fieldName);
         Query query = em.createQuery(queryStr);
@@ -91,7 +86,7 @@ public class DbTest {
         } catch (PersistenceException ex) {
             em.getTransaction().rollback();
             log.error("Failed to execute update query", ex);
-            throw ex;
+            throw new CustomException(ex.getMessage(), ex);
         }
     }
 }

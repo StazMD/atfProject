@@ -24,7 +24,7 @@ public class PropertyReader {
                 log.info("Properties file loaded successfully from {}", APPLICATION_FILE_PATH);
             } catch (Exception ex) {
                 log.error("Failed to load properties file from {}. Error: {}", APPLICATION_FILE_PATH, ex.getMessage());
-                throw new CustomException(ex.getMessage());
+                throw new CustomException(ex.getMessage(), ex);
             }
             log.debug("Properties file already loaded, reusing existing properties.");
         }
@@ -37,7 +37,7 @@ public class PropertyReader {
         String propertyValue = properties.getProperty(key);
         if (propertyValue == null) {
             log.error("Property '{}' not found in {}", key, APPLICATION_FILE_PATH);
-            throw new CustomException(String.format("Property '%s' not found in %s", key, APPLICATION_FILE_PATH));
+            throw new CustomException("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);
         }
         log.debug("Retrieved property '{}': '{}'", key, propertyValue);
         return propertyValue;

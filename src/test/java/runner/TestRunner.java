@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "stepDefinition",
         plugin = {"pretty", "com.epam.reportportal.cucumber.ScenarioReporter"}
-//        tags = "@Login"
 )
 
 public class TestRunner {

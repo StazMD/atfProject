@@ -28,7 +28,7 @@ public class ScreenshotUtils {
             return destFile;
         } catch (IOException ex) {
             log.error("Failed to take screenshot");
-            throw new CustomException(ex.getMessage());
+            throw new CustomException(ex.getMessage(), ex);
         }
     }
 }

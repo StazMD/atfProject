@@ -39,5 +39,4 @@ public class HomePageTest {
             throw new CustomException("Failed to open Add User page: " + ex.getMessage(), true);
         }
     }
-
 }

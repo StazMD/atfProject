@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pages.SignUpPage;
 import stepDefinition.api.RestTest;
+import stepDefinition.db.DbTest;
 import utils.CustomException;
 import utils.TestDataGeneratorUtils;
 
@@ -19,15 +20,15 @@ public class SignUpTest {
 
     private final SignUpPage signUpPage;
     private final RestTest restTest;
-    //    private final DbTest dbTest;
+    private final DbTest dbTest;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, RestTest restTest) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest, DbTest dbTest) {
         this.signUpPage = signUpPage;
         this.restTest = restTest;
-//        this.dbTest = dbTest;
+        this.dbTest = dbTest;
     }
 
     public UserEntity extractUserData() {
@@ -67,8 +68,8 @@ public class SignUpTest {
         log.info("Verifying user's details");
         restTest.getUserDetails();
 
-//        log.info("Checking new user creation in database");
-//        dbTest.getUserEntityFromDatabase();
+        log.info("Checking new user creation in database");
+        dbTest.getUserEntityFromDatabase();
 
         log.info("New user verification complete");
     }
@@ -83,12 +84,14 @@ public class SignUpTest {
             case "email" -> userEntity.setEmail(TestDataGeneratorUtils.getNegativeRandomEmail());
             case "password" -> userEntity.setPassword(TestDataGeneratorUtils.getNegativeRandomPassword());
         }
-        signUpPage.userFields(
-                userEntity.getFirstName(),
-                userEntity.getLastName(),
-                userEntity.getEmail(),
-                userEntity.getPassword()
-        );
+
+        signUpPage.userFields(userEntity);
+//        signUpPage.userFields(
+//                userEntity.getFirstName(),
+//                userEntity.getLastName(),
+//                userEntity.getEmail(),
+//                userEntity.getPassword()
+//        );
 
         scenarioContext.setContext("user", userEntity);
         log.info("Submitted invalid data for {}", fieldName);
@@ -120,12 +123,12 @@ public class SignUpTest {
             restTest.userNotAbleToLogin();
             log.info("Login attempt with {} failed as expected, indicating no such user was created", fieldName);
 
-//            dbTest.assertThatUserWasNotCreated(fieldName);
-//            log.info("Database verification passed: no new user was created with invalid {}", fieldName);
+            dbTest.assertThatUserWasNotCreated(fieldName);
+            log.info("Database verification passed: no new user was created with invalid {}", fieldName);
 
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
             log.error("Verification failed for non-creation of user with invalid {}: {}", fieldName, ex.getMessage());
-            throw new CustomException("Error during verification of non-creation of user with invalid " + fieldName);
+            throw new CustomException("Error during verification of non-creation of user with invalid " + fieldName, true, ex);
         }
     }
 }

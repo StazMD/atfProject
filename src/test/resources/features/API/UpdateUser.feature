@@ -1,7 +1,7 @@
 @API
 Feature: Update User Via API
 
-  Scenario Outline: Successfully update all values of an existing user
+  Scenario Outline: Successfully update values of an existing user
     Given valid user data
       | firstName | lastName | email                 | password     |
       | Ion       | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |

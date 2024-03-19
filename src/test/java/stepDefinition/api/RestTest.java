@@ -2,7 +2,9 @@ package stepDefinition.api;
 
 import api.Assertions;
 import api.Requests;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import context.ScenarioContext;
 import entity.UserEntity;
 import io.cucumber.datatable.DataTable;
@@ -24,10 +26,14 @@ public class RestTest {
 
     private static final ScenarioContext scenarioContext;
     private static final Logger log;
+    private static final ObjectMapper objectMapper;
 
     static {
         scenarioContext = ScenarioContext.INSTANCE;
         log = LogManager.getLogger(RestTest.class);
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     public UserEntity extractUserData() {
@@ -39,11 +45,10 @@ public class RestTest {
     }
 
     public UserEntity extractUserData(String email, String password) {
-        try {
-            return (UserEntity) scenarioContext.getContext("user");
-        } catch (RuntimeException ex) {
-            throw new CustomException("User context failed to extract");
-        }
+        UserEntity user = new UserEntity();
+        user.setEmail(email);
+        user.setPassword(password);
+        return user;
     }
 
     @Given("valid user data")
@@ -76,7 +81,7 @@ public class RestTest {
     public void aRequestToCreateNewUserWasSent() {
         try {
             log.info("Sending request to create a new user");
-            String requestBody = new ObjectMapper().writeValueAsString(extractUserData());
+            String requestBody = objectMapper.writeValueAsString(extractUserData());
             Response response = Requests.postRequest("/users", requestBody, 201);
             String token = response.jsonPath().getString("token");
             scenarioContext.setContext("token", token);
@@ -127,7 +132,7 @@ public class RestTest {
         }
         try {
             log.info("Sending request to update user's details");
-            String requestBody = new ObjectMapper().writeValueAsString(extractUserData());
+            String requestBody = objectMapper.writeValueAsString(extractUserData());
             Requests.patchRequest("/users/me", requestBody, 200);
             log.info("User's details updated successfully");
         } catch (Exception ex) {
@@ -153,7 +158,7 @@ public class RestTest {
     public void aRequestToLoginWithUserSDetailsWasSent() {
         try {
             log.info("Attempting to login with user details");
-            String requestBody = new ObjectMapper().writeValueAsString(extractUserData(
+            String requestBody = objectMapper.writeValueAsString(extractUserData(
                     extractUserData().getEmail(),
                     extractUserData().getPassword()
             ));
@@ -191,7 +196,7 @@ public class RestTest {
 
         UserEntity userEntity = extractUserData();
         try {
-            String requestBody = new ObjectMapper().writeValueAsString(userEntity);
+            String requestBody = objectMapper.writeValueAsString(userEntity);
             log.debug("Request body prepared for login: {}", requestBody);
 
             Response response = Requests.postRequest("/users/login", requestBody, 401);
