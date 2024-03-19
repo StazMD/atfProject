@@ -8,20 +8,20 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.CustomException;
 import utils.EntityManagerUtil;
-import utils.ExceptionUtils;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class dbTest {
+public class DbTest {
 
-    private final Logger log = LogManager.getLogger(dbTest.class);
+    private final Logger log = LogManager.getLogger(DbTest.class);
     private final EntityManager em;
     private final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public dbTest() {
+    public DbTest() {
         em = EntityManagerUtil.getEntityManagerFactory().createEntityManager();
     }
 
@@ -29,7 +29,7 @@ public class dbTest {
         try {
             return (UserEntity) scenarioContext.getContext("user");
         } catch (RuntimeException ex) {
-            throw new ExceptionUtils("User context failed to extract");
+            throw new CustomException("User context failed to extract");
         }
     }
 
@@ -45,7 +45,7 @@ public class dbTest {
         } catch (PersistenceException ex) {
             em.getTransaction().rollback();
             log.error("Reverted transaction due to persistence error", ex);
-            throw ex;
+            throw new CustomException(ex.getMessage());
         }
     }
 

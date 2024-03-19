@@ -33,7 +33,8 @@ public class ReportPortalUtils {
                 log.info("Saved reportportal.properties");
             }
         } catch (Exception ex) {
-            log.error("Error updating reportportal.properties: " + ex.getMessage(), ex);
+            log.error("Error updating reportportal.properties: {}", ex.getMessage(), ex);
+            throw new CustomException(ex.getMessage());
         }
     }
 
@@ -44,6 +45,7 @@ public class ReportPortalUtils {
             log.info("Screenshot was sent");
         } catch (Exception ex) {
             log.error("Failed to send screenshot to ReportPortal: {}", ex.getMessage());
+            throw new CustomException(ex.getMessage());
         }
     }
 }

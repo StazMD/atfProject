@@ -85,7 +85,7 @@ public class TestDataGeneratorUtils {
             case "lastName" -> getRandomLastName();
             case "email" -> getRandomEmail();
             case "password" -> getRandomPassword();
-            default -> field;
+            default -> throw new CustomException("Unexpected value: " + field);
         };
     }
 

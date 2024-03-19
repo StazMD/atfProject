@@ -10,7 +10,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 public class WebDriverFactory {
 
@@ -20,16 +20,15 @@ public class WebDriverFactory {
     private static WebDriver setupDriver() {
         if (driver == null) {
             log.info("Opening WebDriver...");
-            String browserType = PropertyReader.getProperty("browser.type").toLowerCase();
 
+            String browserType = PropertyReader.getProperty("browser.type").toLowerCase();
             switch (browserType) {
                 case "chrome" -> getChromeDriver();
                 case "firefox" -> getFirefoxDriver();
                 case "edge" -> getEdgeDriver();
-                default -> {
-                    throw new ExceptionUtils("Unsupported browser: " + browserType);
-                }
+                default -> throw new CustomException("Unsupported browser: " + browserType);
             }
+
             driver.manage().window().maximize();
             log.debug("Browser window maximized");
             log.info("WebDriver for {} has been successfully set up", browserType);
@@ -43,9 +42,7 @@ public class WebDriverFactory {
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
 
-            boolean chromeHeadless = Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"));
-
-            if (chromeHeadless) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"))) {
                 chromeOptions.addArguments("--headless=new");
                 log.info("Chrome is set to run in headless mode");
             }
@@ -53,7 +50,7 @@ public class WebDriverFactory {
             driver = new ChromeDriver(chromeOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new ExceptionUtils("Error initializing WebDriver");
+            throw new CustomException("Error initializing WebDriver");
         }
     }
 
@@ -62,9 +59,7 @@ public class WebDriverFactory {
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions firefoxOptions = new FirefoxOptions();
 
-            boolean firefoxHeadless = Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"));
-
-            if (firefoxHeadless) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"))) {
                 firefoxOptions.addArguments("--headless");
                 log.info("Firefox is set to run in headless mode");
             }
@@ -72,7 +67,7 @@ public class WebDriverFactory {
             driver = new FirefoxDriver(firefoxOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new ExceptionUtils("Error initializing WebDriver");
+            throw new CustomException("Error initializing WebDriver");
         }
     }
 
@@ -81,9 +76,7 @@ public class WebDriverFactory {
             WebDriverManager.edgedriver().setup();
             EdgeOptions edgeOptions = new EdgeOptions();
 
-            boolean edgeHeadless = Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"));
-
-            if (edgeHeadless) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"))) {
                 edgeOptions.addArguments("--headless");
                 log.info("Edge is set to run in headless mode");
             }
@@ -91,7 +84,7 @@ public class WebDriverFactory {
             driver = new EdgeDriver(edgeOptions);
         } catch (Exception e) {
             log.error("Error initializing WebDriver: " + e.getMessage());
-            throw new ExceptionUtils("Error initializing WebDriver");
+            throw new CustomException("Error initializing WebDriver");
         }
     }
 

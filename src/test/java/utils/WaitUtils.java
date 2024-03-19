@@ -18,33 +18,33 @@ public class WaitUtils {
     private static final Logger log = LogManager.getLogger(WaitUtils.class);
     private static final WebDriver driver = WebDriverFactory.getDriver();
 
-    //TODO reverse waiter?
     public static WebElement waitForElement(WebElement element) {
-        log.debug("Waiting for visibility of element: " + element.toString());
+        log.debug("Waiting for visibility of element '{}'", element.toString());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-        try {
-            WebElement visibleElement = wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
-            log.info("Element is visible: " + element);
-            return visibleElement;
-        } catch (TimeoutException ex) {
-            log.error("Element is not visible after " + timeout + " seconds: " + element);
-            throw ex;
-        }
+        log.info("Element is visible: " + element);
+        return wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
     }
 
     public static void waitForTextInElement(WebElement element, String expectedText) {
         try {
+            log.debug("Waiting for text '{}' in element '{}'", expectedText, element.toString());
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
             wait.until(driver -> element.getText().equals(expectedText));
-        } catch (Exception ex) {
-            throw new ExceptionUtils(String.format("Actual text '%s' does not match the expected text: '%s'", element.getText(), expectedText));
+        } catch (TimeoutException ex) {
+            throw new CustomException(String.format("Actual text '%s' does not match the expected text: '%s'", element.getText(), expectedText), true);
         }
     }
 
-    //TODO: return?
     public static WebElement waitForButton(WebElement button) {
-        WebElement visibleButton = waitForElement(button);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
-        return wait.until(ExpectedConditions.elementToBeClickable(visibleButton));
+        log.info("Waiting for button to be visible and clickable");
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+            WebElement clickableButton = wait.until(ExpectedConditions.elementToBeClickable(waitForElement(button)));
+            log.info("Button is now visible and clickable");
+            return clickableButton;
+        } catch (Exception ex) {
+            log.error("Failed to wait for button to be clickable");
+            throw new CustomException(ex.getMessage());
+        }
     }
 }

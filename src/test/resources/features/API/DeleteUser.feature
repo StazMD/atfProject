@@ -1,7 +1,7 @@
 @API
 Feature: Delete User Via API
 
-  Scenario Outline: Successfully deleting an existing user
+  Scenario Outline: Successfully deleting user
     Given valid user data
       | firstName   | lastName   | email   | password   |
       | <firstName> | <lastName> | <email> | <password> |
@@ -10,6 +10,6 @@ Feature: Delete User Via API
     Then the user was successfully deleted
 
     Examples:
-      | firstName         | lastName         | email                     | password         |
-      | [randomFirstName] | [randomLastName] | [randomEmail]             | [randomPassword] |
-      | Ion               | IAonascu         | Ion.Idooon1ascu@email.com | ion.gutuion.gutu |
+      | firstName         | lastName         | email         | password         |
+      | [randomFirstName] | [randomLastName] | [randomEmail] | [randomPassword] |
+#      | Ion               | IAonascu         | Ion.Idooon1ascu@email.com | ion.gutuion.gutu |

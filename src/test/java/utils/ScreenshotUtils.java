@@ -19,10 +19,7 @@ public class ScreenshotUtils {
     private static final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
     public static File takeScenarioScreenshot() {
-        String screenshotName = scenarioContext
-                .getScenario()
-                .getName()
-                .replaceAll("\\s+", "") + System.currentTimeMillis() + ".png";
+        String screenshotName = scenarioContext.getScenario().getName().replaceAll("\\s+", "") + System.currentTimeMillis() + ".png";
         try {
             File scrFile = ((TakesScreenshot) WebDriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
             File destFile = new File(screenshotsFilePath + screenshotName);
@@ -30,9 +27,8 @@ public class ScreenshotUtils {
             FileUtils.copyFile(scrFile, destFile);
             return destFile;
         } catch (IOException ex) {
-            ex.printStackTrace();
-            log.warn("Failed to take screenshot");
-            return null;
+            log.error("Failed to take screenshot");
+            throw new CustomException(ex.getMessage());
         }
     }
 }

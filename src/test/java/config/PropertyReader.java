@@ -2,14 +2,13 @@ package config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ExceptionUtils;
+import utils.CustomException;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyReader {
-    //TODO find a way to overwrite application url path, to pickup different config files (profiles)
     private static final Logger log = LogManager.getLogger(PropertyReader.class);
     private static final String APPLICATION_FILE_PATH = "src/test/resources/application.properties";
     private static Properties properties;
@@ -25,7 +24,7 @@ public class PropertyReader {
                 log.info("Properties file loaded successfully from {}", APPLICATION_FILE_PATH);
             } catch (Exception ex) {
                 log.error("Failed to load properties file from {}. Error: {}", APPLICATION_FILE_PATH, ex.getMessage());
-                throw new ExceptionUtils("Could not load properties file");
+                throw new CustomException(ex.getMessage());
             }
             log.debug("Properties file already loaded, reusing existing properties.");
         }
@@ -35,12 +34,12 @@ public class PropertyReader {
         if (properties == null) {
             loadProperties();
         }
-        String value = properties.getProperty(key);
-        if (value == null) {
-            log.error("Property '{}' not found", key);
-            throw new ExceptionUtils("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);
+        String propertyValue = properties.getProperty(key);
+        if (propertyValue == null) {
+            log.error("Property '{}' not found in {}", key, APPLICATION_FILE_PATH);
+            throw new CustomException(String.format("Property '%s' not found in %s", key, APPLICATION_FILE_PATH));
         }
-        log.debug("Retrieved property '{}': '{}'", key, value);
-        return value;
+        log.debug("Retrieved property '{}': '{}'", key, propertyValue);
+        return propertyValue;
     }
 }

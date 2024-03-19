@@ -7,6 +7,7 @@ Feature: Login With Valid Credentials
       | email   | password   |
       | <email> | <password> |
     Then user was successfully logged in the application
+
     Examples:
       | email             | password         |
       | testuser@mail.com | TestUserTestUser |
