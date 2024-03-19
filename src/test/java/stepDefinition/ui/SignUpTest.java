@@ -2,6 +2,7 @@ package stepDefinition.ui;
 
 import context.ScenarioContext;
 import entity.UserEntity;
+import enums.Entity;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,7 @@ public class SignUpTest {
 
     public UserEntity extractUserData() {
         try {
-            return (UserEntity) scenarioContext.getContext("user");
+            return (UserEntity) scenarioContext.getContext(Entity.USER);
         } catch (RuntimeException ex) {
             throw new CustomException(ex.getMessage());
         }
@@ -93,7 +94,7 @@ public class SignUpTest {
 //                userEntity.getPassword()
 //        );
 
-        scenarioContext.setContext("user", userEntity);
+        scenarioContext.setContext(Entity.USER, userEntity);
         log.info("Submitted invalid data for {}", fieldName);
     }
 

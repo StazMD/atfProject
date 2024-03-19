@@ -1,5 +1,6 @@
 package pages;
 
+import entity.UserEntity;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utils.WaitUtils;
@@ -32,6 +33,14 @@ public class SignUpPage extends BasePage {
         clickSubmitButton();
     }
 
+    public void userFields(UserEntity user) {
+        WaitUtils.waitForElement(firstNameElement).sendKeys(user.getFirstName());
+        WaitUtils.waitForElement(lastNameElement).sendKeys(user.getLastName());
+        WaitUtils.waitForElement(emailElement).sendKeys(user.getEmail());
+        WaitUtils.waitForElement(passwordElement).sendKeys(user.getPassword());
+        clickSubmitButton();
+    }
+
     public String errorText() {
         return WaitUtils.waitForElement(errorElement).getText();
     }
@@ -40,5 +49,4 @@ public class SignUpPage extends BasePage {
     public WebElement getHeaderElement() {
         return signUpPageHeader;
     }
-
 }

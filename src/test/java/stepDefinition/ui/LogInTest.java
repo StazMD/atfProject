@@ -1,5 +1,6 @@
 package stepDefinition.ui;
 
+import enums.Credentials;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,10 +25,10 @@ public class LogInTest {
 
     @When("valid login credentials were entered")
     public void validCredentialsWereEntered(DataTable dataTable) {
-        List<Map<String, String>> credentials = dataTable.asMaps(String.class, String.class);
+        List<Map<String, String>> credentials = dataTable.asMaps();
         for (Map<String, String> credential : credentials) {
-            String email = credential.get("email");
-            String password = credential.get("password");
+            String email = credential.get(Credentials.EMAIL.getValue());
+            String password = credential.get(Credentials.PASSWORD.getValue());
             try {
                 log.info("Attempting to log in with email: {}", email);
                 homePage.loginUser(email, password);

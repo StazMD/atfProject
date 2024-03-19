@@ -11,7 +11,7 @@ import java.util.Map;
 public enum ScenarioContext {
     INSTANCE;
 
-    private final Map<String, Object> contextData;
+    private final Map<Object, Object> contextData;
     private Scenario scenario;
     private final Logger log = LogManager.getLogger(ScenarioContext.class);
 
@@ -19,11 +19,11 @@ public enum ScenarioContext {
         contextData = new HashMap<>();
     }
 
-    public void setContext(String key, Object value) {
+    public void setContext(Object key, Object value) {
         contextData.put(key, value);
     }
 
-    public Object getContext(String key) {
+    public Object getContext(Object key) {
         if (!contextData.containsKey(key)) {
             log.error("Context for key '{}' not found", key);
             throw new CustomException("Context for key '" + key + "' not found");

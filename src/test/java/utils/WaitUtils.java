@@ -2,6 +2,7 @@ package utils;
 
 import config.PropertyReader;
 import config.WebDriverFactory;
+import enums.ConfigKeys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.TimeoutException;
@@ -14,7 +15,7 @@ import java.time.Duration;
 
 public class WaitUtils {
 
-    private static final long timeout = Long.parseLong(PropertyReader.getProperty("element.wait.timeout"));
+    private static final long timeout = Long.parseLong(PropertyReader.getProperty(ConfigKeys.TIMEOUT));
     private static final Logger log = LogManager.getLogger(WaitUtils.class);
     private static final WebDriver driver = WebDriverFactory.getDriver();
 

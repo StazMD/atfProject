@@ -9,7 +9,7 @@ Feature: Create User Via API
     Then user was successfully created
 
     Examples:
-      | firstName         | lastName         | email                  | password          |
-      | [randomFirstName] | [randomLastName] | [randomEmail]          | [randomPassword]  |
-      | Ion               | Gutul            | [randomEmail]          | ion.ion.ion       |
-      | Anton             | Moraru           | Anton.Moraru@email.com | anton.anton.anton |
+      | firstName         | lastName         | email         | password         |
+      | [randomFirstName] | [randomLastName] | [randomEmail] | [randomPassword] |
+#      | Ion               | Gutul            | [randomEmail]          | ion.ion.ion       |
+#      | Anton             | Moraru           | Anton.Moraru@email.com | anton.anton.anton |

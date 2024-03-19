@@ -2,6 +2,7 @@ package stepDefinition.ui;
 
 import config.PropertyReader;
 import config.WebDriverFactory;
+import enums.ConfigKeys;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +14,7 @@ import utils.CustomException;
 public class HomePageTest {
 
     private final WebDriver driver;
-    private final String homePageUrl = PropertyReader.getProperty("browser.homepage-url");
+    private final String homePageUrl = PropertyReader.getProperty(ConfigKeys.SERVER_URL);
     private final Logger log = LogManager.getLogger(HomePageTest.class);
     private final HomePage homePage;
 

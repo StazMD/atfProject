@@ -4,12 +4,14 @@ import com.github.javafaker.Faker;
 import context.ScenarioContext;
 import entity.ContactEntity;
 import entity.UserEntity;
+import enums.Entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 
 public class TestDataGeneratorUtils {
+
     private final Logger log = LogManager.getLogger(TestDataGeneratorUtils.class);
 
     private static final Faker faker = new Faker();
@@ -96,7 +98,7 @@ public class TestDataGeneratorUtils {
                 getRandomEmail(),
                 getRandomPassword()
         );
-        ScenarioContext.INSTANCE.setContext("user", userEntity);
+        ScenarioContext.INSTANCE.setContext(Entity.USER, userEntity);
         log.info("User credentials generated successfully");
     }
 
@@ -114,7 +116,7 @@ public class TestDataGeneratorUtils {
                 getRandomPostalCode(),
                 getRandomCountry()
         );
-        ScenarioContext.INSTANCE.setContext("contact", contactEntity);
+        ScenarioContext.INSTANCE.setContext(Entity.CONTACT, contactEntity);
         log.info("Contact credentials generated successfully");
     }
 }

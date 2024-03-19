@@ -2,15 +2,17 @@ package api;
 
 import config.PropertyReader;
 import context.ScenarioContext;
+import enums.ConfigKeys;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import static enums.Credentials.TOKEN;
 import static io.restassured.RestAssured.given;
 
 public class Requests {
 
     private final static ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-    private static final String URL = PropertyReader.getProperty("browser.homepage-url");
+    private static final String URL = PropertyReader.getProperty(ConfigKeys.SERVER_URL);
 
     public static Response postRequest(String path, String requestBody, int statusCode) {
         return given().contentType(ContentType.JSON).body(requestBody)
@@ -23,7 +25,7 @@ public class Requests {
     }
 
     public static Response getRequest(String path, int statusCode) {
-        return given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
+        return given().header("Authorization", scenarioContext.getContext(TOKEN))
                 .contentType(ContentType.JSON).when()
                 .get(URL + path)
                 .then()
@@ -33,7 +35,7 @@ public class Requests {
     }
 
     public static void patchRequest(String path, String requestBody, int statusCode) {
-        given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
+        given().header("Authorization", scenarioContext.getContext(TOKEN))
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
@@ -45,7 +47,7 @@ public class Requests {
     }
 
     public static Response deleteRequest(String path, int statusCode) {
-        return given().header("Authorization", "Bearer " + scenarioContext.getContext("token"))
+        return given().header("Authorization", scenarioContext.getContext(TOKEN))
                 .when()
                 .delete(URL + path)
                 .then()

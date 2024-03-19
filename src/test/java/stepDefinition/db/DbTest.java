@@ -2,6 +2,8 @@ package stepDefinition.db;
 
 import context.ScenarioContext;
 import entity.UserEntity;
+import enums.Credentials;
+import enums.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -13,6 +15,7 @@ import utils.EntityManagerUtil;
 
 import java.time.LocalDateTime;
 
+import static enums.Credentials.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DbTest {
@@ -23,7 +26,7 @@ public class DbTest {
 
     private UserEntity extractUserData() {
         try {
-            return (UserEntity) scenarioContext.getContext("user");
+            return (UserEntity) scenarioContext.getContext(Entity.USER);
         } catch (RuntimeException ex) {
             throw new CustomException("User context failed to extract");
         }
@@ -63,11 +66,18 @@ public class DbTest {
         em.getTransaction().begin();
         String queryStr = String.format("SELECT COUNT(u) FROM UserEntity u WHERE u.%s = :%s", fieldName, fieldName);
         Query query = em.createQuery(queryStr);
-        switch (fieldName) {
-            case "firstName" -> query.setParameter("firstName", userEntity.getFirstName());
-            case "lastName" -> query.setParameter("lastName", userEntity.getLastName());
-            case "email" -> query.setParameter("email", userEntity.getEmail());
-            case "password" -> query.setParameter("password", userEntity.getPassword());
+        Credentials credentials;
+        try {
+            credentials = Credentials.valueOf(fieldName.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            log.error("Provided unknown field: {}", fieldName);
+            throw new CustomException(ex.getMessage());
+        }
+        switch (credentials) {
+            case FIRSTNAME -> query.setParameter(FIRSTNAME.getValue(), userEntity.getFirstName());
+            case LASTNAME -> query.setParameter(LASTNAME.getValue(), userEntity.getLastName());
+            case EMAIL -> query.setParameter(EMAIL.getValue(), userEntity.getEmail());
+            case PASSWORD -> query.setParameter(PASSWORD.getValue(), userEntity.getPassword());
         }
         Long count = (Long) query.getSingleResult();
         em.getTransaction().commit();

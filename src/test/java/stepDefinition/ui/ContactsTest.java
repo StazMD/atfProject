@@ -2,11 +2,13 @@ package stepDefinition.ui;
 
 import context.ScenarioContext;
 import entity.ContactEntity;
+import enums.Entity;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import pages.ContactDetailsPage;
 import pages.ContactListPage;
@@ -31,7 +33,7 @@ public class ContactsTest {
     public ContactEntity extractContactData() {
         try {
             log.debug("Attempting to extract contact data from scenario context");
-            return (ContactEntity) scenarioContext.getContext("contact");
+            return (ContactEntity) scenarioContext.getContext(Entity.CONTACT);
         } catch (RuntimeException ex) {
             log.error("Failed to extract contact data from scenario context", ex);
             throw new CustomException("Contact Data could not be extracted", true);
@@ -40,11 +42,15 @@ public class ContactsTest {
 
     @And("contact was created")
     public void contactWasCreated() {
-        log.info("Opening Add Contact Page");
-        contactListPage.openAddContactPage();
-        ContactEntity contactEntity = extractContactData();
-        log.info("Filling contact fields for '{}'", contactEntity.getFirstNameLastName());
-        contactListPage.fillContactFields(contactEntity);
+        try {
+            log.info("Opening Add Contact Page");
+            contactListPage.openAddContactPage();
+            ContactEntity contactEntity = extractContactData();
+            log.info("Filling contact fields for '{}'", contactEntity.getFirstNameLastName());
+            contactListPage.fillContactFields(contactEntity);
+        } catch (TimeoutException ex) {
+            throw new CustomException(ex.getMessage());
+        }
     }
 
     @Then("contact displaying in contact list")

@@ -1,7 +1,9 @@
 package config;
 
+import enums.ConfigKeys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import utils.CustomException;
 
 import java.io.FileInputStream;
@@ -10,7 +12,7 @@ import java.util.Properties;
 
 public class PropertyReader {
     private static final Logger log = LogManager.getLogger(PropertyReader.class);
-    private static final String APPLICATION_FILE_PATH = "src/test/resources/application.properties";
+    private static final String APPLICATION_FILE_PATH = "application.properties";
     private static Properties properties;
 
     private PropertyReader() {
@@ -30,11 +32,12 @@ public class PropertyReader {
         }
     }
 
-    public static String getProperty(String key) {
+    @NotNull
+    public static String getProperty(ConfigKeys key) {
         if (properties == null) {
             loadProperties();
         }
-        String propertyValue = properties.getProperty(key);
+        var propertyValue = properties.getProperty(key.toString());
         if (propertyValue == null) {
             log.error("Property '{}' not found in {}", key, APPLICATION_FILE_PATH);
             throw new CustomException("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);

@@ -31,17 +31,18 @@ public abstract class BasePage {
         try {
             WaitUtils.waitForButton(submitButton).click();
         } catch (RuntimeException ex) {
-            throw new CustomException(ex.getMessage(), true);
+            throw new CustomException(ex.getMessage(), true, ex);
         }
     }
 
     public WebElement getHeaderElement() {
-        throw new UnsupportedOperationException("getHeaderElement must be overwrite");
+        throw new CustomException("getHeaderElement must be overwrite");
     }
 
     public void assertHeader(String headerText) {
+        //TODO: wait for element and get text after, then assert
         WaitUtils.waitForTextInElement(getHeaderElement(), headerText);
         assertThat(headerText).isEqualTo(getHeaderElement().getText());
-        log.info("'" + headerText + "' header is displaying");
+        log.info("'{}' header is displaying", headerText);
     }
 }

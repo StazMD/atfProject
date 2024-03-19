@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import context.ScenarioContext;
 import entity.UserEntity;
+import enums.Credentials;
+import enums.Entity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -22,11 +24,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static enums.Credentials.*;
+
 public class RestTest {
 
     private static final ScenarioContext scenarioContext;
     private static final Logger log;
     private static final ObjectMapper objectMapper;
+
+    private final String firstName = FIRSTNAME.getValue();
+    private final String lastName = LASTNAME.getValue();
+    private final String email = EMAIL.getValue();
+    private final String password = PASSWORD.getValue();
 
     static {
         scenarioContext = ScenarioContext.INSTANCE;
@@ -38,7 +47,7 @@ public class RestTest {
 
     public UserEntity extractUserData() {
         try {
-            return (UserEntity) scenarioContext.getContext("user");
+            return (UserEntity) scenarioContext.getContext(Entity.USER);
         } catch (RuntimeException ex) {
             throw new CustomException("User context failed to extract");
         }
@@ -54,24 +63,30 @@ public class RestTest {
     @Given("valid user data")
     public void validUserData(DataTable userData) {
         log.info("Starting processing user data from DataTable.");
-
-        List<Map<String, String>> userCredentials = userData.asMaps(String.class, String.class);
-        UserEntity userEntity = new UserEntity(extractUserData());
+        List<Map<String, String>> userCredentials = userData.asMaps();
+        var userEntity = new UserEntity(extractUserData());
         for (Map<String, String> credential : userCredentials) {
             Set<String> keys = credential.keySet();
             for (String key : keys) {
+                Credentials credentials;
+                try {
+                    credentials = Credentials.valueOf(key.toUpperCase());
+                } catch (IllegalArgumentException ex) {
+                    log.error("Provided unknown key: {}", key);
+                    throw new CustomException(ex.getMessage());
+                }
                 String value = credential.get(key);
-                String finalValue = value.startsWith("[random") ? TestDataGeneratorUtils.getRandomCredentials(key) : value;
-                switch (key) {
-                    case "firstName" -> userEntity.setFirstName(finalValue);
-                    case "lastName" -> userEntity.setLastName(finalValue);
-                    case "email" -> userEntity.setEmail(finalValue);
-                    case "password" -> userEntity.setPassword(finalValue);
+                String finalValue = value.startsWith(RANDOM.getValue()) ? TestDataGeneratorUtils.getRandomCredentials(key) : value;
+                switch (credentials) {
+                    case FIRSTNAME -> userEntity.setFirstName(finalValue);
+                    case LASTNAME -> userEntity.setLastName(finalValue);
+                    case EMAIL -> userEntity.setEmail(finalValue);
+                    case PASSWORD -> userEntity.setPassword(finalValue);
                 }
                 log.info("Set {}: {}", key, finalValue);
             }
         }
-        ScenarioContext.INSTANCE.setContext("user", userEntity);
+        ScenarioContext.INSTANCE.setContext(Entity.USER, userEntity);
         log.debug("Set user data to scenario context");
 
         log.info("Finished processing user data.");
@@ -83,8 +98,8 @@ public class RestTest {
             log.info("Sending request to create a new user");
             String requestBody = objectMapper.writeValueAsString(extractUserData());
             Response response = Requests.postRequest("/users", requestBody, 201);
-            String token = response.jsonPath().getString("token");
-            scenarioContext.setContext("token", token);
+            String token = response.jsonPath().getString(TOKEN.getValue());
+            scenarioContext.setContext(TOKEN, token);
             log.info("New user created successfully, token acquired");
         } catch (Exception ex) {
             log.error("New user creation failed", ex);
@@ -107,28 +122,21 @@ public class RestTest {
 
     @When("a request to update the user's details with next values was sent")
     public void aRequestToUpdateTheUserSDetailsWasSent(DataTable userData) {
-        List<Map<String, String>> userCredentials = userData.asMaps(String.class, String.class);
+        List<Map<String, String>> userCredentials = userData.asMaps();
         for (Map<String, String> userCredential : userCredentials) {
             UserEntity userEntity = new UserEntity(extractUserData());
 
-            if (userCredential.get("firstName") == null || userCredential.get("lastName") == null || userCredential.get("email") == null || userCredential.get("password") == null) {
+            if (userCredential.get(firstName) == null || userCredential.get(lastName) == null || userCredential.get(email) == null || userCredential.get(password) == null) {
                 log.error("One or more required credentials are empty");
                 throw new CustomException("Credentials should not be empty");
             }
 
-            String firstName = userCredential.get("firstName");
-            userEntity.setFirstName(firstName);
+            userEntity.setFirstName(userCredential.get(firstName));
+            userEntity.setLastName(userCredential.get(lastName));
+            userEntity.setEmail(userCredential.get(email));
+            userEntity.setPassword(userCredential.get(password));
 
-            String lastName = userCredential.get("lastName");
-            userEntity.setLastName(lastName);
-
-            String email = userCredential.get("email");
-            userEntity.setEmail(email);
-
-            String password = userCredential.get("password");
-            userEntity.setPassword(password);
-
-            ScenarioContext.INSTANCE.setContext("user", userEntity);
+            ScenarioContext.INSTANCE.setContext(Entity.USER, userEntity);
         }
         try {
             log.info("Sending request to update user's details");
@@ -163,8 +171,8 @@ public class RestTest {
                     extractUserData().getPassword()
             ));
             Response response = Requests.postRequest("/users/login", requestBody, 200);
-            String token = response.jsonPath().getString("token");
-            scenarioContext.setContext("token", token);
+            String token = response.jsonPath().getString(TOKEN.getValue());
+            scenarioContext.setContext(TOKEN, token);
             log.info("Login successful, token acquired");
         } catch (Exception ex) {
             log.error("Login attempt failed", ex);

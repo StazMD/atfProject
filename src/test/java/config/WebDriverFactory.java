@@ -1,5 +1,6 @@
 package config;
 
+import enums.ConfigKeys;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,10 +19,11 @@ public class WebDriverFactory {
     private static final Logger log = LogManager.getLogger(WebDriverFactory.class);
 
     private static WebDriver setupDriver() {
+
         if (driver == null) {
             log.info("Opening WebDriver...");
 
-            String browserType = PropertyReader.getProperty("browser.type").toLowerCase();
+            var browserType = PropertyReader.getProperty(ConfigKeys.BROWSER_TYPE);
             switch (browserType) {
                 case "chrome" -> getChromeDriver();
                 case "firefox" -> getFirefoxDriver();
@@ -42,7 +44,7 @@ public class WebDriverFactory {
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
 
-            if (Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"))) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS))) {
                 chromeOptions.addArguments("--headless=new");
                 log.info("Chrome is set to run in headless mode");
             }
@@ -59,7 +61,7 @@ public class WebDriverFactory {
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions firefoxOptions = new FirefoxOptions();
 
-            if (Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"))) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS))) {
                 firefoxOptions.addArguments("--headless");
                 log.info("Firefox is set to run in headless mode");
             }
@@ -76,7 +78,7 @@ public class WebDriverFactory {
             WebDriverManager.edgedriver().setup();
             EdgeOptions edgeOptions = new EdgeOptions();
 
-            if (Boolean.parseBoolean(PropertyReader.getProperty("browser.headless"))) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS))) {
                 edgeOptions.addArguments("--headless");
                 log.info("Edge is set to run in headless mode");
             }
