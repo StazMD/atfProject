@@ -12,4 +12,4 @@ Feature: Update User Via API
 
     Examples:
       | firstName | lastName | email                 | password     |
-      | Vasile    | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |
+      | Andrei    | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |

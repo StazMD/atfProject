@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.given;
 public class Requests {
 
     private final static ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
-    private static final String URL = PropertyReader.getProperty(ConfigKeys.SERVER_URL);
+    private static final String URL = PropertyReader.getProperty(ConfigKeys.SERVER_URL.getKey());
 
     public static Response postRequest(String path, String requestBody, int statusCode) {
         return given().contentType(ContentType.JSON).body(requestBody)

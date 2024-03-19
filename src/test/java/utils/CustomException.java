@@ -23,4 +23,5 @@ public class CustomException extends RuntimeException {
             ReportPortalUtils.sendScreenshotToReportPortal();
         }
     }
+
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class ScreenshotUtils {
 
-    private static final String screenshotsFilePath = PropertyReader.getProperty(ConfigKeys.SCREENSHOT_FOLDER);
+    private static final String screenshotsFilePath = PropertyReader.getProperty(ConfigKeys.SCREENSHOT_FOLDER.getKey());
     private static final Logger log = LogManager.getLogger(ScreenshotUtils.class);
     private static final ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 

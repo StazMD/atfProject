@@ -64,7 +64,7 @@ public class SignUpTest {
         log.info("Contact List header verified");
 
         log.info("Attempting to login with new user's details");
-        restTest.aRequestToLoginWithUserSDetailsWasSent();
+        restTest.requestToLoginWithUserDetails();
 
         log.info("Verifying user's details");
         restTest.getUserDetails();

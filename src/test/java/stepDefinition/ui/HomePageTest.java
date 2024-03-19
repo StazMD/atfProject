@@ -14,7 +14,7 @@ import utils.CustomException;
 public class HomePageTest {
 
     private final WebDriver driver;
-    private final String homePageUrl = PropertyReader.getProperty(ConfigKeys.SERVER_URL);
+    private final String homePageUrl = PropertyReader.getProperty(ConfigKeys.SERVER_URL.getKey());
     private final Logger log = LogManager.getLogger(HomePageTest.class);
     private final HomePage homePage;
 

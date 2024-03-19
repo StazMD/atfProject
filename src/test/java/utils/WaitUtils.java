@@ -15,7 +15,7 @@ import java.time.Duration;
 
 public class WaitUtils {
 
-    private static final long timeout = Long.parseLong(PropertyReader.getProperty(ConfigKeys.TIMEOUT));
+    private static final long timeout = Long.parseLong(PropertyReader.getProperty(ConfigKeys.TIMEOUT.getKey()));
     private static final Logger log = LogManager.getLogger(WaitUtils.class);
     private static final WebDriver driver = WebDriverFactory.getDriver();
 

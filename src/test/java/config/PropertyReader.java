@@ -1,6 +1,5 @@
 package config;
 
-import enums.ConfigKeys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +11,7 @@ import java.util.Properties;
 
 public class PropertyReader {
     private static final Logger log = LogManager.getLogger(PropertyReader.class);
-    private static final String APPLICATION_FILE_PATH = "application.properties";
+    private static final String APPLICATION_FILE_PATH = "src/test/resources/application.properties";
     private static Properties properties;
 
     private PropertyReader() {
@@ -33,11 +32,11 @@ public class PropertyReader {
     }
 
     @NotNull
-    public static String getProperty(ConfigKeys key) {
+    public static String getProperty(String key) {
         if (properties == null) {
             loadProperties();
         }
-        var propertyValue = properties.getProperty(key.toString());
+        var propertyValue = properties.getProperty(key);
         if (propertyValue == null) {
             log.error("Property '{}' not found in {}", key, APPLICATION_FILE_PATH);
             throw new CustomException("Property '" + key + "' not found in " + APPLICATION_FILE_PATH);

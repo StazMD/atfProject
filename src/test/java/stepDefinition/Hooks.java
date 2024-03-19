@@ -5,7 +5,6 @@ import context.ScenarioContext;
 import io.cucumber.java.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.EntityManagerUtil;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
@@ -41,14 +40,14 @@ public class Hooks {
         ScenarioContext.INSTANCE.clearContext();
     }
 
-    @After("@UI")
-    public void afterEachUi() {
-        ReportPortalUtils.sendScreenshotToReportPortal();
-    }
+//    @After("@UI")
+//    public void afterEachUi() {
+//        ReportPortalUtils.sendScreenshotToReportPortal();
+//    }
 
     @AfterAll
     public static void tearDownAfterAll() {
         WebDriverFactory.quitDriver();
-        EntityManagerUtil.shutdownJpa();
+//        EntityManagerUtil.shutdownJpa();
     }
 }
