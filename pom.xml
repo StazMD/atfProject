@@ -14,16 +14,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.17.0</jackson.version>
         <javafaker.version>1.0.2</javafaker.version>
-        <selenium.version>4.18.1</selenium.version>
-        <webdrivermanager.version>5.7.0</webdrivermanager.version>
-        <cucumber.version>7.15.0</cucumber.version>
-        <cucumber-junit.version>7.15.0</cucumber-junit.version>
-        <cucumber-picocontainer.version>7.15.0</cucumber-picocontainer.version>
-        <slf4j.version>2.0.12</slf4j.version>
+        <selenium.version>4.19.1</selenium.version>
+        <webdrivermanager.version>5.8.0</webdrivermanager.version>
+        <cucumber.version>7.16.1</cucumber.version>
+        <cucumber-junit.version>7.16.1</cucumber-junit.version>
+        <cucumber-picocontainer.version>7.16.1</cucumber-picocontainer.version>
+        <slf4j.version>2.0.13</slf4j.version>
         <log4j-core.version>2.23.1</log4j-core.version>
         <log4j-api.version>2.23.1</log4j-api.version>
         <assertj.version>3.25.3</assertj.version>
-        <awaitility.version>4.2.0</awaitility.version>
+        <awaitility.version>4.2.1</awaitility.version>
         <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
         <rest-assured.version>5.4.0</rest-assured.version>

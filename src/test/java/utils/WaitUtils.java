@@ -15,7 +15,7 @@ import java.time.Duration;
 
 public class WaitUtils {
 
-    private static final long timeout = Long.parseLong(PropertyReader.getProperty(ConfigKeys.TIMEOUT));
+    private static final long timeout = Long.parseLong(PropertyReader.getProperty(ConfigKeys.TIMEOUT.getKey()));
     private static final Logger log = LogManager.getLogger(WaitUtils.class);
     private static final WebDriver driver = WebDriverFactory.getDriver();
 
@@ -47,5 +47,12 @@ public class WaitUtils {
             log.error("Failed to wait for button to be clickable");
             throw new CustomException(ex.getMessage());
         }
+    }
+
+    public static void sendKeysUtil(WebElement field, String textToPopulate) {
+        log.info("Clearing field '{}'", field);
+        waitForElement(field).clear();
+        log.info("Sending string '{}' in field '{}'", textToPopulate, field);
+        waitForElement(field).sendKeys(textToPopulate);
     }
 }

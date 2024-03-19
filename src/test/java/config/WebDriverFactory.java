@@ -22,17 +22,18 @@ public class WebDriverFactory {
 
         if (driver == null) {
             log.info("Opening WebDriver...");
-
-            var browserType = PropertyReader.getProperty(ConfigKeys.BROWSER_TYPE);
-            switch (browserType) {
-                case "chrome" -> getChromeDriver();
-                case "firefox" -> getFirefoxDriver();
-                case "edge" -> getEdgeDriver();
-                default -> throw new CustomException("Unsupported browser: " + browserType);
+            var browserType = PropertyReader.getProperty(ConfigKeys.BROWSER_TYPE.getKey());
+            try {
+                switch (browserType) {
+                    case "chrome" -> getChromeDriver();
+                    case "firefox" -> getFirefoxDriver();
+                    case "edge" -> getEdgeDriver();
+                    default -> throw new IllegalArgumentException("Unsupported browser type: '" + browserType + "'");
+                }
+            } catch (IllegalArgumentException ex) {
+                log.info("{}...activating default Chrome browser...", ex.getMessage());
+                getChromeDriver();
             }
-
-            driver.manage().window().maximize();
-            log.debug("Browser window maximized");
             log.info("WebDriver for {} has been successfully set up", browserType);
         }
         log.debug("Reusing existing WebDriver instance");
@@ -42,16 +43,17 @@ public class WebDriverFactory {
     private static void getChromeDriver() {
         try {
             WebDriverManager.chromedriver().setup();
-            ChromeOptions chromeOptions = new ChromeOptions();
+            var chromeOptions = new ChromeOptions();
 
-            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS))) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS.getKey()))) {
                 chromeOptions.addArguments("--headless=new");
                 log.info("Chrome is set to run in headless mode");
             }
             log.info("Setting ChromeDriver with options: {}", chromeOptions);
             driver = new ChromeDriver(chromeOptions);
+            getMaximized();
         } catch (Exception ex) {
-            log.error("Error initializing WebDriver: " + ex.getMessage());
+            log.error(ex.getMessage());
             throw new CustomException("Error initializing WebDriver", ex);
         }
     }
@@ -59,14 +61,15 @@ public class WebDriverFactory {
     private static void getFirefoxDriver() {
         try {
             WebDriverManager.firefoxdriver().setup();
-            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            var firefoxOptions = new FirefoxOptions();
 
-            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS))) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS.getKey()))) {
                 firefoxOptions.addArguments("--headless");
                 log.info("Firefox is set to run in headless mode");
             }
             log.info("Setting FirefoxDriver with options: {}", firefoxOptions);
             driver = new FirefoxDriver(firefoxOptions);
+            getMaximized();
         } catch (Exception ex) {
             log.error("Error initializing WebDriver: " + ex.getMessage());
             throw new CustomException("Error initializing WebDriver", ex);
@@ -76,18 +79,24 @@ public class WebDriverFactory {
     private static void getEdgeDriver() {
         try {
             WebDriverManager.edgedriver().setup();
-            EdgeOptions edgeOptions = new EdgeOptions();
+            var edgeOptions = new EdgeOptions();
 
-            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS))) {
+            if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS.getKey()))) {
                 edgeOptions.addArguments("--headless");
                 log.info("Edge is set to run in headless mode");
             }
             log.info("Setting EdgeDriver with options: {}", edgeOptions);
             driver = new EdgeDriver(edgeOptions);
+            getMaximized();
         } catch (Exception ex) {
             log.error("Error initializing WebDriver: " + ex.getMessage());
             throw new CustomException("Error initializing WebDriver", ex);
         }
+    }
+
+    public static void getMaximized() {
+        driver.manage().window().maximize();
+        log.debug("Browser window maximized");
     }
 
     public static WebDriver getDriver() {

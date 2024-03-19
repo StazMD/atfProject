@@ -1,10 +1,15 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utils.CustomException;
 import utils.WaitUtils;
 
 public class HomePage extends BasePage {
+
+    private final Logger log = LogManager.getLogger(HomePage.class);
 
     @FindBy(xpath = "//input[@id='email']")
     private WebElement emailElement;
@@ -21,7 +26,12 @@ public class HomePage extends BasePage {
         clickSubmitButton();
     }
 
-    public void openSignUpPage() {
-        WaitUtils.waitForButton(signUpButtonElement).click();
+    public void signUpButtonClick() {
+        try {
+            WaitUtils.waitForButton(signUpButtonElement).click();
+        } catch (Exception ex) {
+            log.error("Failed to click on 'Sign Up' button", ex);
+            throw new CustomException(ex.getMessage(), true);
+        }
     }
 }

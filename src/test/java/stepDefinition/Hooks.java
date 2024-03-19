@@ -5,12 +5,17 @@ import context.ScenarioContext;
 import io.cucumber.java.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.EntityManagerUtil;
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import utils.ReportPortalUtils;
 import utils.TestDataGeneratorUtils;
 
 
 public class Hooks {
+    static {
+//        ThreadContext.put("scenarioName", "");
+//        ThreadContext.clearMap();
+    }
 
     //    private static final DbTest dbDbTest = new DbTest();
     private static final TestDataGeneratorUtils generateUserDate = new TestDataGeneratorUtils();
@@ -23,6 +28,9 @@ public class Hooks {
 
     @Before(order = 1)
     public void beforeEach(Scenario scenario) {
+        String scenarioName = scenario.getName().replaceAll("[^a-zA-Z0-9\\-_]+", "_");
+        ThreadContext.put("scenarioName", scenarioName);
+        Configurator.reconfigure();
         ScenarioContext.INSTANCE.setScenario(scenario);
         generateUserDate.generateUserCredentials();
         generateUserDate.generateContactCredentials();
@@ -41,14 +49,14 @@ public class Hooks {
         ScenarioContext.INSTANCE.clearContext();
     }
 
-    @After("@UI")
-    public void afterEachUi() {
-        ReportPortalUtils.sendScreenshotToReportPortal();
-    }
+//    @After("@UI")
+//    public void afterEachUi() {
+//        ReportPortalUtils.sendScreenshotToReportPortal();
+//    }
 
     @AfterAll
     public static void tearDownAfterAll() {
         WebDriverFactory.quitDriver();
-        EntityManagerUtil.shutdownJpa();
+//        EntityManagerUtil.shutdownJpa();
     }
 }

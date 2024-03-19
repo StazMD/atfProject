@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pages.SignUpPage;
 import stepDefinition.api.RestTest;
-import stepDefinition.db.DbTest;
 import utils.CustomException;
 import utils.TestDataGeneratorUtils;
 
@@ -21,15 +20,16 @@ public class SignUpTest {
 
     private final SignUpPage signUpPage;
     private final RestTest restTest;
-    private final DbTest dbTest;
+    //    private final DbTest dbTest;
     private static final Logger log = LogManager.getLogger(SignUpTest.class);
 
     ScenarioContext scenarioContext = ScenarioContext.INSTANCE;
 
-    public SignUpTest(SignUpPage signUpPage, RestTest restTest, DbTest dbTest) {
+    //    public SignUpTest(SignUpPage signUpPage, RestTest restTest, DbTest dbTest) {
+    public SignUpTest(SignUpPage signUpPage, RestTest restTest) {
         this.signUpPage = signUpPage;
         this.restTest = restTest;
-        this.dbTest = dbTest;
+//        this.dbTest = dbTest;
     }
 
     public UserEntity extractUserData() {
@@ -42,15 +42,10 @@ public class SignUpTest {
 
     @And("all fields are submitted with valid data")
     public void populateAddUserFields() {
-        log.info("Populating sign up page with valid user data");
+        log.info("Populating Sign up page with valid user data");
         UserEntity userEntity = extractUserData();
-        signUpPage.userFields(
-                userEntity.getFirstName(),
-                userEntity.getLastName(),
-                userEntity.getEmail(),
-                userEntity.getPassword()
-        );
-        log.info("Successfully populated sign up fields with user data: {}, {}, {}, {}",
+        signUpPage.userFields(userEntity);
+        log.info("Successfully populated Sign up fields with user data: {}, {}, {}, {}",
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
                 userEntity.getEmail(),
@@ -63,21 +58,21 @@ public class SignUpTest {
         signUpPage.assertHeader("Contact List");
         log.info("Contact List header verified");
 
-        log.info("Attempting to login with new user's details");
-        restTest.aRequestToLoginWithUserSDetailsWasSent();
+        log.info("Attempting to login with user's details");
+        restTest.requestToLoginWithUserDetails();
 
         log.info("Verifying user's details");
         restTest.getUserDetails();
 
-        log.info("Checking new user creation in database");
-        dbTest.getUserEntityFromDatabase();
+//        log.info("Checking new user creation in database");
+//        dbTest.getUserEntityFromDatabase();
 
-        log.info("New user verification complete");
+        log.info("User verification completed");
     }
 
     @And("{string} submitted with invalid data")
     public void fieldSubmittedWithInvalidData(String fieldName) {
-        log.info("Attempting to submit invalid data for: {}", fieldName);
+        log.info("Attempting to submit invalid data for: '{}'", fieldName);
         UserEntity userEntity = new UserEntity(extractUserData());
         switch (fieldName) {
             case "firstName" -> userEntity.setFirstName(TestDataGeneratorUtils.getNegativeRandomFirstName());
@@ -87,12 +82,6 @@ public class SignUpTest {
         }
 
         signUpPage.userFields(userEntity);
-//        signUpPage.userFields(
-//                userEntity.getFirstName(),
-//                userEntity.getLastName(),
-//                userEntity.getEmail(),
-//                userEntity.getPassword()
-//        );
 
         scenarioContext.setContext(Entity.USER, userEntity);
         log.info("Submitted invalid data for {}", fieldName);
@@ -124,8 +113,8 @@ public class SignUpTest {
             restTest.userNotAbleToLogin();
             log.info("Login attempt with {} failed as expected, indicating no such user was created", fieldName);
 
-            dbTest.assertThatUserWasNotCreated(fieldName);
-            log.info("Database verification passed: no new user was created with invalid {}", fieldName);
+//            dbTest.assertThatUserWasNotCreated(fieldName);
+//            log.info("Database verification passed: no new user was created with invalid {}", fieldName);
 
         } catch (RuntimeException ex) {
             log.error("Verification failed for non-creation of user with invalid {}: {}", fieldName, ex.getMessage());

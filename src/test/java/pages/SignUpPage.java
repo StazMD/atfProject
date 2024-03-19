@@ -25,19 +25,11 @@ public class SignUpPage extends BasePage {
     @FindBy(id = "error")
     private WebElement errorElement;
 
-    public void userFields(String firstName, String lastName, String email, String password) {
-        WaitUtils.waitForElement(firstNameElement).sendKeys(firstName);
-        WaitUtils.waitForElement(lastNameElement).sendKeys(lastName);
-        WaitUtils.waitForElement(emailElement).sendKeys(email);
-        WaitUtils.waitForElement(passwordElement).sendKeys(password);
-        clickSubmitButton();
-    }
-
     public void userFields(UserEntity user) {
-        WaitUtils.waitForElement(firstNameElement).sendKeys(user.getFirstName());
-        WaitUtils.waitForElement(lastNameElement).sendKeys(user.getLastName());
-        WaitUtils.waitForElement(emailElement).sendKeys(user.getEmail());
-        WaitUtils.waitForElement(passwordElement).sendKeys(user.getPassword());
+        WaitUtils.sendKeysUtil(firstNameElement, user.getFirstName());
+        WaitUtils.sendKeysUtil(lastNameElement, user.getLastName());
+        WaitUtils.sendKeysUtil(emailElement, user.getEmail());
+        WaitUtils.sendKeysUtil(passwordElement, user.getPassword());
         clickSubmitButton();
     }
 

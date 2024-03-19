@@ -9,12 +9,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
-import utils.CustomException;
 
 public class HomePageTest {
 
     private final WebDriver driver;
-    private final String homePageUrl = PropertyReader.getProperty(ConfigKeys.SERVER_URL);
+    private final String homePageUrl = PropertyReader.getProperty(ConfigKeys.SERVER_URL.getKey());
     private final Logger log = LogManager.getLogger(HomePageTest.class);
     private final HomePage homePage;
 
@@ -31,13 +30,7 @@ public class HomePageTest {
 
     @When("adding user page opening")
     public void openAddUserPage() {
-        log.info("Opening Add User Page");
-        try {
-            homePage.openSignUpPage();
-            log.debug("Add User page opened successfully");
-        } catch (Exception ex) {
-            log.error("Failed to open Add User page", ex);
-            throw new CustomException("Failed to open Add User page: " + ex.getMessage(), true);
-        }
+        log.info("Opening 'Add User' page...");
+        homePage.signUpButtonClick();
     }
 }

@@ -4,7 +4,7 @@ Feature: Update User Via API
   Scenario Outline: Successfully update values of an existing user
     Given valid user data
       | firstName | lastName | email                 | password     |
-      | Ion       | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |
+      | Ion       | [random] | Ion.Usturoi@email.com | Va.RoiVa.Roi |
     When a request to update the user's details with next values was sent
       | firstName   | lastName   | email   | password   |
       | <firstName> | <lastName> | <email> | <password> |
@@ -12,4 +12,4 @@ Feature: Update User Via API
 
     Examples:
       | firstName | lastName | email                 | password     |
-      | Vasile    | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |
+      | Andrei    | Usturoi  | Ion.Usturoi@email.com | Va.RoiVa.Roi |
