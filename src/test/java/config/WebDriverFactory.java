@@ -1,7 +1,6 @@
 package config;
 
 import enums.ConfigKeys;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -42,7 +41,6 @@ public class WebDriverFactory {
 
     private static void getChromeDriver() {
         try {
-            WebDriverManager.chromedriver().setup();
             var chromeOptions = new ChromeOptions();
 
             if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS.getKey()))) {
@@ -60,7 +58,6 @@ public class WebDriverFactory {
 
     private static void getFirefoxDriver() {
         try {
-            WebDriverManager.firefoxdriver().setup();
             var firefoxOptions = new FirefoxOptions();
 
             if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS.getKey()))) {
@@ -78,7 +75,6 @@ public class WebDriverFactory {
 
     private static void getEdgeDriver() {
         try {
-            WebDriverManager.edgedriver().setup();
             var edgeOptions = new EdgeOptions();
 
             if (Boolean.parseBoolean(PropertyReader.getProperty(ConfigKeys.BROWSER_HEADLESS.getKey()))) {

@@ -14,8 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.17.0</jackson.version>
         <javafaker.version>1.0.2</javafaker.version>
-        <selenium.version>4.19.1</selenium.version>
-        <webdrivermanager.version>5.8.0</webdrivermanager.version>
+        <selenium.version>4.20.0</selenium.version>
+        <apache.commons-io.version>2.16.1</apache.commons-io.version>
         <cucumber.version>7.16.1</cucumber.version>
         <cucumber-junit.version>7.16.1</cucumber-junit.version>
         <cucumber-picocontainer.version>7.16.1</cucumber-picocontainer.version>
@@ -60,9 +60,9 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${webdrivermanager.version}</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${apache.commons-io.version}</version>
         </dependency>
 
         <dependency>
@@ -158,6 +158,18 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>${jakarta.persistence-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
